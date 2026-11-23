@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-TELP 문법 전 영역 실전 트레이너</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Pretendard & Times New Roman 대체 표준 웹폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    /* G-TELP 실제 시험지 100% 동일 폰트 (Times New Roman / Tinos 계열) */
+    .gtelp-exam-font {
+      font-family: "Times New Roman", "Tinos", Times, "Liberation Serif", serif;
+      letter-spacing: 0.015em;
+    }
+    /* 보기 기호 (A), (B), (C), (D) 전용 고딕(Arial) 폰트 */
+    .gtelp-label-font {
+      font-family: Arial, Helvetica, "Pretendard", sans-serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-100/70 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- 상단 헤더 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-3xl mx-auto px-4 h-15 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5 cursor-pointer" id="btn-home">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-sm">
+          G
+        </div>
+        <div>
+          <h1 class="font-extrabold text-slate-900 text-base leading-tight">
+            G-TELP 문법 실전 트레이너
+          </h1>
+          <p class="text-[11px] text-slate-500">실제 시험지 폰트(Times New Roman) 적용</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="btn-open-cheat" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition border border-indigo-200">
+          <span>📖</span>
+          <span>공식표</span>
+        </button>
+        <button id="btn-open-add" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
+          <span>➕</span>
+          <span>문제 추가</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 본문 -->
+  <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:py-6">
+
+    <!-- 1. 메인 대시보드 화면 -->
+    <div id="dashboard-view" class="space-y-6">
+
+      <!-- 학습 통계 바 -->
+      <div class="grid grid-cols-4 gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="text-center">
+          <span class="text-[11px] font-medium text-slate-400 block">푼 문제</span>
+          <span id="stat-solved" class="text-lg md:text-xl font-black text-slate-800">0</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">정답률</span>
+          <span id="stat-rate" class="text-lg md:text-xl font-black text-indigo-600">0%</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">오답노트</span>
+          <span id="stat-wrong-count" class="text-lg md:text-xl font-black text-rose-500">0</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">연속 출석</span>
+          <span id="stat-streak" class="text-lg md:text-xl font-black text-amber-500">1일</span>
+        </div>
+      </div>
+
+      <!-- 선택된 파트 10문제 시작 배너 -->
+      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl shadow-indigo-100 relative overflow-hidden">
+        <div class="relative z-10 space-y-3.5">
+          <div class="flex items-center justify-between">
+            <span id="selected-cat-count" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-xs">
+              현재 등록 문항: 20개
+            </span>
+            <span class="text-xs text-indigo-200">1회 10문제 코스</span>
+          </div>
+
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight leading-snug">
+            <span id="selected-cat-title" class="text-white">준동사 (동명사 vs to부정사)</span> 실전 10문제 풀기<br>
+            <span class="text-indigo-200 text-sm md:text-base font-normal">실제 G-TELP 시험지 폰트(Times New Roman)로 실전 감각 극대화</span>
+          </h2>
+
+          <p id="selected-cat-desc" class="text-xs md:text-sm text-indigo-100/90 leading-relaxed max-w-xl">
+            준동사(동명사 vs to부정사) 3:3 출제 공식에 맞춰 실전 10문제를 출제합니다.
+          </p>
+
+          <div class="pt-2">
+            <button id="btn-start-session" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white text-indigo-700 font-extrabold text-base hover:bg-indigo-50 shadow-lg hover:shadow-xl transition transform active:scale-98 flex items-center justify-center gap-2">
+              <span>🔥 선택 파트 10문제 시작하기</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 문법 파트 선택 그리드 -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+            <span>📚</span> 학습할 문법 파트 선택
+          </h3>
+          <span class="text-xs text-slate-400">카드를 누르면 해당 파트 10문제로 변경됩니다</span>
+        </div>
+
+        <div id="category-container" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <!-- 동적 주입 -->
+        </div>
+      </div>
+
+      <!-- 오답노트 카드 -->
+      <div id="card-wrong-notes" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-rose-300 transition cursor-pointer shadow-xs flex items-center justify-between">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-2">
+            <span class="text-base">📝</span>
+            <h3 class="font-extrabold text-slate-800 text-sm md:text-base">내 오답노트 모아 풀기</h3>
+            <span id="wrong-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">0문제</span>
+          </div>
+          <p class="text-xs text-slate-500">틀렸던 문제만 골라 완벽하게 숙지할 때까지 반복 학습합니다.</p>
+        </div>
+        <span class="text-slate-400 font-bold text-lg">›</span>
+      </div>
+
+    </div>
+
+    <!-- 2. 퀴즈 풀이 화면 (실제 시험지 폰트 100% 적용) -->
+    <div id="quiz-view" class="hidden space-y-4">
+
+      <!-- 상단 진행 바 & 나가기 -->
+      <div class="bg-white px-4 py-3 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span id="progress-text" class="font-extrabold text-indigo-700 text-sm font-mono">문제 1 / 10</span>
+            <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">Official G-TELP Serif</span>
+          </div>
+          <button id="btn-quit-quiz" class="text-xs font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded hover:bg-slate-100 transition">
+            ✕ 그만하기
+          </button>
+        </div>
+
+        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 10%;"></div>
+        </div>
+
+        <!-- 10개 문항 점 인디케이터 -->
+        <div id="quick-dots" class="flex justify-between gap-1 pt-1">
+          <!-- 1~10 동적 생성 -->
+        </div>
+      </div>
+
+      <!-- 실제 시험지 스타일의 문제 카드 -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+        
+        <div>
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
+            <span>G-TELP Level 2 Examination</span>
+            <span class="text-indigo-600 font-normal">Actual Exam Typography</span>
+          </div>
+          <!-- 실제 시험지 폰트 적용된 문제 본문 -->
+          <div id="question-text" class="gtelp-exam-font text-[17px] md:text-[19px] text-slate-900 leading-[1.7] select-text">
+            <!-- 질문 본문 -->
+          </div>
+        </div>
+
+        <!-- 실제 시험지 폰트 적용된 보기 컨테이너 -->
+        <div id="options-container" class="space-y-2.5">
+          <!-- 보기 버튼들 동적 주입 -->
+        </div>
+
+        <!-- 즉석 정답 & 해설 박스 -->
+        <div id="feedback-box" class="hidden pt-2">
+          <div id="feedback-content">
+            <!-- 정오답 + 세부 유형 뱃지 + 해설 동적 주입 -->
+          </div>
+        </div>
+
+        <!-- 다음 문제 이동 버튼 -->
+        <button id="btn-next-question" class="hidden w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition">
+          <span>다음 문제 풀기 (Enter)</span>
+          <span>→</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 3. 결과 화면 -->
+    <div id="result-view" class="hidden space-y-5">
+
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm text-center space-y-4">
+        <div class="inline-block p-3.5 bg-indigo-50 text-indigo-600 rounded-full text-3xl">
+          🏆
+        </div>
+        <div>
+          <h2 class="text-xl md:text-2xl font-black text-slate-900">학습 세트 완료!</h2>
+          <p id="final-message" class="text-xs md:text-sm text-slate-500 mt-1">수고하셨습니다. 방금 푼 문제들을 복습해보세요.</p>
+        </div>
+
+        <div class="flex items-center justify-center gap-8 py-4 border-y border-slate-100 max-w-xs mx-auto">
+          <div>
+            <div class="text-xs text-slate-400 font-medium">맞힌 개수</div>
+            <div id="final-score" class="text-2xl md:text-3xl font-black text-slate-800">0 / 10</div>
+          </div>
+          <div class="h-10 w-px bg-slate-200"></div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">정답률</div>
+            <div id="final-rate" class="text-2xl md:text-3xl font-black text-indigo-600">0%</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button id="btn-retry-session" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs md:text-sm shadow-md transition">
+            🔄 새로운 10문제 또 풀기
+          </button>
+          <button id="btn-result-home" class="px-5 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs md:text-sm transition">
+            🏠 메인으로 돌아가기
+          </button>
+        </div>
+      </div>
+
+      <!-- 10문제 전체 리뷰 리스트 -->
+      <div class="space-y-3">
+        <h3 class="font-extrabold text-slate-800 text-sm md:text-base flex items-center gap-2">
+          <span>📋</span> 이번 세트 정답 및 출제 공식 한눈에 보기
+        </h3>
+        <div id="result-review-list" class="space-y-3">
+          <!-- 동적 주입 -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 탭형 전 문법 공식표 모달 -->
+  <div id="cheatsheet-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-2xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">📖</span>
+          <h3 class="font-extrabold text-slate-900 text-sm md:text-base">G-TELP 문법 전 영역 핵심 공식표</h3>
+        </div>
+        <button id="btn-close-cheat" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">✕</button>
+      </div>
+
+      <div id="cheat-tabs" class="flex flex-wrap gap-1.5 p-3 border-b border-slate-200 bg-slate-50/50">
+        <!-- 탭 동적 주입 -->
+      </div>
+
+      <div id="cheat-content" class="p-5 overflow-y-auto space-y-3 flex-1">
+        <!-- 내용 동적 주입 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 새 문제 추가 모달 -->
+  <div id="add-question-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-lg max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <h3 class="font-extrabold text-slate-900 text-sm md:text-base">새 문법 실전문제 직접 추가</h3>
+        <button id="btn-close-add" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">✕</button>
+      </div>
+      <form id="form-add-question" class="p-5 overflow-y-auto space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">문법 파트 선택</label>
+            <select name="category" class="w-full p-2 border border-slate-300 rounded-xl">
+              <option value="gerund_infinitive">준동사 (동명사/to부정사)</option>
+              <option value="tense">시제 (Tense)</option>
+              <option value="subjunctive">가정법 (과거/과거완료)</option>
+              <option value="should_omission">Should 생략</option>
+              <option value="relative">관계사 (관계대명사/부사)</option>
+              <option value="modal">조동사</option>
+              <option value="conjunction">연결어</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">세부 유형 태그</label>
+            <input type="text" name="subCategoryName" placeholder="예: to부정사, 과거진행" class="w-full p-2 border border-slate-300 rounded-xl">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">문제 본문 (빈칸은 ___________ 표시)</label>
+          <textarea name="questionText" rows="3" required placeholder="예: The CEO decided ___________ new employees." class="w-full p-2.5 border border-slate-300 rounded-xl gtelp-exam-font text-base"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-700">선택지 4개</label>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(A)</span>
+            <input type="text" name="optA" required placeholder="보기 A" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(B)</span>
+            <input type="text" name="optB" required placeholder="보기 B" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(C)</span>
+            <input type="text" name="optC" required placeholder="보기 C" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(D)</span>
+            <input type="text" name="optD" required placeholder="보기 D" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">정답 선택</label>
+            <select name="answer" class="w-full p-2 border border-slate-300 rounded-xl font-bold">
+              <option value="a">(A)</option>
+              <option value="b">(B)</option>
+              <option value="c">(C)</option>
+              <option value="d">(D)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">단서 힌트 키워드</label>
+            <input type="text" name="hint" placeholder="예: decide 뒤 목적어" class="w-full p-2 border border-slate-300 rounded-xl">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">상세 해설</label>
+          <textarea name="explanation" rows="2" placeholder="정답이 되는 공식 설명" class="w-full p-2 border border-slate-300 rounded-xl"></textarea>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="app.closeModal('add-question-modal')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold">취소</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold">문제 등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 스크립트 로드 -->
+  <script src="data/cheatsheet.js"></script>
+  <script src="data/generator.js"></script>
+  <script src="data/questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

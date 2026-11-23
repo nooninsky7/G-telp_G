@@ -1,0 +1,2067 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-TELP 문법 전 영역 실전 트레이너</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Pretendard & Times New Roman 대체 표준 웹폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    /* G-TELP 실제 시험지 100% 동일 폰트 (Times New Roman / Tinos 계열) */
+    .gtelp-exam-font {
+      font-family: "Times New Roman", "Tinos", Times, "Liberation Serif", serif;
+      letter-spacing: 0.015em;
+    }
+    /* 보기 기호 (A), (B), (C), (D) 전용 고딕(Arial) 폰트 */
+    .gtelp-label-font {
+      font-family: Arial, Helvetica, "Pretendard", sans-serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-100/70 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- 상단 헤더 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-3xl mx-auto px-4 h-15 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5 cursor-pointer" id="btn-home">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-sm">
+          G
+        </div>
+        <div>
+          <h1 class="font-extrabold text-slate-900 text-base leading-tight">
+            G-TELP 문법 실전 트레이너
+          </h1>
+          <p class="text-[11px] text-slate-500">실제 시험지 폰트(Times New Roman) 적용</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="btn-open-cheat" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition border border-indigo-200">
+          <span>📖</span>
+          <span>공식표</span>
+        </button>
+        <button id="btn-open-add" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
+          <span>➕</span>
+          <span>문제 추가</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 본문 -->
+  <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:py-6">
+
+    <!-- 1. 메인 대시보드 화면 -->
+    <div id="dashboard-view" class="space-y-6">
+
+      <!-- 학습 통계 바 -->
+      <div class="grid grid-cols-4 gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="text-center">
+          <span class="text-[11px] font-medium text-slate-400 block">푼 문제</span>
+          <span id="stat-solved" class="text-lg md:text-xl font-black text-slate-800">0</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">정답률</span>
+          <span id="stat-rate" class="text-lg md:text-xl font-black text-indigo-600">0%</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">오답노트</span>
+          <span id="stat-wrong-count" class="text-lg md:text-xl font-black text-rose-500">0</span>
+        </div>
+        <div class="text-center border-l border-slate-100">
+          <span class="text-[11px] font-medium text-slate-400 block">연속 출석</span>
+          <span id="stat-streak" class="text-lg md:text-xl font-black text-amber-500">1일</span>
+        </div>
+      </div>
+
+      <!-- 선택된 파트 10문제 시작 배너 -->
+      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl shadow-indigo-100 relative overflow-hidden">
+        <div class="relative z-10 space-y-3.5">
+          <div class="flex items-center justify-between">
+            <span id="selected-cat-count" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-xs">
+              현재 등록 문항: 20개
+            </span>
+            <span class="text-xs text-indigo-200">1회 10문제 코스</span>
+          </div>
+
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight leading-snug">
+            <span id="selected-cat-title" class="text-white">준동사 (동명사 vs to부정사)</span> 실전 10문제 풀기<br>
+            <span class="text-indigo-200 text-sm md:text-base font-normal">실제 G-TELP 시험지 폰트(Times New Roman)로 실전 감각 극대화</span>
+          </h2>
+
+          <p id="selected-cat-desc" class="text-xs md:text-sm text-indigo-100/90 leading-relaxed max-w-xl">
+            준동사(동명사 vs to부정사) 3:3 출제 공식에 맞춰 실전 10문제를 출제합니다.
+          </p>
+
+          <div class="pt-2">
+            <button id="btn-start-session" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white text-indigo-700 font-extrabold text-base hover:bg-indigo-50 shadow-lg hover:shadow-xl transition transform active:scale-98 flex items-center justify-center gap-2">
+              <span>🔥 선택 파트 10문제 시작하기</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 문법 파트 선택 그리드 -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+            <span>📚</span> 학습할 문법 파트 선택
+          </h3>
+          <span class="text-xs text-slate-400">카드를 누르면 해당 파트 10문제로 변경됩니다</span>
+        </div>
+
+        <div id="category-container" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <!-- 동적 주입 -->
+        </div>
+      </div>
+
+      <!-- 오답노트 카드 -->
+      <div id="card-wrong-notes" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-rose-300 transition cursor-pointer shadow-xs flex items-center justify-between">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-2">
+            <span class="text-base">📝</span>
+            <h3 class="font-extrabold text-slate-800 text-sm md:text-base">내 오답노트 모아 풀기</h3>
+            <span id="wrong-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">0문제</span>
+          </div>
+          <p class="text-xs text-slate-500">틀렸던 문제만 골라 완벽하게 숙지할 때까지 반복 학습합니다.</p>
+        </div>
+        <span class="text-slate-400 font-bold text-lg">›</span>
+      </div>
+
+    </div>
+
+    <!-- 2. 퀴즈 풀이 화면 (실제 시험지 폰트 100% 적용) -->
+    <div id="quiz-view" class="hidden space-y-4">
+
+      <!-- 상단 진행 바 & 나가기 -->
+      <div class="bg-white px-4 py-3 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span id="progress-text" class="font-extrabold text-indigo-700 text-sm font-mono">문제 1 / 10</span>
+            <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">Official G-TELP Serif</span>
+          </div>
+          <button id="btn-quit-quiz" class="text-xs font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded hover:bg-slate-100 transition">
+            ✕ 그만하기
+          </button>
+        </div>
+
+        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 10%;"></div>
+        </div>
+
+        <!-- 10개 문항 점 인디케이터 -->
+        <div id="quick-dots" class="flex justify-between gap-1 pt-1">
+          <!-- 1~10 동적 생성 -->
+        </div>
+      </div>
+
+      <!-- 실제 시험지 스타일의 문제 카드 -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+        
+        <div>
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
+            <span>G-TELP Level 2 Examination</span>
+            <span class="text-indigo-600 font-normal">Actual Exam Typography</span>
+          </div>
+          <!-- 실제 시험지 폰트 적용된 문제 본문 -->
+          <div id="question-text" class="gtelp-exam-font text-[17px] md:text-[19px] text-slate-900 leading-[1.7] select-text">
+            <!-- 질문 본문 -->
+          </div>
+        </div>
+
+        <!-- 실제 시험지 폰트 적용된 보기 컨테이너 -->
+        <div id="options-container" class="space-y-2.5">
+          <!-- 보기 버튼들 동적 주입 -->
+        </div>
+
+        <!-- 즉석 정답 & 해설 박스 -->
+        <div id="feedback-box" class="hidden pt-2">
+          <div id="feedback-content">
+            <!-- 정오답 + 세부 유형 뱃지 + 해설 동적 주입 -->
+          </div>
+        </div>
+
+        <!-- 다음 문제 이동 버튼 -->
+        <button id="btn-next-question" class="hidden w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition">
+          <span>다음 문제 풀기 (Enter)</span>
+          <span>→</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 3. 결과 화면 -->
+    <div id="result-view" class="hidden space-y-5">
+
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm text-center space-y-4">
+        <div class="inline-block p-3.5 bg-indigo-50 text-indigo-600 rounded-full text-3xl">
+          🏆
+        </div>
+        <div>
+          <h2 class="text-xl md:text-2xl font-black text-slate-900">학습 세트 완료!</h2>
+          <p id="final-message" class="text-xs md:text-sm text-slate-500 mt-1">수고하셨습니다. 방금 푼 문제들을 복습해보세요.</p>
+        </div>
+
+        <div class="flex items-center justify-center gap-8 py-4 border-y border-slate-100 max-w-xs mx-auto">
+          <div>
+            <div class="text-xs text-slate-400 font-medium">맞힌 개수</div>
+            <div id="final-score" class="text-2xl md:text-3xl font-black text-slate-800">0 / 10</div>
+          </div>
+          <div class="h-10 w-px bg-slate-200"></div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">정답률</div>
+            <div id="final-rate" class="text-2xl md:text-3xl font-black text-indigo-600">0%</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button id="btn-retry-session" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs md:text-sm shadow-md transition">
+            🔄 새로운 10문제 또 풀기
+          </button>
+          <button id="btn-result-home" class="px-5 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs md:text-sm transition">
+            🏠 메인으로 돌아가기
+          </button>
+        </div>
+      </div>
+
+      <!-- 10문제 전체 리뷰 리스트 -->
+      <div class="space-y-3">
+        <h3 class="font-extrabold text-slate-800 text-sm md:text-base flex items-center gap-2">
+          <span>📋</span> 이번 세트 정답 및 출제 공식 한눈에 보기
+        </h3>
+        <div id="result-review-list" class="space-y-3">
+          <!-- 동적 주입 -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 탭형 전 문법 공식표 모달 -->
+  <div id="cheatsheet-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-2xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">📖</span>
+          <h3 class="font-extrabold text-slate-900 text-sm md:text-base">G-TELP 문법 전 영역 핵심 공식표</h3>
+        </div>
+        <button id="btn-close-cheat" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">✕</button>
+      </div>
+
+      <div id="cheat-tabs" class="flex flex-wrap gap-1.5 p-3 border-b border-slate-200 bg-slate-50/50">
+        <!-- 탭 동적 주입 -->
+      </div>
+
+      <div id="cheat-content" class="p-5 overflow-y-auto space-y-3 flex-1">
+        <!-- 내용 동적 주입 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 새 문제 추가 모달 -->
+  <div id="add-question-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-lg max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <h3 class="font-extrabold text-slate-900 text-sm md:text-base">새 문법 실전문제 직접 추가</h3>
+        <button id="btn-close-add" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">✕</button>
+      </div>
+      <form id="form-add-question" class="p-5 overflow-y-auto space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">문법 파트 선택</label>
+            <select name="category" class="w-full p-2 border border-slate-300 rounded-xl">
+              <option value="gerund_infinitive">준동사 (동명사/to부정사)</option>
+              <option value="tense">시제 (Tense)</option>
+              <option value="subjunctive">가정법 (과거/과거완료)</option>
+              <option value="should_omission">Should 생략</option>
+              <option value="relative">관계사 (관계대명사/부사)</option>
+              <option value="modal">조동사</option>
+              <option value="conjunction">연결어</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">세부 유형 태그</label>
+            <input type="text" name="subCategoryName" placeholder="예: to부정사, 과거진행" class="w-full p-2 border border-slate-300 rounded-xl">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">문제 본문 (빈칸은 ___________ 표시)</label>
+          <textarea name="questionText" rows="3" required placeholder="예: The CEO decided ___________ new employees." class="w-full p-2.5 border border-slate-300 rounded-xl gtelp-exam-font text-base"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-700">선택지 4개</label>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(A)</span>
+            <input type="text" name="optA" required placeholder="보기 A" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(B)</span>
+            <input type="text" name="optB" required placeholder="보기 B" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(C)</span>
+            <input type="text" name="optC" required placeholder="보기 C" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 gtelp-label-font">(D)</span>
+            <input type="text" name="optD" required placeholder="보기 D" class="flex-1 p-2 border border-slate-300 rounded-xl gtelp-exam-font text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">정답 선택</label>
+            <select name="answer" class="w-full p-2 border border-slate-300 rounded-xl font-bold">
+              <option value="a">(A)</option>
+              <option value="b">(B)</option>
+              <option value="c">(C)</option>
+              <option value="d">(D)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">단서 힌트 키워드</label>
+            <input type="text" name="hint" placeholder="예: decide 뒤 목적어" class="w-full p-2 border border-slate-300 rounded-xl">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">상세 해설</label>
+          <textarea name="explanation" rows="2" placeholder="정답이 되는 공식 설명" class="w-full p-2 border border-slate-300 rounded-xl"></textarea>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="app.closeModal('add-question-modal')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold">취소</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold">문제 등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 스크립트 로드 -->
+  <script>
+// G-TELP 전 문법 파트 핵심 공식 & 치트시트
+const CHEATSHEET = {
+  tense: {
+    title: "1. 시제 (Tense) - 6대 진행형",
+    rules: [
+      { name: "시제 절대 공식 1", desc: "G-TELP 시제 문제는 100% '-ing'(진행형)만 정답!" },
+      { name: "시제 절대 공식 2", desc: "과진, 현진, 미진, 과완진, 현완진, 미완진 각 1문제씩 총 6문제 출제!" },
+      { name: "과거진행 (was/were -ing)", desc: "when + 과거동사, while + 과거진행, 과거 특정 시점" },
+      { name: "현재진행 (am/is/are -ing)", desc: "now, right now, at the moment, currently (기간 없음)" },
+      { name: "미래진행 (will be -ing)", desc: "tomorrow, next ~, 시간부사절(when/as soon as) 현재동사" },
+      { name: "과거완료진행 (had been -ing)", desc: "before/until 과거시점 + for/since 기간" },
+      { name: "현재완료진행 (have/has been -ing)", desc: "now + for 기간, for + 기간(현재문맥), since + 과거시점" },
+      { name: "미래완료진행 (will have been -ing)", desc: "by 미래시점 + for 기간, by the time 현재 + for 기간" }
+    ]
+  },
+  gerund_infinitive: {
+    title: "2. 준동사 (동명사 vs to부정사)",
+    rules: [
+      { 
+        name: "🎯 켈리쌤 꿀팁 1: 3:3 법칙", 
+        desc: "G-TELP 준동사는 총 5~6문제가 나오며, 동명사(-ing) 3문제, to부정사(to V) 3문제가 균형 출제됩니다! 4문제를 확실히 풀면 나머지 2문제는 개수 세기로 맞출 수 있습니다." 
+      },
+      { 
+        name: "동명사(-ing)만 취하는 필수 동사 (암기표 3 핵심)", 
+        desc: "enjoy, finish, avoid, mind, consider, postpone, put off, delay, suggest, recommend, deny, give up, admit, quit, practice, keep, risk, resist" 
+      },
+      { 
+        name: "to부정사(to V)만 취하는 필수 동사 (암기표 4 핵심)", 
+        desc: "want, hope, wish, decide, plan, promise, agree, refuse, afford, expect, manage, offer, hesitate, choose, fail, tend, would like" 
+      },
+      { 
+        name: "🚨 함정 주의: allow, advise, encourage, recommend, require", 
+        desc: "1) 동사 바로 뒤 목적어: suggest / recommend / avoid + -ing (동명사)\n2) 목적어 + 목적격보어: allow A to V, advise A to V, encourage A to V, expect A to V (to부정사)" 
+      },
+      { 
+        name: "📌 시험에 딱 나오는 관용표현 TOP 5 (나머진 버려도 됨!)", 
+        desc: "1. prevent [keep, stop, prohibit] A from ~ing (A가 ~하는 것을 막다 - 최빈출!)\n2. look forward to ~ing (~을 고대하다 - to가 전치사)\n3. cannot help ~ing (~하지 않을 수 없다)\n4. spend + 시간/돈 + ~ing (~하는 데 시간/돈을 쓰다)\n5. be busy ~ing (~하느라 바쁘다)" 
+      },
+      { 
+        name: "기타 위치 공식", 
+        desc: "1) 전치사 뒤 빈칸: 전치사 + -ing (동명사)\n2) 주어 자리 빈칸: 동명사 (~ing is/was...)\n3) 목적 (~하기 위하여): to부정사 (to V)\n4) 가주어-진주어: It is 형용사 + to V" 
+      }
+    ]
+  },
+  subjunctive: {
+    title: "3. 가정법 (과거 & 과거완료)",
+    rules: [
+      { name: "가정법 과거 공식", desc: "If + S + 과거동사(were), S + would / could / might + 동사원형" },
+      { name: "가정법 과거완료 공식", desc: "If + S + had p.p., S + would / could / might + have p.p." },
+      { name: "혼합가정법", desc: "If S + had p.p. (과거), S + would/could/might + 동사원형 + now (현재)" },
+      { name: "If 도치 생략", desc: "Had + S + p.p., S + would have p.p. (If가 생략되면 Had가 문두로)" }
+    ]
+  },
+  should_omission: {
+    title: "4. Should 생략 (주장·제안·요구·명령)",
+    rules: [
+      { name: "동사원형 절대 공식", desc: "주절에 주장/제안/요구/명령 동사 + that S + (should) 동사원형!" },
+      { name: "주요 동사", desc: "suggest, insist, recommend, demand, request, require, order, propose" },
+      { name: "주요 형용사 (이성적 판단)", desc: "It is necessary / essential / important / imperative + that S + (should) 동사원형" }
+    ]
+  },
+  relative: {
+    title: "5. 관계사 (관계대명사 & 관계부사)",
+    rules: [
+      { name: "선행사 구분", desc: "사람 선행사 -> who / whom, 사물/동물 선행사 -> which" },
+      { name: "that 절대 불가 2가지", desc: "1) 콤마 뒤 (, that X), 2) 전치사 바로 뒤 (in that X)" },
+      { name: "관계부사", desc: "완전한 문장 뒤따름: where(장소), when(시간), why(이유), how(방법)" },
+      { name: "소유격 관계대명사 whose", desc: "선행사의 소유격 역할 + 뒤에 무관사 명사가 옴" }
+    ]
+  },
+  modal: {
+    title: "6. 조동사 (Modal Verbs)",
+    rules: [
+      { name: "해석 중심 문제", desc: "문맥의 의미에 따라 가장 알맞은 조동사 선택 (조동사 뒤는 동사원형)" },
+      { name: "의무 / 필요", desc: "must, should, have to (~해야 한다)" },
+      { name: "가능 / 능력", desc: "can, could, be able to (~할 수 있다)" },
+      { name: "추측 / 가능성", desc: "may, might (~일지도 모른다), must (~임에 틀림없다)" }
+    ]
+  },
+  conjunction: {
+    title: "7. 연결어 (접속사 vs 전치사 vs 접속부사)",
+    rules: [
+      { name: "접속사 vs 전치사 구분", desc: "양보: although/even though (+ 절) vs despite/in spite of (+ 명사구)\n이유: because/since (+ 절) vs because of/due to (+ 명사구)" },
+      { name: "접속부사 (문장 부사)", desc: "however (그러나), therefore (그러므로), furthermore (게다가), otherwise (그렇지 않으면)" },
+      { name: "논리적 연결", desc: "앞뒤 문장의 인과, 역접, 나열 관계를 정확히 해석하여 결정" }
+    ]
+  }
+};
+
+</script>
+  <script>
+// G-TELP 전 문법 무한 실전 문제 동적 생성 엔진 (Infinite Question Generator)
+// 지텔프 Level 2 공식 출제 규격 100% 반영:
+// 1. 시제: 6대 진행시제 단서 공식 기반 문장 조합
+// 2. 준동사: 암기표 3(동명사) / 암기표 4(to부정사) / 관용구 무한 생성
+// 3. 가정법: 가정법 과거 / 가정법 과거완료 짝맞추기 무한 생성
+// 4. Should 생략: 주장·제안·요구 동사원형 무한 생성
+// 5. 관계사: that 불가, 사람/사물 선행사 무한 생성
+// 6. 조동사: 의무(must), 능력(can), 가능성(may) 무한 생성
+// 7. 연결어: Although vs Despite, Because vs Due to 무한 생성
+
+const GTELP_GENERATOR = {
+  // -------------------------------------------------------------
+  // 어휘 은행 (Vocab Bank)
+  // -------------------------------------------------------------
+  subjects: [
+    "The chief financial officer", "The senior software engineer", "Dr. Richardson", "The marketing director",
+    "Professor Gallagher", "The regional logistics manager", "The head surgeon", "Ms. Katherine Vance",
+    "The executive committee", "The clinical research team", "The project supervisor", "The environmental inspector",
+    "Mr. Harrison", "The architecture consultant", "The quality assurance specialist", "The international sales representative"
+  ],
+
+  // -------------------------------------------------------------
+  // 1. 시제 무한 생성기
+  // -------------------------------------------------------------
+  generateTenseQuestion(type) {
+    const subTypes = ['과진', '현진', '미진', '과완진', '현완진', '미완진'];
+    const chosenType = type || subTypes[Math.floor(Math.random() * subTypes.length)];
+
+    const verbs = [
+      { base: "review", ing: "reviewing", ed: "reviewed" },
+      { base: "examine", ing: "examining", ed: "examined" },
+      { base: "conduct", ing: "conducting", ed: "conducted" },
+      { base: "deliver", ing: "delivering", ed: "delivered" },
+      { base: "prepare", ing: "preparing", ed: "prepared" },
+      { base: "investigate", ing: "investigating", ed: "investigated" },
+      { base: "develop", ing: "developing", ed: "developed" },
+      { base: "monitor", ing: "monitoring", ed: "monitored" },
+      { base: "analyze", ing: "analyzing", ed: "analyzed" },
+      { base: "negotiate", ing: "negotiating", ed: "negotiated" }
+    ];
+    const v = verbs[Math.floor(Math.random() * verbs.length)];
+    const subj = this.subjects[Math.floor(Math.random() * this.subjects.length)];
+
+    let question = "";
+    let correct = "";
+    let distractors = [];
+    let hint = "";
+    let gPoint = "";
+    let subCategoryName = "";
+
+    switch (chosenType) {
+      case '과진':
+        subCategoryName = "시제 > 과거진행형 (was/were ~ing)";
+        question = `When the unexpected fire alarm sounded throughout the facility yesterday, ${subj} ___________ confidential inspection data in the main office.`;
+        correct = `was ${v.ing}`;
+        distractors = [`will ${v.base}`, v.ed, `has been ${v.ing}`];
+        hint = "단서: When절의 과거동사 'sounded' -> 과거 특정 시점에 진행 중이던 일";
+        gPoint = "G-POINT 5: when + 과거동사 -> 과거진행형 (was/were -ing)";
+        break;
+
+      case '현진':
+        subCategoryName = "시제 > 현재진행형 (am/is/are ~ing)";
+        question = `Due to a sudden network disruption on the server, ${subj} ___________ the system configuration right now to prevent data corruption.`;
+        correct = `is ${v.ing}`;
+        distractors = [v.base + "s", v.ed, `will have been ${v.ing}`];
+        hint = "단서: 문장의 'right now' (현재 시점 부사) + 완료 기간 없음";
+        gPoint = "G-POINT 6: right now, at the moment -> 현재진행형 (am/is/are -ing)";
+        break;
+
+      case '미진':
+        subCategoryName = "시제 > 미래진행형 (will be ~ing)";
+        question = `The international trade symposium will convene next week in Geneva. Tomorrow afternoon, ${subj} ___________ a presentation on economic forecasting on behalf of our enterprise.`;
+        correct = `will be ${v.ing}`;
+        distractors = [`has been ${v.ing}`, v.ed, v.base + "s"];
+        hint = "단서: 'Tomorrow afternoon' (단순 미래 시점 부사)";
+        gPoint = "G-POINT 7: Tomorrow, Next ~ -> 미래진행형 (will be -ing)";
+        break;
+
+      case '과완진':
+        subCategoryName = "시제 > 과거완료진행형 (had been ~ing)";
+        question = `The research board finally validated the pharmaceutical trial yesterday. ${subj} ___________ the clinical safety reports for six continuous months before the committee arrived.`;
+        correct = `had been ${v.ing}`;
+        distractors = [`was ${v.ing}`, `is ${v.ing}`, `will be ${v.ing}`];
+        hint = "단서: 기간 'for six continuous months' + 'before the committee arrived (과거 시점)'";
+        gPoint = "G-POINT 8: before 과거시점 + for 기간 -> 과거완료진행형 (had been -ing)";
+        break;
+
+      case '현완진':
+        subCategoryName = "시제 > 현재완료진행형 (have/has been ~ing)";
+        question = `Ever since our headquarters relocated to Chicago last year, ${subj} ___________ corporate restructuring procedures for eight weeks now.`;
+        correct = `has been ${v.ing}`;
+        distractors = [v.ed, `will ${v.base}`, `had ${v.ed}`];
+        hint = "단서: 'for eight weeks now' (기간 for + 현재 시점 now)";
+        gPoint = "G-POINT 9: for 기간 now -> 현재완료진행형 (have/has been -ing)";
+        break;
+
+      case '미완진':
+        subCategoryName = "시제 > 미래완료진행형 (will have been ~ing)";
+        question = `By the time the new subsea transportation tunnel officially opens next October, the engineering consortium ___________ on the foundation works for exactly five continuous years.`;
+        correct = `will have been working`;
+        distractors = [`has been working`, `was working`, `is working`];
+        hint = "단서: 'By the time + opens next October (미래 완료)' + 기간 'for five continuous years'";
+        gPoint = "G-POINT 10: By 미래시점 + for 기간 -> 미래완료진행형 (will have been -ing)";
+        break;
+    }
+
+    const options = [
+      { text: correct, isCorrect: true },
+      ...distractors.map(d => ({ text: d, isCorrect: false }))
+    ].sort(() => Math.random() - 0.5);
+
+    return {
+      id: `DYN-TENSE-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+      category: "tense",
+      subCategory: chosenType,
+      subCategoryName: subCategoryName,
+      question: question,
+      options: options,
+      hint: hint,
+      gPoint: gPoint,
+      explanation: `지텔프 출제 공식에 따라 ${hint}이 명시되어 있으므로 진행형 정답인 '${correct}'가 정답입니다. (G-TELP는 단순시제 소거 후 진행형 선택)`
+    };
+  },
+
+  // -------------------------------------------------------------
+  // 2. 준동사 무한 생성기 (동명사 vs to부정사)
+  // -------------------------------------------------------------
+  generateGerundInfinitiveQuestion() {
+    const isGerund = Math.random() > 0.5;
+    const subj = this.subjects[Math.floor(Math.random() * this.subjects.length)];
+
+    if (isGerund) {
+      // 동명사 패턴 (suggest, avoid, postpone, mind, finish, keep, risk 등)
+      const gerundVerbs = [
+        { v: "suggested", obj: "conducting", plain: "conduct", toV: "to conduct" },
+        { v: "avoided", obj: "disclosing", plain: "disclose", toV: "to disclose" },
+        { v: "postponed", obj: "launching", plain: "launch", toV: "to launch" },
+        { v: "recommended", obj: "upgrading", plain: "upgrade", toV: "to upgrade" },
+        { v: "considered", obj: "expanding", plain: "expand", toV: "to expand" },
+        { v: "denied", obj: "leaking", plain: "leak", toV: "to leak" },
+        { v: "finished", obj: "evaluating", plain: "evaluate", toV: "to evaluate" },
+        { v: "risked", obj: "investing", plain: "invest", toV: "to invest" }
+      ];
+      const item = gerundVerbs[Math.floor(Math.random() * gerundVerbs.length)];
+
+      const question = `Due to sudden budgetary adjustments, ${subj} ${item.v} ___________ the proprietary software program until the subsequent fiscal quarter.`;
+      const options = [
+        { text: item.obj, isCorrect: true },
+        { text: item.toV, isCorrect: false },
+        { text: item.plain, isCorrect: false },
+        { text: "having " + item.plain + "ed", isCorrect: false }
+      ].sort(() => Math.random() - 0.5);
+
+      return {
+        id: `DYN-GI-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "gerund_infinitive",
+        subCategory: "동명사",
+        subCategoryName: `준동사 > 동명사만을 목적어로 취하는 동사 (${item.v} + -ing)`,
+        question: question,
+        options: options,
+        hint: `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표 3: ${item.v} + 동명사)`,
+        gPoint: `G-TELP 준동사 공식: ${item.v} + 동명사(-ing)`,
+        explanation: `동사 '${item.v}'는 동명사(-ing)만을 목적어로 취하는 대표적인 지텔프 빈출 동사이므로 '${item.obj}'가 정답입니다.`
+      };
+    } else {
+      // to부정사 패턴 (decide, agree, refuse, hope, plan, manage, hesitate 등)
+      const toVerbs = [
+        { v: "decided", obj: "to hire", plain: "hire", ing: "hiring" },
+        { v: "agreed", obj: "to sign", plain: "sign", ing: "signing" },
+        { v: "refused", obj: "to comply", plain: "comply", ing: "complying" },
+        { v: "planned", obj: "to open", plain: "open", ing: "opening" },
+        { v: "hoped", obj: "to achieve", plain: "achieve", ing: "achieving" },
+        { v: "managed", obj: "to resolve", plain: "resolve", ing: "resolving" },
+        { v: "hesitated", obj: "to accept", plain: "accept", ing: "accepting" },
+        { v: "promised", obj: "to deliver", plain: "deliver", ing: "delivering" }
+      ];
+      const item = toVerbs[Math.floor(Math.random() * toVerbs.length)];
+
+      const question = `Following an extensive strategic review, ${subj} ${item.v} ___________ the corporate joint-venture agreement with the overseas affiliate.`;
+      const options = [
+        { text: item.obj, isCorrect: true },
+        { text: item.ing, isCorrect: false },
+        { text: item.plain, isCorrect: false },
+        { text: "to have " + item.plain + "ed", isCorrect: false }
+      ].sort(() => Math.random() - 0.5);
+
+      return {
+        id: `DYN-GI-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "gerund_infinitive",
+        subCategory: "to부정사",
+        subCategoryName: `준동사 > to부정사만을 목적어로 취하는 동사 (${item.v} + to V)`,
+        question: question,
+        options: options,
+        hint: `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표 4: ${item.v} + to부정사)`,
+        gPoint: `G-TELP 준동사 공식: ${item.v} + to부정사(to V)`,
+        explanation: `동사 '${item.v}'는 미래지향적 의미의 to부정사만을 목적어로 취하므로 '${item.obj}'가 정답입니다.`
+      };
+    }
+  },
+
+  // -------------------------------------------------------------
+  // 3. 가정법 무한 생성기 (과거 vs 과거완료)
+  // -------------------------------------------------------------
+  generateSubjunctiveQuestion() {
+    const isPast = Math.random() > 0.5;
+    const subj = this.subjects[Math.floor(Math.random() * this.subjects.length)];
+
+    if (isPast) {
+      // 가정법 과거: If S were, S would/could V
+      const question = `If ${subj} ___________ more accessible for urgent consultations, the design department could finalize the client prototype immediately.`;
+      const options = [
+        { text: "were", isCorrect: true },
+        { text: "had been", isCorrect: false },
+        { text: "is", isCorrect: false },
+        { text: "will be", isCorrect: false }
+      ].sort(() => Math.random() - 0.5);
+
+      return {
+        id: `DYN-SUB-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "subjunctive",
+        subCategory: "가정법과거",
+        subCategoryName: "가정법 > 가정법 과거 (현재 사실 반대)",
+        question: question,
+        options: options,
+        hint: "단서: 주절의 'could finalize (조동사 과거형 + 동사원형)'",
+        gPoint: "G-TELP 가정법 공식: If + S + 과거동사(were), S + would/could/might + 동사원형",
+        explanation: "주절에 'could + 동사원형'이 왔으므로 If절에는 가정법 과거를 나타내는 'were'가 와야 합니다. (인칭 무관 were)"
+      };
+    } else {
+      // 가정법 과거완료: If S had p.p., S would have p.p.
+      const question = `If the logistics division ___________ the cargo consignment earlier yesterday, our international client would have received the microchips on schedule.`;
+      const options = [
+        { text: "had dispatched", isCorrect: true },
+        { text: "dispatched", isCorrect: false },
+        { text: "dispatches", isCorrect: false },
+        { text: "would dispatch", isCorrect: false }
+      ].sort(() => Math.random() - 0.5);
+
+      return {
+        id: `DYN-SUB-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "subjunctive",
+        subCategory: "가정법과거완료",
+        subCategoryName: "가정법 > 가정법 과거완료 (과거 사실 반대)",
+        question: question,
+        options: options,
+        hint: "단서: 주절의 'would have received (조동사 과거 + have p.p.)'",
+        gPoint: "G-TELP 가정법 공식: If + S + had p.p., S + would/could/might + have p.p.",
+        explanation: "주절에 'would have p.p.'가 주어졌으므로 If절에는 가정법 과거완료인 'had p.p.(had dispatched)'가 정답입니다."
+      };
+    }
+  },
+
+  // -------------------------------------------------------------
+  // 4. Should 생략 무한 생성기
+  // -------------------------------------------------------------
+  generateShouldQuestion() {
+    const triggers = ["insisted", "recommended", "suggested", "demanded", "requested", "urged"];
+    const t = triggers[Math.floor(Math.random() * triggers.length)];
+    const subj = this.subjects[Math.floor(Math.random() * this.subjects.length)];
+
+    const actions = [
+      { base: "wear", s: "wears", ed: "wore", context: "protective helmets at the construction site" },
+      { base: "submit", s: "submits", ed: "submitted", context: "the quarterly audit report before Friday" },
+      { base: "attend", s: "attends", ed: "attended", context: "the mandatory compliance training session" },
+      { base: "notify", s: "notifies", ed: "notified", context: "the human resources department immediately" }
+    ];
+    const act = actions[Math.floor(Math.random() * actions.length)];
+
+    const question = `${subj} strongly ${t} that each employee ___________ ${act.context}.`;
+    const options = [
+      { text: act.base, isCorrect: true },
+      { text: act.s, isCorrect: false },
+      { text: act.ed, isCorrect: false },
+      { text: act.base + "ing", isCorrect: false }
+    ].sort(() => Math.random() - 0.5);
+
+    return {
+      id: `DYN-SHOULD-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+      category: "should_omission",
+      subCategory: "should생략",
+      subCategoryName: `Should 생략 > ${t} that S + (should) 동사원형`,
+      question: question,
+      options: options,
+      hint: `단서: 주절의 주장/제안/요구 동사 '${t} that + S + (should) 동사원형'`,
+      gPoint: `G-TELP 당위성 공식: ${t} + that S + (should) 동사원형`,
+      explanation: `주절에 주장/제안/요구 동사 '${t}'가 쓰였으므로 that절 내부에는 조동사 should가 생략되어 주어의 인칭이나 시제와 관계없이 무조건 '동사원형(${act.base})'이 정답입니다.`
+    };
+  },
+
+  // -------------------------------------------------------------
+  // 5. 관계사 / 조동사 / 연결어 무한 생성기
+  // -------------------------------------------------------------
+  generateOtherQuestion(category) {
+    if (category === 'relative') {
+      const isComma = Math.random() > 0.5;
+      if (isComma) {
+        return {
+          id: `DYN-REL-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+          category: "relative",
+          subCategory: "관계대명사",
+          subCategoryName: "관계사 > 콤마(,) 뒤 계속적 용법 (that 절대 불가)",
+          question: `The international pharmaceutical conglomerate acquired BioNova Therapeutics, ___________ developed the breakthrough oncology treatment last year.`,
+          options: [
+            { text: "which", isCorrect: true },
+            { text: "that", isCorrect: false },
+            { text: "who", isCorrect: false },
+            { text: "what", isCorrect: false }
+          ].sort(() => Math.random() - 0.5),
+          hint: "단서: 콤마(,) 뒤 사물 선행사 BioNova Therapeutics (that은 콤마 뒤 불가)",
+          gPoint: "G-TELP 관계사 공식: 콤마(,) 뒤에는 that 절대 불가 -> which",
+          explanation: "선행사가 회사(사물)이고 콤마(,) 뒤 계속적 용법이므로 관계대명사 that은 절대 쓸 수 없습니다. 따라서 'which'가 정답입니다."
+        };
+      } else {
+        return {
+          id: `DYN-REL-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+          category: "relative",
+          subCategory: "관계대명사",
+          subCategoryName: "관계사 > 사람 선행사 주격 관계대명사 (who)",
+          question: `The committee awarded a prestigious honor to the lead researcher ___________ spearheaded the clean water filtration project.`,
+          options: [
+            { text: "who", isCorrect: true },
+            { text: "which", isCorrect: false },
+            { text: "whom", isCorrect: false },
+            { text: "whose", isCorrect: false }
+          ].sort(() => Math.random() - 0.5),
+          hint: "단서: 사람 선행사(the lead researcher) + 뒤에 주어가 없는 불완전한 절",
+          gPoint: "G-TELP 관계사 공식: 사람 선행사 + 주격 = who",
+          explanation: "선행사가 사람이고 뒤이어 동사(spearheaded)가 오므로 주격 관계대명사 'who'가 정답입니다."
+        };
+      }
+    } else if (category === 'modal') {
+      return {
+        id: `DYN-MODAL-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "modal",
+        subCategory: "조동사",
+        subCategoryName: "조동사 > 엄격한 법규/규정에 따른 의무 (must)",
+        question: `In accordance with mandatory maritime safety guidelines, all vessel operators ___________ maintain continuous radio contact with harbor authorities during adverse weather.`,
+        options: [
+          { text: "must", isCorrect: true },
+          { text: "might", isCorrect: false },
+          { text: "would", isCorrect: false },
+          { text: "could", isCorrect: false }
+        ].sort(() => Math.random() - 0.5),
+        hint: "단서: 'mandatory safety guidelines(의무 안전 지침)' -> 강한 법적 의무",
+        gPoint: "G-TELP 조동사 해석: 법규/규정에 따른 필수 의무 = must (~해야만 한다)",
+        explanation: "안전 지침에 따라 '반드시 무선 교신을 유지해야 한다'는 강한 의무를 나타내므로 조동사 'must'가 정답입니다."
+      };
+    } else {
+      // conjunction
+      return {
+        id: `DYN-CONJ-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: "conjunction",
+        subCategory: "연결어",
+        subCategoryName: "연결어 > 양보 접속사 (Although + 절)",
+        question: `___________ the enterprise encountered severe supply chain disruptions throughout the winter, they succeeded in surpassing their annual revenue forecast.`,
+        options: [
+          { text: "Although", isCorrect: true },
+          { text: "Despite", isCorrect: false },
+          { text: "Because of", isCorrect: false },
+          { text: "However", isCorrect: false }
+        ].sort(() => Math.random() - 0.5),
+        hint: "단서: 뒤에 주어+동사 절(the enterprise encountered...)이 오며 역접/양보의 문맥",
+        gPoint: "G-TELP 연결어 공식: 절(S+V)을 이끄는 양보 접속사 = Although (Despite는 전치사)",
+        explanation: "뒤에 주어+동사를 갖춘 완전한 절이 오며 '공급망 혼란을 겪었음에도 불구하고'라는 양보의 관계이므로 접속사 'Although'가 정답입니다."
+      };
+    }
+  },
+
+  // -------------------------------------------------------------
+  // 통합 10문제 무한 생성기
+  // -------------------------------------------------------------
+  generate10Set(category) {
+    const set = [];
+
+    if (category === 'tense') {
+      const types = ['과진', '현진', '미진', '과완진', '현완진', '미완진'];
+      types.forEach(t => set.push(this.generateTenseQuestion(t)));
+      while (set.length < 10) {
+        set.push(this.generateTenseQuestion());
+      }
+    } else if (category === 'gerund_infinitive') {
+      while (set.length < 10) {
+        set.push(this.generateGerundInfinitiveQuestion());
+      }
+    } else if (category === 'subjunctive') {
+      while (set.length < 10) {
+        set.push(this.generateSubjunctiveQuestion());
+      }
+    } else if (category === 'should_omission') {
+      while (set.length < 10) {
+        set.push(this.generateShouldQuestion());
+      }
+    } else if (category === 'relative' || category === 'modal' || category === 'conjunction') {
+      while (set.length < 10) {
+        set.push(this.generateOtherQuestion(category));
+      }
+    } else {
+      // 'all' 전체 종합 모의고사 (지텔프 시험 비중 완벽 재현: 시제 4, 준동사 2, 가정법 2, Should 1, 기타 1)
+      set.push(this.generateTenseQuestion('과진'));
+      set.push(this.generateTenseQuestion('현진'));
+      set.push(this.generateTenseQuestion('미진'));
+      set.push(this.generateTenseQuestion('과완진'));
+      set.push(this.generateGerundInfinitiveQuestion());
+      set.push(this.generateGerundInfinitiveQuestion());
+      set.push(this.generateSubjunctiveQuestion());
+      set.push(this.generateSubjunctiveQuestion());
+      set.push(this.generateShouldQuestion());
+      set.push(this.generateOtherQuestion('relative'));
+    }
+
+    return set.sort(() => Math.random() - 0.5);
+  }
+};
+
+</script>
+  <script>
+// G-TELP 문법 전 영역 실전 문제 은행
+// 파트 분류:
+// 1. tense (시제 - 60문항)
+// 2. gerund_infinitive (준동사 - 20문항 실전 변형 탑재)
+// 3. subjunctive (가정법)
+// 4. should_omission (Should 생략)
+// 5. relative (관계사)
+// 6. modal (조동사)
+// 7. conjunction (연결어)
+
+const QUESTIONS_DATABASE = [
+  // =========================================================================
+  // 1. 시제 (TENSE) - 6대 진행형 60문항
+  // =========================================================================
+  {
+    id: "PAST-CONT-01",
+    category: "tense",
+    subCategory: "과진",
+    subCategoryName: "시제 > 과거진행형 (was/were ~ing)",
+    question: "When the regional manager arrived at the branch office unannounced, the senior accountant ___________ the quarterly financial audit with his team.",
+    options: [
+      { text: "was reviewing", isCorrect: true },
+      { text: "will review", isCorrect: false },
+      { text: "reviews", isCorrect: false },
+      { text: "has been reviewing", isCorrect: false }
+    ],
+    hint: "단서: When절의 과거시제 동사 'arrived' (특정 과거 시점의 일시적 동작)",
+    gPoint: "G-POINT 5: when + 과거동사 + 주절 과거진행형 (was/were -ing)",
+    explanation: "When절에 과거시제 'arrived'가 쓰여 과거 특정 시점을 나타냅니다. 지점장이 예고 없이 도착했을 당시 회계사가 감사 자료를 '검토하고 있던 중'이었으므로 과거진행형 'was reviewing'이 정답입니다."
+  },
+  {
+    id: "PAST-CONT-02",
+    category: "tense",
+    subCategory: "과진",
+    subCategoryName: "시제 > 과거진행형 (was/were ~ing)",
+    question: "While Julian ___________ samples of the new fabric in the laboratory, his partner drafted the patent application. In fact, Julian wanted to double-check the durability.",
+    options: [
+      { text: "tested", isCorrect: false },
+      { text: "was testing", isCorrect: true },
+      { text: "will test", isCorrect: false },
+      { text: "had been testing", isCorrect: false }
+    ],
+    hint: "단서: 접속사 'While' + 주절의 과거동사 'drafted'",
+    gPoint: "G-POINT 4: 주절 과거 + while 과거진행형 (was/were -ing)",
+    explanation: "주절의 시제가 과거(drafted)이며, While절 내부에서 동시 동작으로 진행 중이던 상황을 묘사하므로 과거진행형 'was testing'이 정답입니다."
+  },
+  {
+    id: "PAST-CONT-03",
+    category: "tense",
+    subCategory: "과진",
+    subCategoryName: "시제 > 과거진행형 (was/were ~ing)",
+    question: "Carlos, the chief architect from Madrid, visited the construction site yesterday. When I met him in the temporary trailer, several engineers ___________ blueprints on the digital table.",
+    options: [
+      { text: "examined", isCorrect: false },
+      { text: "were examining", isCorrect: true },
+      { text: "have been examining", isCorrect: false },
+      { text: "will examine", isCorrect: false }
+    ],
+    hint: "단서: 'When I met (과거동사) him'",
+    gPoint: "G-POINT 5: when + 과거동사, 주어 복수(several engineers) -> were ~ing",
+    explanation: "When절에 과거동사 'met'이 주어졌고 주어가 복수인 'several engineers'이므로 과거진행형 'were examining'이 정답입니다."
+  },
+  {
+    id: "PAST-CONT-04",
+    category: "tense",
+    subCategory: "과진",
+    subCategoryName: "시제 > 과거진행형 (was/were ~ing)",
+    question: "Marcus answered incoming emails while Clara ___________ the medical equipment for the upcoming demonstration. She was extremely careful not to damage the delicate sensors.",
+    options: [
+      { text: "would calibrate", isCorrect: false },
+      { text: "calibrated", isCorrect: false },
+      { text: "was calibrating", isCorrect: true },
+      { text: "has been calibrating", isCorrect: false }
+    ],
+    hint: "단서: 주절 과거동사 'answered' + 접속사 'while'",
+    gPoint: "G-POINT 4: 과거 주절 + while 과거진행형",
+    explanation: "마커스가 이메일에 답장하던 과거 시점(answered) 동안 클라라가 장비를 조율 중이었으므로 과거진행형 'was calibrating'이 정답입니다."
+  },
+  {
+    id: "PAST-CONT-05",
+    category: "tense",
+    subCategory: "과진",
+    subCategoryName: "시제 > 과거진행형 (was/were ~ing)",
+    question: "At 9 o'clock last night, the security guard noticed smoke rising from the basement. When he rushed to investigate, the faulty server ___________ sparks near the electrical panel.",
+    options: [
+      { text: "was emitting", isCorrect: true },
+      { text: "emitted", isCorrect: false },
+      { text: "will be emitting", isCorrect: false },
+      { text: "has been emitting", isCorrect: false }
+    ],
+    hint: "단서: 'When he rushed (과거시제)'",
+    gPoint: "G-POINT 5: when + 과거동사 -> 과거진행형",
+    explanation: "경비원이 조사하러 달려갔을 당시(rushed) 스파크를 일으키고 있던 중이었으므로 과거진행형 'was emitting'이 정답입니다."
+  },
+  {
+    id: "PRES-CONT-01",
+    category: "tense",
+    subCategory: "현진",
+    subCategoryName: "시제 > 현재진행형 (am/is/are ~ing)",
+    question: "Due to a technical glitch on the main payment gateway, the IT support team ___________ the system right now to prevent data loss.",
+    options: [
+      { text: "is now rebooting", isCorrect: true },
+      { text: "reboots", isCorrect: false },
+      { text: "had rebooted", isCorrect: false },
+      { text: "will have rebooted", isCorrect: false }
+    ],
+    hint: "단서: 'right now' (현재 시점 단서) + 완료 기간(for, since) 없음",
+    gPoint: "G-POINT 6: 현재 힌트(now, right now) -> 현재진행형 (am/is/are -ing)",
+    explanation: "'right now'라는 현재 시점 부사가 주어졌고 기간 단서가 없으므로 현재진행형 'is now rebooting'이 정답입니다."
+  },
+  {
+    id: "PRES-CONT-02",
+    category: "tense",
+    subCategory: "현진",
+    subCategoryName: "시제 > 현재진행형 (am/is/are ~ing)",
+    question: "Sophia is scheduled to graduate from culinary school this summer. She ___________ specialized baking utensils at the supply store at the moment.",
+    options: [
+      { text: "is purchasing", isCorrect: true },
+      { text: "purchased", isCorrect: false },
+      { text: "has been purchasing", isCorrect: false },
+      { text: "will purchase", isCorrect: false }
+    ],
+    hint: "단서: 'at the moment' (현재 시점) + 기간 단서 없음",
+    gPoint: "G-POINT 6: at the moment -> 현재진행형",
+    explanation: "'at the moment(지금 이 순간)'는 현재진행형의 대표적인 단서이며, 완료 기간(for 등)이 없으므로 현재진행형 'is purchasing'이 정답입니다."
+  },
+  {
+    id: "FUT-CONT-01",
+    category: "tense",
+    subCategory: "미진",
+    subCategoryName: "시제 > 미래진행형 (will be ~ing)",
+    question: "The regional technology expo will begin next Monday in Tokyo. Tomorrow morning, Ms. Vance ___________ an opening speech on artificial intelligence on behalf of our firm.",
+    options: [
+      { text: "will be delivering", isCorrect: true },
+      { text: "delivered", isCorrect: false },
+      { text: "has delivered", isCorrect: false },
+      { text: "had been delivering", isCorrect: false }
+    ],
+    hint: "단서: 'Tomorrow morning' (미래 시점 부사) + 기간 단서 없음",
+    gPoint: "G-POINT 7: 미래 힌트(Tomorrow morning) -> 미래진행형 (will be -ing)",
+    explanation: "내일 아침이라는 명확한 미래 시점 단서가 주어졌으며 완료 기간이 없으므로 미래진행형 'will be delivering'이 정답입니다."
+  },
+  {
+    id: "PAST-PERF-CONT-01",
+    category: "tense",
+    subCategory: "과완진",
+    subCategoryName: "시제 > 과거완료진행형 (had been ~ing)",
+    question: "The symphony orchestra earned a standing ovation after their flawless concert. The musicians ___________ the challenging concerto for eight weeks before opening night arrived.",
+    options: [
+      { text: "had been rehearsing", isCorrect: true },
+      { text: "are rehearsing", isCorrect: false },
+      { text: "were rehearsing", isCorrect: false },
+      { text: "will be rehearsing", isCorrect: false }
+    ],
+    hint: "단서: 기간 'for eight weeks' + 'before opening night arrived (과거 시점)'",
+    gPoint: "G-POINT 8: before 과거시점 + for 기간 -> 과거완료진행형 (had been -ing)",
+    explanation: "개막일이 도달한 과거 시점(arrived) 전까지 8주 동안 연습해오고 있었던 것이므로 과거완료진행형 'had been rehearsing'이 정답입니다."
+  },
+  {
+    id: "PRES-PERF-CONT-01",
+    category: "tense",
+    subCategory: "현완진",
+    subCategoryName: "시제 > 현재완료진행형 (have/has been ~ing)",
+    question: "When David graduated from architecture school, he moved to Seattle, where he ___________ eco-friendly skyscrapers for fourteen years now. He still loves his job.",
+    options: [
+      { text: "has been designing", isCorrect: true },
+      { text: "designed", isCorrect: false },
+      { text: "will be designing", isCorrect: false },
+      { text: "had designed", isCorrect: false }
+    ],
+    hint: "단서: 'for fourteen years now' (기간 for + 현재 시점 now) + 현재 문맥(still loves)",
+    gPoint: "G-POINT 9: for 기간 + now -> 현재완료진행형 (has/have been -ing)",
+    explanation: "과거에 시애틀로 이주한 후 '지금까지 14년 동안(for fourteen years now)' 친환경 빌딩을 계속 설계해오고 있는 중이므로 현재완료진행형 'has been designing'이 정답입니다."
+  },
+  {
+    id: "FUT-PERF-CONT-01",
+    category: "tense",
+    subCategory: "미완진",
+    subCategoryName: "시제 > 미래완료진행형 (will have been ~ing)",
+    question: "By the end of this semester, Professor Harrison ___________ international finance and economics at Stanford University for exactly thirty years.",
+    options: [
+      { text: "will have been teaching", isCorrect: true },
+      { text: "is teaching", isCorrect: false },
+      { text: "taught", isCorrect: false },
+      { text: "has been teaching", isCorrect: false }
+    ],
+    hint: "단서: 미래 완료 시점 'By the end of this semester' + 기간 'for exactly thirty years'",
+    gPoint: "G-POINT 10: 미래 힌트(by ~) + for 기간 -> 미래완료진행형 (will have been -ing)",
+    explanation: "미래 시점을 나타내는 'By the end of this semester'와 지속 기간인 'for exactly thirty years'가 결합되어 있으므로 미래완료진행형 'will have been teaching'이 정답입니다."
+  },
+
+  // =========================================================================
+  // 2. 준동사 (GERUND vs INFINITIVE) - 교재 20문제 실전 완벽 변형
+  // =========================================================================
+  {
+    id: "GI-01",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > to부정사만을 목적어로 취하는 동사 (decide to V)",
+    question: "Due to the explosive surge in overseas sales this quarter, the board of directors decided ___________ thirty additional software engineers to expand the platform.",
+    options: [
+      { text: "to hire", isCorrect: true },
+      { text: "hiring", isCorrect: false },
+      { text: "to be hiring", isCorrect: false },
+      { text: "having hired", isCorrect: false }
+    ],
+    hint: "단서: 동사 'decide' 뒤 목적어 자리 (암기표 4: decide + to V)",
+    gPoint: "G-POINT 14: decide, plan, hope, agree, refuse + to부정사",
+    explanation: "동사 'decide'는 미래지향적 동작을 나타내는 to부정사만을 목적어로 취합니다. 따라서 'to hire'가 정답입니다."
+  },
+  {
+    id: "GI-02",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > to부정사만을 목적어로 취하는 동사 (agree to V)",
+    question: "After intense collective negotiations, union representatives agreed ___________ with a compromise proposal to overcome the company's financial crisis.",
+    options: [
+      { text: "to come", isCorrect: true },
+      { text: "coming", isCorrect: false },
+      { text: "to have come", isCorrect: false },
+      { text: "having come", isCorrect: false }
+    ],
+    hint: "단서: 동사 'agree' 뒤 목적어 자리 (암기표 4: agree + to V)",
+    gPoint: "G-POINT 14: agree, promise, consent + to부정사",
+    explanation: "동사 'agree(동의하다/합의하다)'는 to부정사만을 목적어로 취하므로 'to come'이 정답입니다."
+  },
+  {
+    id: "GI-03",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 동명사만을 목적어로 취하는 동사 (stop -ing)",
+    question: "Because the workload as a chief accountant was too heavy, Victoria's chronic illness worsened. Her physician recommended that she stop ___________ overtime and take adequate rest.",
+    options: [
+      { text: "working", isCorrect: true },
+      { text: "to work", isCorrect: false },
+      { text: "having worked", isCorrect: false },
+      { text: "work", isCorrect: false }
+    ],
+    hint: "단서: 'stop + -ing' (하던 일을 그만두다 / 멈추다)",
+    gPoint: "G-POINT 15: stop + -ing (~하던 것을 멈추다) vs stop + to V (~하기 위해 멈추다)",
+    explanation: "문맥상 의사가 야근하던 것을 '그만두고 휴식을 취하라'고 권고한 것이므로 동명사 'working'이 정답입니다. (stop to work는 '일하기 위해 멈추다'라는 뜻이 되어 어색합니다)"
+  },
+  {
+    id: "GI-04",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 목적을 나타내는 to부정사 (부사적 용법)",
+    question: "___________ an intellectual property dispute with its overseas competitor, the technology startup decided to retain an experienced patent attorney.",
+    options: [
+      { text: "To settle", isCorrect: true },
+      { text: "Settling", isCorrect: false },
+      { text: "To have settled", isCorrect: false },
+      { text: "Having settled", isCorrect: false }
+    ],
+    hint: "단서: 문두에서 '~하기 위하여 (목적)'를 나타내는 부사적 용법",
+    gPoint: "G-POINT 16: 문두 빈칸, 뒤에 주절(S+V) 완벽 -> 목적의 to부정사 (To V)",
+    explanation: "특허 분쟁을 '원만하게 해결하기 위하여' 변호사를 고용하기로 결정했다는 목적을 나타내므로 to부정사 'To settle'이 정답입니다."
+  },
+  {
+    id: "GI-05",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 관용 표현 (be able to V)",
+    question: "Henry had been practicing Japanese pronunciation diligently for eight years. Now he is fully able ___________ with Tokyo clients without any interpreter.",
+    options: [
+      { text: "to speak", isCorrect: true },
+      { text: "speaking", isCorrect: false },
+      { text: "to have spoken", isCorrect: false },
+      { text: "will speak", isCorrect: false }
+    ],
+    hint: "단서: 관용 표현 'be able + to부정사'",
+    gPoint: "G-POINT 19: be able to V (~할 수 있다)",
+    explanation: "be able 뒤에는 to부정사가 연결되어 능력을 나타내므로 'to speak'가 정답입니다."
+  },
+  {
+    id: "GI-06",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 전치사 뒤 빈칸 = 동명사 (without + -ing)",
+    question: "Several junior developers refused to take on emergency maintenance duties because the company kept assigning extra tasks without ___________ proper compensation.",
+    options: [
+      { text: "giving", isCorrect: true },
+      { text: "to give", isCorrect: false },
+      { text: "being given", isCorrect: false },
+      { text: "to have given", isCorrect: false }
+    ],
+    hint: "단서: 전치사 'without' 뒤 목적어 자리",
+    gPoint: "G-POINT 11: 전치사(in, on, of, for, with, without) 뒤 빈칸 -> -ing(동명사)",
+    explanation: "전치사(without) 뒤에는 목적어로 동명사가 와야 하므로 'giving'이 정답입니다."
+  },
+  {
+    id: "GI-07",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > to부정사만을 목적어로 취하는 동사 (manage to V)",
+    question: "Although the venture capital firm was extremely skeptical of the business proposal, Sarah managed ___________ the investment committee to fund her project.",
+    options: [
+      { text: "to persuade", isCorrect: true },
+      { text: "persuading", isCorrect: false },
+      { text: "would persuade", isCorrect: false },
+      { text: "having persuaded", isCorrect: false }
+    ],
+    hint: "단서: 동사 'manage' 뒤 목적어 자리 (암기표 4: manage + to V)",
+    gPoint: "G-POINT 14: manage to V (가까스로 ~해내다)",
+    explanation: "동사 manage는 목적어로 to부정사만을 취하므로 'to persuade'가 정답입니다."
+  },
+  {
+    id: "GI-08",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 목적을 나타내는 to부정사 (to V)",
+    question: "Global Retailers Corporation has expanded its seasonal marketing campaign across social media ___________ young demographic consumers worldwide.",
+    options: [
+      { text: "to attract", isCorrect: true },
+      { text: "attracting", isCorrect: false },
+      { text: "having attracted", isCorrect: false },
+      { text: "to have attracted", isCorrect: false }
+    ],
+    hint: "단서: 문맥상 젊은 소비자들을 '유치하기 위하여 (목적)'",
+    gPoint: "G-POINT 16: ~하기 위하여 (in order to) = to부정사",
+    explanation: "캠페인을 확장한 목적(~을 유치하기 위해)을 나타내는 부사적 용법이므로 'to attract'가 정답입니다."
+  },
+  {
+    id: "GI-09",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 명사를 수식하는 to부정사 (형용사적 용법)",
+    question: "Kelly enjoys relaxing at cozy cafes on Sunday afternoons. She visits the local bookstore every weekend to purchase interesting novels ___________ during her break.",
+    options: [
+      { text: "to read", isCorrect: true },
+      { text: "reading", isCorrect: false },
+      { text: "will read", isCorrect: false },
+      { text: "having read", isCorrect: false }
+    ],
+    hint: "단서: 앞의 명사 'interesting novels'를 수식 (~할 소설)",
+    gPoint: "G-POINT 17: 명사 + to V (~할 명사 - 형용사적 용법)",
+    explanation: "휴식 시간에 '읽을 소설(novels to read)'이라는 수식 관계이므로 to부정사 'to read'가 정답입니다."
+  },
+  {
+    id: "GI-10",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 동명사만을 목적어로 취하는 동사 (suggest -ing)",
+    question: "The experienced fitness trainer whom I met at the rehabilitation center suggested ___________ cardiovascular workouts at least three times a week.",
+    options: [
+      { text: "exercising", isCorrect: true },
+      { text: "to exercise", isCorrect: false },
+      { text: "exercise", isCorrect: false },
+      { text: "to have exercised", isCorrect: false }
+    ],
+    hint: "단서: 동사 'suggest' 뒤 목적어 자리 (암기표 3: suggest + -ing)",
+    gPoint: "G-POINT 13: suggest, recommend, consider + -ing(동명사)",
+    explanation: "동사 suggest(제안하다)는 동명사만을 목적어로 취하므로 'exercising'이 정답입니다."
+  },
+  {
+    id: "GI-11",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 최빈출 관용표현 (prevent A from -ing)",
+    question: "The cybersecurity department deployed biometric verification protocols to prevent unauthorized hackers from ___________ classified corporate files.",
+    options: [
+      { text: "accessing", isCorrect: true },
+      { text: "to access", isCorrect: false },
+      { text: "would access", isCorrect: false },
+      { text: "having accessed", isCorrect: false }
+    ],
+    hint: "단서: 관용구 'prevent [keep/stop] A from + -ing'",
+    gPoint: "G-POINT 20: prevent A from ~ing (A가 ~하는 것을 막다)",
+    explanation: "전치사 from 뒤에 동명사가 결합하는 지텔프 최빈출 관용표현 'prevent A from -ing'이므로 'accessing'이 정답입니다."
+  },
+  {
+    id: "GI-12",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 문장의 주어 자리 빈칸 = 동명사 (-ing)",
+    question: "___________ complex economic models using artificial intelligence was Dr. Mitchell's primary research passion throughout his academic career.",
+    options: [
+      { text: "Developing", isCorrect: true },
+      { text: "Develop", isCorrect: false },
+      { text: "To have developed", isCorrect: false },
+      { text: "Having developed", isCorrect: false }
+    ],
+    hint: "단서: 문장의 단수동사 'was' 앞의 주어 자리 빈칸",
+    gPoint: "G-POINT 12: 문두 주어 자리 빈칸 + 단수동사 -> 동명사 (~ing)",
+    explanation: "문장의 본동사 'was' 앞에서 주어 역할을 해야 하므로 동명사 'Developing'이 정답입니다."
+  },
+  {
+    id: "GI-13",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 가주어(It) - 진주어(to V) 구문",
+    question: "In today's fast-paced corporate environment, it is an absolute relief ___________ a project finished ahead of its contractual deadline.",
+    options: [
+      { text: "to get", isCorrect: true },
+      { text: "getting", isCorrect: false },
+      { text: "to have got", isCorrect: false },
+      { text: "would get", isCorrect: false }
+    ],
+    hint: "단서: 가주어 'it is an absolute relief' + 진주어 자리 빈칸",
+    gPoint: "G-POINT 18: 가주어 It is 명사/형용사 + 진주어 to부정사 (to V)",
+    explanation: "가주어 it에 대응하는 진짜 주어가 필요한 자리이므로 to부정사 'to get'이 정답입니다."
+  },
+  {
+    id: "GI-14",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > 목적격보어 to부정사 (expect A to V)",
+    question: "The venture capitalist expected the fledgling biotech firm ___________ clinical trial approval by the end of the fiscal year.",
+    options: [
+      { text: "to obtain", isCorrect: true },
+      { text: "obtaining", isCorrect: false },
+      { text: "obtain", isCorrect: false },
+      { text: "obtained", isCorrect: false }
+    ],
+    hint: "단서: 5형식 동사 'expected + 목적어 + to V'",
+    gPoint: "G-POINT 19: expect, allow, encourage, advise + 목적어 + to부정사",
+    explanation: "동사 expect는 5형식 구문에서 목적격보어로 to부정사를 취하므로 'to obtain'이 정답입니다."
+  },
+  {
+    id: "GI-15",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 동명사만을 목적어로 취하는 동사 (keep -ing)",
+    question: "Despite fluctuating raw material prices, the solar energy manufacturer must keep ___________ high-efficiency photovoltaic cells to remain competitive.",
+    options: [
+      { text: "producing", isCorrect: true },
+      { text: "to produce", isCorrect: false },
+      { text: "produce", isCorrect: false },
+      { text: "having produced", isCorrect: false }
+    ],
+    hint: "단서: 동사 'keep + -ing' (계속해서 ~하다)",
+    gPoint: "G-POINT 13: keep, continue(진행), practice + 동명사",
+    explanation: "동사 keep은 동명사만을 목적어로 취하여 '계속해서 ~하다'라는 의미를 나타내므로 'producing'이 정답입니다."
+  },
+  {
+    id: "GI-16",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 동명사만을 목적어로 취하는 동사 (risk -ing)",
+    question: "The aggressive hedge fund manager was willing to risk ___________ significant financial capital on speculative overseas investments.",
+    options: [
+      { text: "losing", isCorrect: true },
+      { text: "to lose", isCorrect: false },
+      { text: "will lose", isCorrect: false },
+      { text: "having lost", isCorrect: false }
+    ],
+    hint: "단서: 동사 'risk + -ing' (암기표 3: risk는 동명사만 목적어로 취함)",
+    gPoint: "G-POINT 13: risk + -ing (~의 위험을 무릅쓰다)",
+    explanation: "동사 risk는 동명사(-ing)만을 목적어로 취하므로 'losing'이 정답입니다."
+  },
+  {
+    id: "GI-17",
+    category: "gerund_infinitive",
+    subCategory: "to부정사",
+    subCategoryName: "준동사 > to부정사만을 목적어로 취하는 동사 (refuse to V)",
+    question: "When the building superintendent requested tenants to vacate the premises for fire inspection, the store manager refused ___________ until the next day.",
+    options: [
+      { text: "to cooperate", isCorrect: true },
+      { text: "cooperating", isCorrect: false },
+      { text: "will cooperate", isCorrect: false },
+      { text: "having cooperated", isCorrect: false }
+    ],
+    hint: "단서: 동사 'refuse' 뒤 목적어 자리 (암기표 4: refuse + to V)",
+    gPoint: "G-POINT 14: refuse, hesitate, reject(단, reject는 -ing) / refuse + to V",
+    explanation: "동사 refuse(거절하다)는 to부정사만을 목적어로 취하므로 'to cooperate'가 정답입니다."
+  },
+  {
+    id: "GI-18",
+    category: "gerund_infinitive",
+    subCategory: "동명사",
+    subCategoryName: "준동사 > 동명사만을 목적어로 취하는 동사 (recommend -ing)",
+    question: "The nutritionist emphasized the importance of balanced metabolism and recommended ___________ excessive refined sugar intake completely.",
+    options: [
+      { text: "cutting", isCorrect: true },
+      { text: "to cut", isCorrect: false },
+      { text: "to have cut", isCorrect: false },
+      { text: "cut", isCorrect: false }
+    ],
+    hint: "단서: 동사 바로 뒤 목적어 자리 'recommended + -ing'",
+    gPoint: "G-POINT 13 & 오답 POINT 1: recommend 뒤 바로 목적어는 동명사(-ing)",
+    explanation: "recommend 뒤에 목적어(A)가 없을 때는 바로 동명사(-ing)를 목적어로 취하므로 'cutting'이 정답입니다. (recommend A to V와 구별 필수!)"
+  },
+
+  // =========================================================================
+  // 3. 가정법 (SUBJUNCTIVE : 과거 vs 과거완료)
+  // =========================================================================
+  {
+    id: "SUB-01",
+    category: "subjunctive",
+    subCategory: "가정법과거",
+    subCategoryName: "가정법 > 가정법 과거 (현재 사실 반대)",
+    question: "If Mr. Robinson ___________ more flexible with his work schedule, he could collaborate with the international overseas design team.",
+    options: [
+      { text: "were", isCorrect: true },
+      { text: "had been", isCorrect: false },
+      { text: "is", isCorrect: false },
+      { text: "will be", isCorrect: false }
+    ],
+    hint: "단서: 주절의 'could collaborate (조동사 과거형 + 동사원형)'",
+    gPoint: "G-TELP 가정법 공식: If + S + 과거동사(were), S + would/could/might + 동사원형",
+    explanation: "주절에 'could + 동사원형'이 왔으므로 현재 사실과 반대되는 가정을 나타내는 가정법 과거 공식입니다. If절의 be동사는 인칭에 상관없이 'were'를 씁니다."
+  },
+  {
+    id: "SUB-02",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > 가정법 과거완료 (과거 사실 반대)",
+    question: "If the logistics department ___________ the cargo shipment earlier yesterday, the client would have received the industrial parts on schedule.",
+    options: [
+      { text: "had dispatched", isCorrect: true },
+      { text: "dispatched", isCorrect: false },
+      { text: "dispatches", isCorrect: false },
+      { text: "would dispatch", isCorrect: false }
+    ],
+    hint: "단서: 주절의 'would have received (조동사 과거 + have p.p.)'",
+    gPoint: "G-TELP 가정법 공식: If + S + had p.p., S + would/could/might + have p.p.",
+    explanation: "주절에 'would have p.p.'가 주어졌으므로 If절에는 가정법 과거완료인 'had p.p.(had dispatched)'가 정답입니다."
+  },
+
+  // =========================================================================
+  // 4. Should 생략 (주장·제안·요구·명령 동사원형)
+  // =========================================================================
+  {
+    id: "SHOULD-01",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > 제안/요구/주장/명령 동사원형",
+    question: "The senior safety inspector strongly recommended that all factory workers ___________ protective goggles while operating the heavy machinery.",
+    options: [
+      { text: "wear", isCorrect: true },
+      { text: "wore", isCorrect: false },
+      { text: "wears", isCorrect: false },
+      { text: "wearing", isCorrect: false }
+    ],
+    hint: "단서: 주절의 제안/권고 동사 'recommended that + S + (should) 동사원형'",
+    gPoint: "G-TELP 당위성 공식: recommend + that + S + (should) 동사원형",
+    explanation: "recommend, suggest, insist 등의 동사 뒤의 that절에는 당위성을 뜻하는 조동사 should가 생략되어 주어의 수나 시제와 무관하게 '동사원형(wear)'이 정답입니다."
+  },
+
+  // =========================================================================
+  // 5. 관계사 / 조동사 / 연결어
+  // =========================================================================
+  {
+    id: "REL-01",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 콤마(,) 뒤 계속적 용법 (that 불가)",
+    question: "The global pharmaceutical firm acquired BioGen Laboratories, ___________ developed the revolutionary vaccine last winter.",
+    options: [
+      { text: "which", isCorrect: true },
+      { text: "that", isCorrect: false },
+      { text: "who", isCorrect: false },
+      { text: "what", isCorrect: false }
+    ],
+    hint: "단서: 콤마(,) 뒤 사물 선행사 BioGen Laboratories (that은 콤마 뒤 불가)",
+    gPoint: "G-TELP 관계사 공식: 콤마(,) 뒤에는 that 절대 불가 -> which",
+    explanation: "선행사가 회사(사물)이고 콤마(,) 뒤 계속적 용법이므로 관계대명사 that은 쓸 수 없습니다. 따라서 주격 관계대명사 'which'가 정답입니다."
+  },
+  {
+    id: "MOD-01",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 엄격한 규칙/의무 (must)",
+    question: "According to strict aviation safety regulations, all passengers ___________ fasten their seatbelts whenever the seatbelt light is illuminated.",
+    options: [
+      { text: "must", isCorrect: true },
+      { text: "might", isCorrect: false },
+      { text: "would", isCorrect: false },
+      { text: "could", isCorrect: false }
+    ],
+    hint: "단서: 엄격한 항공 안전 규정 (strict regulations) -> 강한 의무/법칙",
+    gPoint: "G-TELP 조동사 해석: 법규/규정에 따른 필수 의무 = must",
+    explanation: "문맥상 안전 규정에 따라 '반드시 좌석 벨트를 착용해야 한다'는 강한 의무를 나타내므로 조동사 'must'가 정답입니다."
+  },
+  {
+    id: "CONJ-01",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 양보 접속사 (although/though)",
+    question: "___________ the sales team encountered unexpected supply chain disruptions, they managed to surpass their annual revenue target.",
+    options: [
+      { text: "Although", isCorrect: true },
+      { text: "Despite", isCorrect: false },
+      { text: "Because of", isCorrect: false },
+      { text: "However", isCorrect: false }
+    ],
+    hint: "단서: 뒤에 주어+동사 절(the sales team encountered ...)이 오고 양보의 의미",
+    gPoint: "G-TELP 연결어 공식: 절을 이끄는 양보 접속사 = Although (Despite는 전치사)",
+    explanation: "뒤에 '주어 + 동사'를 갖춘 절이 이어지며, '공급망 혼란을 겪었음에도 불구하고'라는 역접/양보의 관계이므로 접속사 'Although'가 정답입니다."
+  }
+];
+
+// 카테고리 정보
+const CATEGORIES = [
+  { id: "all", name: "전체 종합 (전 문법 모의고사)", icon: "sparkles", badge: "실전 종합 10제" },
+  { id: "tense", name: "시제 (Tense)", icon: "clock", badge: "6대 시제 60제 완비" },
+  { id: "gerund_infinitive", name: "준동사 (동명사 vs to부정사)", icon: "git-commit", badge: "실전 20제 탑재" },
+  { id: "subjunctive", name: "가정법 (과거 & 과거완료)", icon: "wand-2", badge: "공식 짝맞추기" },
+  { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "주장·제안 동사원형" },
+  { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "that불가 공식" },
+  { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "의무·가능성" },
+  { id: "conjunction", name: "연결어 (접속사/부사)", icon: "share-2", badge: "논리 관계" }
+];
+
+</script>
+  <script>
+// G-TELP 문법 마스터 컨트롤러 (전 파트 지원 & 준동사 3:3 균형 출제)
+
+class GTelpApp {
+  constructor() {
+    this.questions = [...QUESTIONS_DATABASE];
+    this.currentCategory = 'gerund_infinitive'; // 방금 준동사 자료를 주셨으므로 준동사를 우선 기본 선택
+    this.currentQuestions = [];
+    this.currentIndex = 0;
+    this.selectedAnswers = {};
+    this.isAnswered = {};
+    this.history = { totalSolved: 0, totalCorrect: 0, streak: 1, wrongIds: [] };
+
+    this.loadUserData();
+    this.initDOM();
+    this.bindEvents();
+    this.renderDashboard();
+  }
+
+  loadUserData() {
+    try {
+      const savedCustom = localStorage.getItem('gtelp_custom_questions');
+      if (savedCustom) {
+        const parsed = JSON.parse(savedCustom);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.questions = [...QUESTIONS_DATABASE, ...parsed];
+        }
+      }
+
+      const savedHistory = localStorage.getItem('gtelp_user_history');
+      if (savedHistory) {
+        this.history = JSON.parse(savedHistory);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  saveUserData() {
+    localStorage.setItem('gtelp_user_history', JSON.stringify(this.history));
+  }
+
+  initDOM() {
+    this.dom = {
+      dashboardView: document.getElementById('dashboard-view'),
+      quizView: document.getElementById('quiz-view'),
+      resultView: document.getElementById('result-view'),
+      cheatsheetModal: document.getElementById('cheatsheet-modal'),
+      addQuestionModal: document.getElementById('add-question-modal'),
+
+      statSolved: document.getElementById('stat-solved'),
+      statRate: document.getElementById('stat-rate'),
+      statWrongCount: document.getElementById('stat-wrong-count'),
+      statStreak: document.getElementById('stat-streak'),
+
+      categoryContainer: document.getElementById('category-container'),
+      selectedCatTitle: document.getElementById('selected-cat-title'),
+      selectedCatDesc: document.getElementById('selected-cat-desc'),
+      selectedCatCount: document.getElementById('selected-cat-count'),
+
+      progressText: document.getElementById('progress-text'),
+      progressBar: document.getElementById('progress-bar'),
+      questionText: document.getElementById('question-text'),
+      optionsContainer: document.getElementById('options-container'),
+      feedbackBox: document.getElementById('feedback-box'),
+      feedbackContent: document.getElementById('feedback-content'),
+      btnNextQuestion: document.getElementById('btn-next-question'),
+      quickDots: document.getElementById('quick-dots')
+    };
+  }
+
+  bindEvents() {
+    document.getElementById('btn-start-session').addEventListener('click', () => this.startQuizSession(this.currentCategory));
+    document.getElementById('btn-home').addEventListener('click', () => this.showDashboard());
+    document.getElementById('btn-quit-quiz').addEventListener('click', () => {
+      if (confirm('현재 풀던 10문제 세트를 종료하고 메인으로 돌아갈까요?')) {
+        this.showDashboard();
+      }
+    });
+
+    document.getElementById('btn-open-cheat').addEventListener('click', () => this.openCheatsheet());
+    document.getElementById('btn-close-cheat').addEventListener('click', () => this.closeModal('cheatsheet-modal'));
+
+    document.getElementById('btn-open-add').addEventListener('click', () => this.openAddModal());
+    document.getElementById('btn-close-add').addEventListener('click', () => this.closeModal('add-question-modal'));
+    document.getElementById('form-add-question').addEventListener('submit', (e) => this.handleSaveNewQuestion(e));
+
+    this.dom.btnNextQuestion.addEventListener('click', () => this.goNextQuestion());
+    document.getElementById('btn-retry-session').addEventListener('click', () => this.startQuizSession(this.currentCategory));
+    document.getElementById('btn-result-home').addEventListener('click', () => this.showDashboard());
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeModal('cheatsheet-modal');
+        this.closeModal('add-question-modal');
+      }
+      if ((e.key === 'Enter') && !this.dom.quizView.classList.contains('hidden')) {
+        const currentQ = this.currentQuestions[this.currentIndex];
+        if (this.isAnswered[currentQ.id]) {
+          this.goNextQuestion();
+        }
+      }
+    });
+  }
+
+  renderDashboard() {
+    const total = this.history.totalSolved || 0;
+    const rate = total > 0 ? Math.round((this.history.totalCorrect / total) * 100) : 0;
+    const wrongCount = this.history.wrongIds ? this.history.wrongIds.length : 0;
+
+    this.dom.statSolved.textContent = total;
+    this.dom.statRate.textContent = `${rate}%`;
+    this.dom.statWrongCount.textContent = wrongCount;
+    this.dom.statStreak.textContent = `${this.history.streak || 1}일`;
+
+    const wrongCard = document.getElementById('card-wrong-notes');
+    if (wrongCount === 0) {
+      wrongCard.classList.add('opacity-50', 'pointer-events-none');
+      document.getElementById('wrong-badge').textContent = '오답 없음';
+    } else {
+      wrongCard.classList.remove('opacity-50', 'pointer-events-none');
+      document.getElementById('wrong-badge').textContent = `${wrongCount}문제`;
+      wrongCard.onclick = () => this.startWrongSession();
+    }
+
+    this.renderCategoryCards();
+    this.updateSelectedCategoryBanner();
+  }
+
+  renderCategoryCards() {
+    const html = CATEGORIES.map(cat => {
+      const isSelected = this.currentCategory === cat.id;
+      const count = cat.id === 'all' 
+        ? this.questions.length 
+        : this.questions.filter(q => q.category === cat.id).length;
+
+      const activeBorder = isSelected 
+        ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/50' 
+        : 'border-slate-200 bg-white hover:border-indigo-300';
+
+      return `
+        <div onclick="app.selectCategory('${cat.id}')" 
+             class="p-4 rounded-2xl border ${activeBorder} cursor-pointer transition shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">
+                ${cat.badge}
+              </span>
+              <span class="text-xs font-mono font-semibold text-slate-400">${count}문항</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm md:text-base">${cat.name}</h4>
+          </div>
+          <div class="mt-3 text-xs font-bold ${isSelected ? 'text-indigo-600' : 'text-slate-400'} flex items-center justify-between">
+            <span>${isSelected ? '선택됨 ✓' : '선택하기'}</span>
+            <span>→</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    this.dom.categoryContainer.innerHTML = html;
+  }
+
+  selectCategory(catId) {
+    this.currentCategory = catId;
+    this.renderCategoryCards();
+    this.updateSelectedCategoryBanner();
+  }
+
+  updateSelectedCategoryBanner() {
+    const cat = CATEGORIES.find(c => c.id === this.currentCategory) || CATEGORIES[2];
+    const count = this.currentCategory === 'all' 
+      ? this.questions.length 
+      : this.questions.filter(q => q.category === this.currentCategory).length;
+
+    this.dom.selectedCatTitle.textContent = cat.name;
+    this.dom.selectedCatCount.textContent = `현재 등록 문항: ${count}개`;
+
+    let desc = "준동사(동명사 vs to부정사) 3:3 출제 공식에 맞춰 실전 10문제를 출제합니다.";
+    if (cat.id === 'tense') desc = "6대 시제(과진·현진·미진·과완진·현완진·미완진)를 골고루 섞어 10문제를 출제합니다.";
+    else if (cat.id === 'all') desc = "G-TELP 시험에 나오는 시제, 준동사, 가정법, should생략, 관계사, 조동사, 연결어를 골고루 섞어 출제합니다.";
+    else if (cat.id === 'gerund_infinitive') desc = "G-TELP 준동사 핵심: 동명사 3:3 to부정사 출제 공식 및 빈출 표현(decide to V / suggest -ing)을 집중 훈련합니다.";
+    else if (cat.id === 'subjunctive') desc = "가정법 과거(If 과거, would 동사원형)와 가정법 과거완료(If had p.p., would have p.p.) 짝맞추기 훈련입니다.";
+    else if (cat.id === 'should_omission') desc = "suggest, recommend, insist 등 주장·제안·요구 동사 뒤 (should) 동사원형 공식을 훈련합니다.";
+    else if (cat.id === 'relative') desc = "콤마 뒤 that 불가, 사람/사물 선행사 구분 등 관계대명사/관계부사 핵심을 훈련합니다.";
+    else if (cat.id === 'modal') desc = "문맥에 따른 의무(must/should), 가능성(may/can) 등 조동사 해석을 훈련합니다.";
+    else if (cat.id === 'conjunction') desc = "although(접속사) vs despite(전치사), however 등 문맥 연결어 논리 관계를 훈련합니다.";
+
+    this.dom.selectedCatDesc.textContent = desc;
+  }
+
+  // =========================================================================
+  // 10문제 추출 및 무한 실전 동적 생성 엔진 연동
+  // =========================================================================
+  startQuizSession(categoryId) {
+    let selected = [];
+
+    // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 10문제 생성
+    if (typeof GTELP_GENERATOR !== 'undefined') {
+      selected = GTELP_GENERATOR.generate10Set(categoryId);
+    } else {
+      let pool = categoryId === 'all' ? [...this.questions] : this.questions.filter(q => q.category === categoryId);
+      if (pool.length === 0) pool = [...this.questions];
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      selected = shuffled.slice(0, Math.min(10, pool.length));
+    }
+
+    selected.sort(() => Math.random() - 0.5);
+
+    // 보기(A, B, C, D) 무작위 셔플
+    this.currentQuestions = selected.map(q => {
+      const labels = ['A', 'B', 'C', 'D'];
+      const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+      return {
+        ...q,
+        shuffledOptions: shuffledOptions.map((opt, idx) => ({
+          label: labels[idx],
+          text: opt.text,
+          isCorrect: opt.isCorrect
+        }))
+      };
+    });
+
+    this.currentIndex = 0;
+    this.selectedAnswers = {};
+    this.isAnswered = {};
+
+    this.dom.dashboardView.classList.add('hidden');
+    this.dom.resultView.classList.add('hidden');
+    this.dom.quizView.classList.remove('hidden');
+
+    this.renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  startWrongSession() {
+    const wrongPool = this.questions.filter(q => this.history.wrongIds.includes(q.id));
+    if (wrongPool.length === 0) return;
+
+    this.currentQuestions = wrongPool.slice(0, 10).map(q => {
+      const labels = ['A', 'B', 'C', 'D'];
+      const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+      return {
+        ...q,
+        shuffledOptions: shuffledOptions.map((opt, idx) => ({
+          label: labels[idx],
+          text: opt.text,
+          isCorrect: opt.isCorrect
+        }))
+      };
+    });
+
+    this.currentIndex = 0;
+    this.selectedAnswers = {};
+    this.isAnswered = {};
+
+    this.dom.dashboardView.classList.add('hidden');
+    this.dom.resultView.classList.add('hidden');
+    this.dom.quizView.classList.remove('hidden');
+
+    this.renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuestion() {
+    const total = this.currentQuestions.length;
+    const currentQ = this.currentQuestions[this.currentIndex];
+    const isAlreadyAnswered = !!this.isAnswered[currentQ.id];
+    const selectedOptIdx = this.selectedAnswers[currentQ.id];
+
+    const progressPercent = Math.round(((this.currentIndex + 1) / total) * 100);
+    this.dom.progressBar.style.width = `${progressPercent}%`;
+    this.dom.progressText.textContent = `문제 ${this.currentIndex + 1} / ${total}`;
+
+    this.renderQuickDots();
+
+    const formatted = currentQ.question.replace(/___________/g, '<span class="px-2 py-0.5 mx-1 font-bold text-indigo-700 bg-indigo-50 border-b-2 border-indigo-500 rounded">___________</span>');
+    this.dom.questionText.innerHTML = formatted;
+
+    // 보기 렌더링 (실제 G-TELP 시험지 폰트 100% 반영)
+    const optionsHtml = currentQ.shuffledOptions.map((opt, idx) => {
+      let cardStyle = "border-slate-200 bg-white hover:border-indigo-400 hover:bg-slate-50/80 cursor-pointer text-slate-800 shadow-xs";
+      let labelStyle = "text-slate-600 font-bold border-r border-slate-200 pr-3 mr-3 gtelp-label-font";
+      let statusIcon = "";
+
+      if (isAlreadyAnswered) {
+        if (opt.isCorrect) {
+          cardStyle = "border-emerald-500 bg-emerald-50/80 text-emerald-950 font-semibold ring-2 ring-emerald-500/30";
+          labelStyle = "text-emerald-700 font-bold border-r border-emerald-300 pr-3 mr-3 gtelp-label-font";
+          statusIcon = `<span class="ml-auto text-emerald-600 font-bold text-xs bg-emerald-100 px-2 py-1 rounded-md gtelp-label-font">✓ 정답</span>`;
+        } else if (selectedOptIdx === idx && !opt.isCorrect) {
+          cardStyle = "border-rose-400 bg-rose-50/80 text-rose-950 ring-2 ring-rose-400/30";
+          labelStyle = "text-rose-600 font-bold border-r border-rose-300 pr-3 mr-3 gtelp-label-font";
+          statusIcon = `<span class="ml-auto text-rose-600 font-bold text-xs bg-rose-100 px-2 py-1 rounded-md gtelp-label-font">✗ 내가 고른 오답</span>`;
+        } else {
+          cardStyle = "border-slate-200 bg-white opacity-40 text-slate-400 cursor-not-allowed";
+          labelStyle = "text-slate-400 border-r border-slate-200 pr-3 mr-3 gtelp-label-font";
+        }
+      }
+
+      return `
+        <div onclick="app.handleSelectOption(${idx})" 
+             class="group flex items-center p-4 rounded-xl border text-[16px] md:text-[17px] transition-all duration-150 ${cardStyle}">
+          <span class="text-sm tracking-wider uppercase ${labelStyle}">
+            (${opt.label})
+          </span>
+          <span class="flex-1 gtelp-exam-font">${opt.text}</span>
+          ${statusIcon}
+        </div>
+      `;
+    }).join('');
+
+    this.dom.optionsContainer.innerHTML = optionsHtml;
+
+    if (isAlreadyAnswered) {
+      const chosenOpt = currentQ.shuffledOptions[selectedOptIdx];
+      const isCorrect = chosenOpt && chosenOpt.isCorrect;
+
+      this.dom.feedbackBox.classList.remove('hidden');
+      this.dom.feedbackContent.innerHTML = `
+        <div class="p-4 rounded-2xl border ${isCorrect ? 'bg-emerald-50/90 border-emerald-300' : 'bg-rose-50/90 border-rose-300'} space-y-2.5 animate-fade-in">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}">
+            <div class="flex items-center gap-2">
+              <span class="text-base font-extrabold ${isCorrect ? 'text-emerald-700' : 'text-rose-600'}">
+                ${isCorrect ? '🎉 정답입니다!' : '❌ 아쉽네요, 오답입니다!'}
+              </span>
+            </div>
+            <!-- 이때 문법 파트 및 세부 유형 공개 -->
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs text-slate-500 font-medium">출제 유형:</span>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-indigo-600 text-white shadow-xs">
+                📌 ${currentQ.subCategoryName || currentQ.subCategory}
+              </span>
+            </div>
+          </div>
+
+          <div class="text-xs md:text-sm text-slate-700 space-y-1.5 leading-relaxed">
+            <div class="p-2.5 bg-white/80 rounded-xl border border-slate-200/80">
+              <span class="font-bold text-indigo-700">🔑 단서 & 공식:</span> ${currentQ.hint}
+            </div>
+            <p class="pt-1">${currentQ.explanation}</p>
+          </div>
+        </div>
+      `;
+
+      this.dom.btnNextQuestion.classList.remove('hidden');
+      if (this.currentIndex === total - 1) {
+        this.dom.btnNextQuestion.innerHTML = `<span>채점 결과 보기</span> <span>→</span>`;
+        this.dom.btnNextQuestion.className = "w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
+      } else {
+        this.dom.btnNextQuestion.innerHTML = `<span>다음 문제 풀기 (Enter)</span> <span>→</span>`;
+        this.dom.btnNextQuestion.className = "w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
+      }
+    } else {
+      this.dom.feedbackBox.classList.add('hidden');
+      this.dom.btnNextQuestion.classList.add('hidden');
+    }
+  }
+
+  handleSelectOption(optionIndex) {
+    const currentQ = this.currentQuestions[this.currentIndex];
+    if (this.isAnswered[currentQ.id]) return;
+
+    this.selectedAnswers[currentQ.id] = optionIndex;
+    this.isAnswered[currentQ.id] = true;
+
+    const chosenOpt = currentQ.shuffledOptions[optionIndex];
+    const isCorrect = chosenOpt.isCorrect;
+
+    this.history.totalSolved = (this.history.totalSolved || 0) + 1;
+    if (isCorrect) {
+      this.history.totalCorrect = (this.history.totalCorrect || 0) + 1;
+      if (this.history.wrongIds) {
+        this.history.wrongIds = this.history.wrongIds.filter(id => id !== currentQ.id);
+      }
+    } else {
+      if (!this.history.wrongIds) this.history.wrongIds = [];
+      if (!this.history.wrongIds.includes(currentQ.id)) {
+        this.history.wrongIds.push(currentQ.id);
+      }
+    }
+
+    this.saveUserData();
+    this.renderQuestion();
+
+    setTimeout(() => {
+      this.dom.feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+
+  goNextQuestion() {
+    if (this.currentIndex < this.currentQuestions.length - 1) {
+      this.currentIndex++;
+      this.renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      this.showFinalResult();
+    }
+  }
+
+  renderQuickDots() {
+    const dotsHtml = this.currentQuestions.map((q, idx) => {
+      const answered = this.isAnswered[q.id];
+      const isCurrent = idx === this.currentIndex;
+      let dotColor = "bg-slate-200 text-slate-500";
+
+      if (answered) {
+        const selIdx = this.selectedAnswers[q.id];
+        const isRight = q.shuffledOptions[selIdx]?.isCorrect;
+        dotColor = isRight ? "bg-emerald-500 text-white font-bold" : "bg-rose-500 text-white font-bold";
+      }
+
+      const ring = isCurrent ? "ring-2 ring-indigo-600 ring-offset-2 scale-110 font-bold" : "";
+
+      return `
+        <div class="w-7 h-7 rounded-lg text-xs flex items-center justify-center transition ${dotColor} ${ring}">
+          ${idx + 1}
+        </div>
+      `;
+    }).join('');
+
+    this.dom.quickDots.innerHTML = dotsHtml;
+  }
+
+  showFinalResult() {
+    this.dom.quizView.classList.add('hidden');
+    this.dom.resultView.classList.remove('hidden');
+
+    let correctCount = 0;
+    this.currentQuestions.forEach(q => {
+      const selIdx = this.selectedAnswers[q.id];
+      if (q.shuffledOptions[selIdx]?.isCorrect) correctCount++;
+    });
+
+    const total = this.currentQuestions.length;
+    const rate = Math.round((correctCount / total) * 100);
+
+    document.getElementById('final-score').textContent = `${correctCount} / ${total}`;
+    document.getElementById('final-rate').textContent = `${rate}%`;
+
+    let message = "🎉 축하합니다! 완벽하게 마스터하고 계시네요!";
+    if (rate < 60) {
+      message = "💪 괜찮아요! 단서와 공식을 복습하며 오답노트를 다시 풀어보세요.";
+    } else if (rate < 90) {
+      message = "👍 아주 훌륭합니다! 헷갈린 문항만 보완하면 실전 만점입니다.";
+    }
+    document.getElementById('final-message').textContent = message;
+
+    const reviewHtml = this.currentQuestions.map((q, idx) => {
+      const selIdx = this.selectedAnswers[q.id];
+      const userOpt = q.shuffledOptions[selIdx];
+      const isRight = userOpt?.isCorrect;
+      const rightOpt = q.shuffledOptions.find(o => o.isCorrect);
+
+      return `
+        <div class="p-4 rounded-xl border ${isRight ? 'bg-emerald-50/40 border-emerald-200' : 'bg-rose-50/40 border-rose-200'}">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">
+              Q${idx + 1}. [${q.subCategoryName || q.subCategory}]
+            </span>
+            <span class="text-xs font-bold ${isRight ? 'text-emerald-700' : 'text-rose-600'}">
+              ${isRight ? '✓ 정답' : `✗ 오답 (내 선택: (${userOpt ? userOpt.label : '-'}) / 정답: (${rightOpt.label}))`}
+            </span>
+          </div>
+          <p class="text-sm md:text-base text-slate-800 mb-2 gtelp-exam-font leading-relaxed">${q.question}</p>
+          <div class="text-xs text-slate-600 bg-white/90 p-2.5 rounded-lg border border-slate-200">
+            <span class="font-bold text-indigo-700">G-POINT:</span> ${q.hint} - ${q.explanation}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('result-review-list').innerHTML = reviewHtml;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  showDashboard() {
+    this.dom.quizView.classList.add('hidden');
+    this.dom.resultView.classList.add('hidden');
+    this.dom.dashboardView.classList.remove('hidden');
+    this.renderDashboard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openCheatsheet() {
+    const keys = Object.keys(CHEATSHEET);
+    const tabsHtml = keys.map((k, i) => `
+      <button onclick="app.showCheatTab('${k}')" id="cheat-tab-${k}" 
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition ${k === 'gerund_infinitive' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+        ${CHEATSHEET[k].title.split('.')[1] || CHEATSHEET[k].title}
+      </button>
+    `).join('');
+
+    document.getElementById('cheat-tabs').innerHTML = tabsHtml;
+    this.showCheatTab('gerund_infinitive'); // 준동사 탭 기본 열기
+    this.dom.cheatsheetModal.classList.remove('hidden');
+  }
+
+  showCheatTab(tabKey) {
+    Object.keys(CHEATSHEET).forEach(k => {
+      const btn = document.getElementById(`cheat-tab-${k}`);
+      if (btn) {
+        if (k === tabKey) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+        }
+      }
+    });
+
+    const data = CHEATSHEET[tabKey];
+    const rulesHtml = data.rules.map(r => `
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="font-bold text-slate-800 text-sm mb-1">${r.name}</div>
+        <p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${r.desc}</p>
+      </div>
+    `).join('');
+
+    document.getElementById('cheat-content').innerHTML = `
+      <div class="space-y-2">
+        <h4 class="font-extrabold text-slate-900 text-sm mb-2">${data.title}</h4>
+        ${rulesHtml}
+      </div>
+    `;
+  }
+
+  openAddModal() {
+    this.dom.addQuestionModal.classList.remove('hidden');
+  }
+
+  closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+  }
+
+  handleSaveNewQuestion(e) {
+    e.preventDefault();
+    const form = e.target;
+    const category = form.category.value;
+    const subCategoryName = form.subCategoryName.value.trim();
+    const questionText = form.questionText.value.trim();
+    const optA = form.optA.value.trim();
+    const optB = form.optB.value.trim();
+    const optC = form.optC.value.trim();
+    const optD = form.optD.value.trim();
+    const answer = form.answer.value;
+    const hint = form.hint.value.trim();
+    const explanation = form.explanation.value.trim();
+
+    if (!questionText || !optA || !optB || !optC || !optD) {
+      alert("모든 필수 항목을 입력해주세요.");
+      return;
+    }
+
+    const newQuestion = {
+      id: `CUSTOM-${Date.now()}`,
+      category: category,
+      subCategory: subCategoryName || category,
+      subCategoryName: `${subCategoryName || category} (직접 등록)`,
+      question: questionText,
+      options: [
+        { text: optA, isCorrect: answer === 'a' },
+        { text: optB, isCorrect: answer === 'b' },
+        { text: optC, isCorrect: answer === 'c' },
+        { text: optD, isCorrect: answer === 'd' }
+      ],
+      hint: hint || "단서 키워드를 확인하세요.",
+      gPoint: "사용자 추가 문제",
+      explanation: explanation || "정답 해설이 등록되지 않았습니다."
+    };
+
+    this.questions.push(newQuestion);
+    try {
+      const saved = localStorage.getItem('gtelp_custom_questions');
+      const list = saved ? JSON.parse(saved) : [];
+      list.push(newQuestion);
+      localStorage.setItem('gtelp_custom_questions', JSON.stringify(list));
+    } catch (err) {
+      console.error(err);
+    }
+
+    alert("새 문제가 성공적으로 등록되었습니다!");
+    form.reset();
+    this.closeModal('add-question-modal');
+    this.renderDashboard();
+  }
+}
+
+let app;
+window.addEventListener('DOMContentLoaded', () => {
+  app = new GTelpApp();
+});
+
+</script>
+</body>
+</html>
