@@ -16,6 +16,7 @@ class GTelpApp {
     this.elapsedSeconds = 0;
 
     this.loadUserData();
+    this.checkUrlSyncParam();
     this.initDOM();
     this.bindEvents();
     this.renderDashboard();
@@ -72,6 +73,126 @@ class GTelpApp {
     return pool;
   }
 
+  // =========================================================================
+  // 초간단 기기간 동기화 (QR 코드 & 카카오톡 복사/붙여넣기)
+  // =========================================================================
+  checkUrlSyncParam() {
+    try {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#sync=')) {
+        const code = hash.replace('#sync=', '');
+        if (this.applySyncPayload(code)) {
+          history.replaceState(null, null, window.location.pathname);
+          setTimeout(() => {
+            alert("🎉 기기 동기화 완료!\n\n다른 기기에서 풀던 학습 기록과 오답노트가 성공적으로 반영되었습니다. 계속해서 학습하세요!");
+          }, 300);
+        }
+      }
+    } catch (e) {
+      console.error("URL sync error:", e);
+    }
+  }
+
+  generateSyncPayload() {
+    const payload = {
+      h: this.history,
+      w: this.wrongQuestionStore || {},
+      t: Date.now()
+    };
+    const jsonStr = JSON.stringify(payload);
+    if (typeof LZString !== 'undefined') {
+      return LZString.compressToEncodedURIComponent(jsonStr);
+    } else {
+      return encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+    }
+  }
+
+  applySyncPayload(compressedString) {
+    if (!compressedString) return false;
+    try {
+      let jsonStr = '';
+      if (typeof LZString !== 'undefined') {
+        jsonStr = LZString.decompressFromEncodedURIComponent(compressedString);
+      }
+      if (!jsonStr) {
+        jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(compressedString))));
+      }
+      const data = JSON.parse(jsonStr);
+      if (data && data.h) {
+        this.history = data.h;
+        this.wrongQuestionStore = data.w || {};
+        this.saveUserData();
+        this.renderDashboard();
+        return true;
+      }
+    } catch (e) {
+      console.error("Sync parse error:", e);
+    }
+    return false;
+  }
+
+  openSyncModal() {
+    const code = this.generateSyncPayload();
+    const syncUrl = `${window.location.origin}${window.location.pathname}#sync=${code}`;
+    const qrContainer = document.getElementById('sync-qrcode');
+    if (qrContainer) {
+      qrContainer.innerHTML = '';
+      if (typeof QRCode !== 'undefined') {
+        try {
+          new QRCode(qrContainer, {
+            text: syncUrl,
+            width: 170,
+            height: 170,
+            colorDark: "#0f172a",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } catch (e) {
+          qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${encodeURIComponent(syncUrl)}" alt="QR Code" class="w-42 h-42">`;
+        }
+      } else {
+        qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${encodeURIComponent(syncUrl)}" alt="QR Code" class="w-42 h-42">`;
+      }
+    }
+    const inputArea = document.getElementById('sync-paste-input');
+    if (inputArea) inputArea.value = '';
+    const modal = document.getElementById('sync-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  copySyncCode() {
+    const code = this.generateSyncPayload();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(() => {
+        alert("✅ 내 학습기록 코드가 복사되었습니다!\n\n카카오톡 '나와의 채팅방' 등에 붙여넣어 전송한 뒤, 다른 기기에서 [붙여넣은 코드 적용하기]를 누르시면 됩니다.");
+      }).catch(() => {
+        prompt("아래 코드를 전체 복사해주세요:", code);
+      });
+    } else {
+      prompt("아래 코드를 전체 복사해주세요:", code);
+    }
+  }
+
+  applySyncCodeFromInput() {
+    const inputArea = document.getElementById('sync-paste-input');
+    if (!inputArea) return;
+    const val = inputArea.value.trim();
+    if (!val) {
+      alert("붙여넣을 동기화 코드를 먼저 입력해주세요.");
+      return;
+    }
+    let code = val;
+    if (val.includes('#sync=')) {
+      code = val.split('#sync=')[1];
+    }
+    if (this.applySyncPayload(code)) {
+      alert("🎉 동기화 완료!\n\n학습 기록과 오답노트가 성공적으로 적용되었습니다.");
+      this.closeModal('sync-modal');
+    } else {
+      alert("⚠️ 올바른 동기화 코드가 아닙니다. 다시 확인하고 붙여넣어 주세요.");
+    }
+  }
+
   initDOM() {
     this.dom = {
       dashboardView: document.getElementById('dashboard-view'),
@@ -122,6 +243,11 @@ class GTelpApp {
       }
     });
 
+    document.getElementById('btn-open-sync').addEventListener('click', () => this.openSyncModal());
+    document.getElementById('btn-close-sync').addEventListener('click', () => this.closeModal('sync-modal'));
+    document.getElementById('btn-copy-sync-code').addEventListener('click', () => this.copySyncCode());
+    document.getElementById('btn-apply-sync-code').addEventListener('click', () => this.applySyncCodeFromInput());
+
     document.getElementById('btn-open-cheat').addEventListener('click', () => this.openCheatsheet());
     document.getElementById('btn-close-cheat').addEventListener('click', () => this.closeModal('cheatsheet-modal'));
 
@@ -139,6 +265,7 @@ class GTelpApp {
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        this.closeModal('sync-modal');
         this.closeModal('cheatsheet-modal');
         this.closeModal('add-question-modal');
       }
