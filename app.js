@@ -85,6 +85,11 @@ class GTelpApp {
     document.getElementById('form-add-question').addEventListener('submit', (e) => this.handleSaveNewQuestion(e));
 
     this.dom.btnNextQuestion.addEventListener('click', () => this.goNextQuestion());
+    this.dom.btnPrevQuestion = document.getElementById('btn-prev-question');
+    if (this.dom.btnPrevQuestion) {
+      this.dom.btnPrevQuestion.addEventListener('click', () => this.goPrevQuestion());
+    }
+
     document.getElementById('btn-retry-session').addEventListener('click', () => this.startQuizSession(this.currentCategory));
     document.getElementById('btn-result-home').addEventListener('click', () => this.showDashboard());
 
@@ -93,10 +98,20 @@ class GTelpApp {
         this.closeModal('cheatsheet-modal');
         this.closeModal('add-question-modal');
       }
-      if ((e.key === 'Enter') && !this.dom.quizView.classList.contains('hidden')) {
+      if (!this.dom.quizView.classList.contains('hidden')) {
         const currentQ = this.currentQuestions[this.currentIndex];
-        if (this.isAnswered[currentQ.id]) {
-          this.goNextQuestion();
+        // Enter 키 또는 오른쪽 화살표: 다음 문제
+        if (e.key === 'Enter') {
+          if (this.isAnswered[currentQ.id]) {
+            this.goNextQuestion();
+          }
+        } else if (e.key === 'ArrowLeft') {
+          // 왼쪽 화살표: 이전 문제로 가기
+          this.goPrevQuestion();
+        } else if (e.key === 'ArrowRight') {
+          if (this.isAnswered[currentQ.id]) {
+            this.goNextQuestion();
+          }
         }
       }
     });
@@ -204,7 +219,11 @@ class GTelpApp {
       selected = shuffled.slice(0, Math.min(10, pool.length));
     }
 
-    selected.sort(() => Math.random() - 0.5);
+    // 문제 추출 후 완벽한 무작위 셔플 (Fisher-Yates 셔플로 순서 완전히 섞기)
+    for (let i = selected.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selected[i], selected[j]] = [selected[j], selected[i]];
+    }
 
     // 보기(A, B, C, D) 무작위 셔플
     this.currentQuestions = selected.map(q => {
@@ -342,17 +361,33 @@ class GTelpApp {
         </div>
       `;
 
+      // 버튼 제어: 이전 문제 버튼 및 다음 문제 버튼
+      if (this.dom.btnPrevQuestion) {
+        if (this.currentIndex > 0) {
+          this.dom.btnPrevQuestion.classList.remove('hidden');
+        } else {
+          this.dom.btnPrevQuestion.classList.add('hidden');
+        }
+      }
+
       this.dom.btnNextQuestion.classList.remove('hidden');
       if (this.currentIndex === total - 1) {
         this.dom.btnNextQuestion.innerHTML = `<span>채점 결과 보기</span> <span>→</span>`;
-        this.dom.btnNextQuestion.className = "w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
+        this.dom.btnNextQuestion.className = "flex-1 py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
       } else {
         this.dom.btnNextQuestion.innerHTML = `<span>다음 문제 풀기 (Enter)</span> <span>→</span>`;
-        this.dom.btnNextQuestion.className = "w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
+        this.dom.btnNextQuestion.className = "flex-1 py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm md:text-base flex items-center justify-center gap-2 shadow-lg transition";
       }
     } else {
       this.dom.feedbackBox.classList.add('hidden');
       this.dom.btnNextQuestion.classList.add('hidden');
+      if (this.dom.btnPrevQuestion) {
+        if (this.currentIndex > 0) {
+          this.dom.btnPrevQuestion.classList.remove('hidden');
+        } else {
+          this.dom.btnPrevQuestion.classList.add('hidden');
+        }
+      }
     }
   }
 
@@ -387,6 +422,22 @@ class GTelpApp {
     }, 100);
   }
 
+  goPrevQuestion() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  jumpToQuestion(index) {
+    if (index >= 0 && index < this.currentQuestions.length) {
+      this.currentIndex = index;
+      this.renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   goNextQuestion() {
     if (this.currentIndex < this.currentQuestions.length - 1) {
       this.currentIndex++;
@@ -401,20 +452,24 @@ class GTelpApp {
     const dotsHtml = this.currentQuestions.map((q, idx) => {
       const answered = this.isAnswered[q.id];
       const isCurrent = idx === this.currentIndex;
-      let dotColor = "bg-slate-200 text-slate-500";
+      let dotColor = "bg-slate-200 text-slate-600 hover:bg-slate-300";
 
       if (answered) {
         const selIdx = this.selectedAnswers[q.id];
         const isRight = q.shuffledOptions[selIdx]?.isCorrect;
-        dotColor = isRight ? "bg-emerald-500 text-white font-bold" : "bg-rose-500 text-white font-bold";
+        dotColor = isRight 
+          ? "bg-emerald-500 text-white font-bold hover:bg-emerald-600 shadow-xs" 
+          : "bg-rose-500 text-white font-bold hover:bg-rose-600 shadow-xs";
       }
 
-      const ring = isCurrent ? "ring-2 ring-indigo-600 ring-offset-2 scale-110 font-bold" : "";
+      const ring = isCurrent ? "ring-2 ring-indigo-600 ring-offset-2 scale-110 font-black shadow-sm" : "";
 
       return `
-        <div class="w-7 h-7 rounded-lg text-xs flex items-center justify-center transition ${dotColor} ${ring}">
+        <button onclick="app.jumpToQuestion(${idx})" 
+                title="${idx + 1}번 문제로 이동"
+                class="w-7 h-7 rounded-lg text-xs flex items-center justify-center transition cursor-pointer ${dotColor} ${ring}">
           ${idx + 1}
-        </div>
+        </button>
       `;
     }).join('');
 
