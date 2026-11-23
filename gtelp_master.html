@@ -2878,6 +2878,7 @@ class GTelpApp {
     this.selectedAnswers = {};
     this.isAnswered = {};
     this.history = { totalSolved: 0, totalCorrect: 0, streak: 1, wrongIds: [] };
+    this.wrongQuestionStore = {};
 
     // 타이머 변수
     this.timerInterval = null;
@@ -2903,6 +2904,13 @@ class GTelpApp {
       if (savedHistory) {
         this.history = JSON.parse(savedHistory);
       }
+
+      const savedWrongStore = localStorage.getItem('gtelp_wrong_questions_store');
+      if (savedWrongStore) {
+        this.wrongQuestionStore = JSON.parse(savedWrongStore);
+      } else {
+        this.wrongQuestionStore = {};
+      }
     } catch (e) {
       console.error(e);
     }
@@ -2910,6 +2918,27 @@ class GTelpApp {
 
   saveUserData() {
     localStorage.setItem('gtelp_user_history', JSON.stringify(this.history));
+    localStorage.setItem('gtelp_wrong_questions_store', JSON.stringify(this.wrongQuestionStore));
+  }
+
+  getWrongQuestionsList() {
+    const pool = [];
+    const storedKeys = Object.keys(this.wrongQuestionStore || {});
+    storedKeys.forEach(id => {
+      if (this.wrongQuestionStore[id]) {
+        pool.push(this.wrongQuestionStore[id]);
+      }
+    });
+
+    if (this.history.wrongIds) {
+      this.history.wrongIds.forEach(id => {
+        if (!pool.some(q => q.id === id)) {
+          const found = this.questions.find(q => q.id === id);
+          if (found) pool.push(found);
+        }
+      });
+    }
+    return pool;
   }
 
   initDOM() {
@@ -3028,7 +3057,8 @@ class GTelpApp {
   renderDashboard() {
     const total = this.history.totalSolved || 0;
     const rate = total > 0 ? Math.round((this.history.totalCorrect / total) * 100) : 0;
-    const wrongCount = this.history.wrongIds ? this.history.wrongIds.length : 0;
+    const wrongList = this.getWrongQuestionsList();
+    const wrongCount = wrongList.length;
 
     this.dom.statSolved.textContent = total;
     this.dom.statRate.textContent = `${rate}%`;
@@ -3036,13 +3066,24 @@ class GTelpApp {
     this.dom.statStreak.textContent = `${this.history.streak || 1}일`;
 
     const wrongCard = document.getElementById('card-wrong-notes');
-    if (wrongCount === 0) {
-      wrongCard.classList.add('opacity-50', 'pointer-events-none');
-      document.getElementById('wrong-badge').textContent = '오답 없음';
-    } else {
+    const wrongBadge = document.getElementById('wrong-badge');
+    if (wrongCard) {
       wrongCard.classList.remove('opacity-50', 'pointer-events-none');
-      document.getElementById('wrong-badge').textContent = `${wrongCount}문제`;
       wrongCard.onclick = () => this.startWrongSession();
+
+      if (wrongCount === 0) {
+        wrongCard.className = "bg-white p-5 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:bg-slate-50/50 transition cursor-pointer shadow-xs flex items-center justify-between";
+        if (wrongBadge) {
+          wrongBadge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500";
+          wrongBadge.textContent = "0문제 (보관함 비어있음)";
+        }
+      } else {
+        wrongCard.className = "bg-rose-50/40 p-5 rounded-2xl border-2 border-rose-300 hover:border-rose-400 hover:bg-rose-50/70 transition cursor-pointer shadow-sm flex items-center justify-between";
+        if (wrongBadge) {
+          wrongBadge.className = "text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-600 text-white shadow-xs animate-pulse";
+          wrongBadge.textContent = `🔥 ${wrongCount}문제 복습하기`;
+        }
+      }
     }
 
     this.renderCategoryCards();
@@ -3161,11 +3202,15 @@ class GTelpApp {
   }
 
   startWrongSession() {
-    const wrongPool = this.questions.filter(q => this.history.wrongIds.includes(q.id));
-    if (wrongPool.length === 0) return;
+    const wrongPool = this.getWrongQuestionsList();
+    if (wrongPool.length === 0) {
+      alert("📝 오답노트 보관함 안내\n\n현재 틀린 문제가 없어 오답노트가 비어 있습니다.\n\n실전 10문제나 26문제 모의고사를 풀다가 틀린 문제가 생기면 이곳에 자동으로 누적되어 언제든 다시 풀며 완벽히 마스터할 수 있습니다!");
+      return;
+    }
 
     this.startTimer();
-    this.currentQuestions = wrongPool.slice(0, 10).map(q => {
+    const shuffled = [...wrongPool].sort(() => Math.random() - 0.5);
+    this.currentQuestions = shuffled.slice(0, 10).map(q => {
       const labels = ['A', 'B', 'C', 'D'];
       const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
       return {
@@ -3328,11 +3373,27 @@ class GTelpApp {
       if (this.history.wrongIds) {
         this.history.wrongIds = this.history.wrongIds.filter(id => id !== currentQ.id);
       }
+      if (this.wrongQuestionStore && this.wrongQuestionStore[currentQ.id]) {
+        delete this.wrongQuestionStore[currentQ.id];
+      }
     } else {
       if (!this.history.wrongIds) this.history.wrongIds = [];
       if (!this.history.wrongIds.includes(currentQ.id)) {
         this.history.wrongIds.push(currentQ.id);
       }
+      if (!this.wrongQuestionStore) this.wrongQuestionStore = {};
+      this.wrongQuestionStore[currentQ.id] = {
+        id: currentQ.id,
+        category: currentQ.category,
+        subCategory: currentQ.subCategory,
+        subCategoryName: currentQ.subCategoryName,
+        question: currentQ.question,
+        options: currentQ.options,
+        triggerWord: currentQ.triggerWord,
+        hint: currentQ.hint,
+        gPoint: currentQ.gPoint,
+        explanation: currentQ.explanation
+      };
     }
 
     this.saveUserData();
