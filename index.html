@@ -100,6 +100,28 @@
         </div>
       </div>
 
+      <!-- 📅 오늘의 학습 현황 (당일 기준 실시간 기록) -->
+      <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-base">📅</span>
+            <h3 class="font-extrabold text-slate-900 text-sm md:text-base">오늘의 학습 현황</h3>
+            <span id="daily-date-badge" class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">2026.11.23</span>
+          </div>
+          <div id="daily-total-summary" class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+            오늘 총 0세트 (0문제)
+          </div>
+        </div>
+
+        <!-- 오늘 푼 항목별 세트 수 뱃지 리스트 -->
+        <div id="daily-categories-list" class="flex flex-wrap gap-2 pt-0.5">
+          <div class="py-1 text-xs text-slate-400 flex items-center gap-1.5">
+            <span>🌱</span>
+            <span>오늘 아직 완료한 학습이 없습니다. 문제 풀기를 시작해보세요!</span>
+          </div>
+        </div>
+      </div>
+
       <!-- 선택된 파트 10문제 시작 배너 -->
       <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl shadow-indigo-100 relative overflow-hidden">
         <div class="relative z-10 space-y-3.5">
@@ -242,6 +264,9 @@
         <div>
           <h2 class="text-xl md:text-2xl font-black text-slate-900">학습 세트 완료!</h2>
           <p id="final-message" class="text-xs md:text-sm text-slate-500 mt-1">수고하셨습니다. 방금 푼 문제들을 복습해보세요.</p>
+          <div id="final-daily-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold mt-2">
+            오늘 1세트 완료!
+          </div>
         </div>
 
         <div class="grid grid-cols-3 gap-3 py-4 border-y border-slate-100 max-w-sm mx-auto">

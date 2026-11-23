@@ -10,6 +10,8 @@ class GTelpApp {
     this.isAnswered = {};
     this.history = { totalSolved: 0, totalCorrect: 0, streak: 1, wrongIds: [] };
     this.wrongQuestionStore = {};
+    this.dailyStats = this.getDefaultDailyStats();
+    this.currentSessionType = 'gerund_infinitive';
 
     // 타이머 변수
     this.timerInterval = null;
@@ -20,6 +22,23 @@ class GTelpApp {
     this.initDOM();
     this.bindEvents();
     this.renderDashboard();
+  }
+
+  getTodayDateString() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  getDefaultDailyStats() {
+    return {
+      date: this.getTodayDateString(),
+      totalSets: 0,
+      totalQuestions: 0,
+      categories: {}
+    };
   }
 
   loadUserData() {
@@ -43,6 +62,18 @@ class GTelpApp {
       } else {
         this.wrongQuestionStore = {};
       }
+
+      const savedDaily = localStorage.getItem('gtelp_daily_stats');
+      if (savedDaily) {
+        const parsedDaily = JSON.parse(savedDaily);
+        if (parsedDaily && parsedDaily.date === this.getTodayDateString()) {
+          this.dailyStats = parsedDaily;
+        } else {
+          this.dailyStats = this.getDefaultDailyStats();
+        }
+      } else {
+        this.dailyStats = this.getDefaultDailyStats();
+      }
     } catch (e) {
       console.error(e);
     }
@@ -51,6 +82,42 @@ class GTelpApp {
   saveUserData() {
     localStorage.setItem('gtelp_user_history', JSON.stringify(this.history));
     localStorage.setItem('gtelp_wrong_questions_store', JSON.stringify(this.wrongQuestionStore));
+    localStorage.setItem('gtelp_daily_stats', JSON.stringify(this.dailyStats));
+  }
+
+  recordDailySet(categoryId, questionCount) {
+    const today = this.getTodayDateString();
+    if (!this.dailyStats || this.dailyStats.date !== today) {
+      this.dailyStats = this.getDefaultDailyStats();
+    }
+    this.dailyStats.totalSets = (this.dailyStats.totalSets || 0) + 1;
+    this.dailyStats.totalQuestions = (this.dailyStats.totalQuestions || 0) + questionCount;
+
+    if (!this.dailyStats.categories) this.dailyStats.categories = {};
+
+    const names = {
+      'full_26': '실전 26제 모의고사',
+      'tense': '시제',
+      'gerund_infinitive': '준동사',
+      'subjunctive': '가정법',
+      'should_omission': 'Should 생략',
+      'relative': '관계사',
+      'modal': '조동사',
+      'conjunction': '연결어',
+      'all': '전체 종합',
+      'wrong': '오답노트 복습'
+    };
+    const catName = names[categoryId] || categoryId;
+
+    if (!this.dailyStats.categories[categoryId]) {
+      this.dailyStats.categories[categoryId] = {
+        name: catName,
+        sets: 0,
+        questions: 0
+      };
+    }
+    this.dailyStats.categories[categoryId].sets += 1;
+    this.dailyStats.categories[categoryId].questions += questionCount;
   }
 
   getWrongQuestionsList() {
@@ -97,6 +164,7 @@ class GTelpApp {
     const payload = {
       h: this.history,
       w: this.wrongQuestionStore || {},
+      d: this.dailyStats || {},
       t: Date.now()
     };
     const jsonStr = JSON.stringify(payload);
@@ -121,6 +189,9 @@ class GTelpApp {
       if (data && data.h) {
         this.history = data.h;
         this.wrongQuestionStore = data.w || {};
+        if (data.d && data.d.date === this.getTodayDateString()) {
+          this.dailyStats = data.d;
+        }
         this.saveUserData();
         this.renderDashboard();
         return true;
@@ -346,6 +417,61 @@ class GTelpApp {
 
     this.renderCategoryCards();
     this.updateSelectedCategoryBanner();
+    this.renderDailyActivity();
+  }
+
+  renderDailyActivity() {
+    const today = this.getTodayDateString();
+    if (this.dailyStats.date !== today) {
+      this.dailyStats = this.getDefaultDailyStats();
+      this.saveUserData();
+    }
+
+    const badgeDate = document.getElementById('daily-date-badge');
+    const summaryEl = document.getElementById('daily-total-summary');
+    const listEl = document.getElementById('daily-categories-list');
+    if (!listEl) return;
+
+    if (badgeDate) {
+      const parts = today.split('-');
+      badgeDate.textContent = `${parts[0]}.${parts[1]}.${parts[2]}`;
+    }
+
+    const totalSets = this.dailyStats.totalSets || 0;
+    const totalQ = this.dailyStats.totalQuestions || 0;
+
+    if (summaryEl) {
+      summaryEl.textContent = `오늘 총 ${totalSets}세트 (${totalQ}문제)`;
+      if (totalSets > 0) {
+        summaryEl.className = "text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 shadow-2xs";
+      } else {
+        summaryEl.className = "text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200";
+      }
+    }
+
+    const cats = this.dailyStats.categories || {};
+    const catKeys = Object.keys(cats);
+
+    if (catKeys.length === 0 || totalSets === 0) {
+      listEl.innerHTML = `
+        <div class="py-1 text-xs text-slate-400 flex items-center gap-1.5">
+          <span>🌱</span>
+          <span>오늘 아직 완료한 학습이 없습니다. 문제 풀기를 시작해보세요!</span>
+        </div>
+      `;
+    } else {
+      const html = catKeys.map(k => {
+        const item = cats[k];
+        return `
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 shadow-2xs">
+            <span class="font-extrabold text-indigo-700">${item.name}</span>
+            <span class="font-black text-slate-900 bg-white px-2 py-0.5 rounded-md border border-slate-200">${item.sets}세트</span>
+            <span class="text-[11px] font-medium text-slate-400">(${item.questions}제)</span>
+          </div>
+        `;
+      }).join('');
+      listEl.innerHTML = html;
+    }
   }
 
   renderCategoryCards() {
@@ -386,6 +512,61 @@ class GTelpApp {
     this.currentCategory = catId;
     this.renderCategoryCards();
     this.updateSelectedCategoryBanner();
+    this.renderDailyActivity();
+  }
+
+  renderDailyActivity() {
+    const today = this.getTodayDateString();
+    if (this.dailyStats.date !== today) {
+      this.dailyStats = this.getDefaultDailyStats();
+      this.saveUserData();
+    }
+
+    const badgeDate = document.getElementById('daily-date-badge');
+    const summaryEl = document.getElementById('daily-total-summary');
+    const listEl = document.getElementById('daily-categories-list');
+    if (!listEl) return;
+
+    if (badgeDate) {
+      const parts = today.split('-');
+      badgeDate.textContent = `${parts[0]}.${parts[1]}.${parts[2]}`;
+    }
+
+    const totalSets = this.dailyStats.totalSets || 0;
+    const totalQ = this.dailyStats.totalQuestions || 0;
+
+    if (summaryEl) {
+      summaryEl.textContent = `오늘 총 ${totalSets}세트 (${totalQ}문제)`;
+      if (totalSets > 0) {
+        summaryEl.className = "text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 shadow-2xs";
+      } else {
+        summaryEl.className = "text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200";
+      }
+    }
+
+    const cats = this.dailyStats.categories || {};
+    const catKeys = Object.keys(cats);
+
+    if (catKeys.length === 0 || totalSets === 0) {
+      listEl.innerHTML = `
+        <div class="py-1 text-xs text-slate-400 flex items-center gap-1.5">
+          <span>🌱</span>
+          <span>오늘 아직 완료한 학습이 없습니다. 문제 풀기를 시작해보세요!</span>
+        </div>
+      `;
+    } else {
+      const html = catKeys.map(k => {
+        const item = cats[k];
+        return `
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 shadow-2xs">
+            <span class="font-extrabold text-indigo-700">${item.name}</span>
+            <span class="font-black text-slate-900 bg-white px-2 py-0.5 rounded-md border border-slate-200">${item.sets}세트</span>
+            <span class="text-[11px] font-medium text-slate-400">(${item.questions}제)</span>
+          </div>
+        `;
+      }).join('');
+      listEl.innerHTML = html;
+    }
   }
 
   updateSelectedCategoryBanner() {
@@ -414,6 +595,7 @@ class GTelpApp {
   // 10문제 또는 26문제 무한 실전 동적 생성 엔진 연동
   // =========================================================================
   startQuizSession(categoryId, count = 10) {
+    this.currentSessionType = (categoryId === 'full_26' || count === 26) ? 'full_26' : categoryId;
     this.startTimer();
     let selected = [];
 
@@ -460,6 +642,7 @@ class GTelpApp {
   }
 
   startWrongSession() {
+    this.currentSessionType = 'wrong';
     const wrongPool = this.getWrongQuestionsList();
     if (wrongPool.length === 0) {
       alert("📝 오답노트 보관함 안내\n\n현재 틀린 문제가 없어 오답노트가 비어 있습니다.\n\n실전 10문제나 26문제 모의고사를 풀다가 틀린 문제가 생기면 이곳에 자동으로 누적되어 언제든 다시 풀며 완벽히 마스터할 수 있습니다!");
@@ -747,6 +930,17 @@ class GTelpApp {
     const elFinalAvg = document.getElementById('final-avg-time');
     if (elFinalTime) elFinalTime.textContent = timeFormatted;
     if (elFinalAvg) elFinalAvg.textContent = `문제당 평균 ${avgSec}초`;
+
+    // 당일 학습 기록 갱신 (하루 기준 완료 세트 수 & 문항 수)
+    const sessionCat = this.currentSessionType || this.currentCategory;
+    this.recordDailySet(sessionCat, total);
+    this.saveUserData();
+
+    const catStats = this.dailyStats && this.dailyStats.categories ? this.dailyStats.categories[sessionCat] : null;
+    const dailyBadge = document.getElementById('final-daily-badge');
+    if (dailyBadge && catStats) {
+      dailyBadge.innerHTML = `<span>📅</span> 오늘 <strong>${catStats.name}</strong> 누적 <strong>${catStats.sets}세트 (${catStats.questions}문제)</strong> 완료!`;
+    }
 
     // 취약점 정밀 진단 리포트 생성
     const reportBox = document.getElementById('weakness-report');
