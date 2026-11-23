@@ -482,13 +482,13 @@ const QUESTIONS_DATABASE = [
   },
 
   // =========================================================================
-  // 3. 가정법 (SUBJUNCTIVE : 과거 vs 과거완료)
+  // 3. 가정법 (SUBJUNCTIVE : 과거 vs 과거완료 실전 10문항 완비)
   // =========================================================================
   {
     id: "SUB-01",
     category: "subjunctive",
     subCategory: "가정법과거",
-    subCategoryName: "가정법 > 가정법 과거 (현재 사실 반대)",
+    subCategoryName: "가정법 > 가정법 과거 (If절 Be동사 were)",
     question: "If Mr. Robinson ___________ more flexible with his work schedule, he could collaborate with the international overseas design team.",
     options: [
       { text: "were", isCorrect: true },
@@ -496,35 +496,173 @@ const QUESTIONS_DATABASE = [
       { text: "is", isCorrect: false },
       { text: "will be", isCorrect: false }
     ],
+    triggerWord: "could collaborate",
     hint: "단서: 주절의 'could collaborate (조동사 과거형 + 동사원형)'",
     gPoint: "G-TELP 가정법 공식: If + S + 과거동사(were), S + would/could/might + 동사원형",
-    explanation: "주절에 'could + 동사원형'이 왔으므로 현재 사실과 반대되는 가정을 나타내는 가정법 과거 공식입니다. If절의 be동사는 인칭에 상관없이 'were'를 씁니다."
+    explanation: "주절에 'could + 동사원형'이 왔으므로 현재 사실과 반대되는 가정을 나타내는 가정법 과거 공식입니다. If절의 be동사는 주어 인칭에 상관없이 'were'가 정답입니다."
   },
   {
     id: "SUB-02",
     category: "subjunctive",
-    subCategory: "가정법과거완료",
-    subCategoryName: "가정법 > 가정법 과거완료 (과거 사실 반대)",
-    question: "If the logistics department ___________ the cargo shipment earlier yesterday, the client would have received the industrial parts on schedule.",
+    subCategory: "가정법과거",
+    subCategoryName: "가정법 > 가정법 과거 (주절 would + 동사원형)",
+    question: "If our engineering team had access to the high-performance computing cluster, Dr. Bennett ___________ the aerodynamic simulation much faster.",
     options: [
-      { text: "had dispatched", isCorrect: true },
-      { text: "dispatched", isCorrect: false },
-      { text: "dispatches", isCorrect: false },
-      { text: "would dispatch", isCorrect: false }
+      { text: "would complete", isCorrect: true },
+      { text: "completed", isCorrect: false },
+      { text: "will complete", isCorrect: false },
+      { text: "would have completed", isCorrect: false }
     ],
-    hint: "단서: 주절의 'would have received (조동사 과거 + have p.p.)'",
+    triggerWord: "If our engineering team had",
+    hint: "단서: If절의 과거동사 'had'",
+    gPoint: "G-POINT 1: If + 과거동사 -> 주절 would/could + 동사원형",
+    explanation: "If절에 과거동사 'had'가 쓰였으므로 가정법 과거입니다. 주절에는 'would + 동사원형'인 'would complete'가 정답입니다."
+  },
+  {
+    id: "SUB-03",
+    category: "subjunctive",
+    subCategory: "가정법과거",
+    subCategoryName: "가정법 > 가정법 과거 (If절 일반동사 과거형)",
+    question: "If the municipal transport authorities ___________ in favor of the urban subway extension, the city would initiate the tunnel excavation work next month.",
+    options: [
+      { text: "voted", isCorrect: true },
+      { text: "had voted", isCorrect: false },
+      { text: "votes", isCorrect: false },
+      { text: "will vote", isCorrect: false }
+    ],
+    triggerWord: "would initiate",
+    hint: "단서: 주절의 'would initiate (would + 동사원형)'",
+    gPoint: "G-POINT 1: If + S + 과거동사 -> 주절 would + 동사원형",
+    explanation: "주절에 'would initiate'가 있으므로 If절에는 일반동사 과거형인 'voted'가 정답입니다."
+  },
+  {
+    id: "SUB-04",
+    category: "subjunctive",
+    subCategory: "가정법과거",
+    subCategoryName: "가정법 > 가정법 과거 (주절 could + 동사원형)",
+    question: "If the corporate treasury department possessed sufficient liquid capital reserves, we ___________ the regional logistics competitor this quarter.",
+    options: [
+      { text: "could acquire", isCorrect: true },
+      { text: "acquired", isCorrect: false },
+      { text: "will acquire", isCorrect: false },
+      { text: "could have acquired", isCorrect: false }
+    ],
+    triggerWord: "If the corporate treasury department possessed",
+    hint: "단서: If절의 과거동사 'possessed'",
+    gPoint: "G-POINT 1: If + 과거동사 -> 주절 could + 동사원형",
+    explanation: "If절의 시제가 과거(possessed)이므로 주절에는 조동사 과거+동사원형인 'could acquire'가 정답입니다."
+  },
+  {
+    id: "SUB-05",
+    category: "subjunctive",
+    subCategory: "가정법과거",
+    subCategoryName: "가정법 > 가정법 과거 (If절 knew)",
+    question: "If the marketing director ___________ the exact budgetary constraints of the client, she could draft a tailored proposal today.",
+    options: [
+      { text: "knew", isCorrect: true },
+      { text: "had known", isCorrect: false },
+      { text: "knows", isCorrect: false },
+      { text: "will know", isCorrect: false }
+    ],
+    triggerWord: "could draft",
+    hint: "단서: 주절의 'could draft (could + 동사원형)'",
+    gPoint: "G-POINT 1: If + S + 과거동사(knew) -> 주절 could + 동사원형",
+    explanation: "주절에 'could draft'가 있으므로 If절에는 과거동사 'knew'가 정답입니다."
+  },
+  {
+    id: "SUB-06",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > 가정법 과거완료 (If절 had p.p.)",
+    question: "If the technical operations team ___________ the diagnostic evaluation earlier yesterday, we would have prevented the catastrophic server shutdown.",
+    options: [
+      { text: "had analyzed", isCorrect: true },
+      { text: "analyzed", isCorrect: false },
+      { text: "has analyzed", isCorrect: false },
+      { text: "would analyze", isCorrect: false }
+    ],
+    triggerWord: "would have prevented",
+    hint: "단서: 주절의 'would have prevented (조동사 과거 + have p.p.)'",
     gPoint: "G-TELP 가정법 공식: If + S + had p.p., S + would/could/might + have p.p.",
-    explanation: "주절에 'would have p.p.'가 주어졌으므로 If절에는 가정법 과거완료인 'had p.p.(had dispatched)'가 정답입니다."
+    explanation: "주절에 'would have prevented'가 있으므로 If절에는 가정법 과거완료인 'had p.p.(had analyzed)'가 정답입니다."
+  },
+  {
+    id: "SUB-07",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > 가정법 과거완료 (주절 would have p.p.)",
+    question: "If the logistics department had dispatched the cargo shipment prior to 3 PM yesterday, the client ___________ the industrial parts on schedule.",
+    options: [
+      { text: "would have received", isCorrect: true },
+      { text: "received", isCorrect: false },
+      { text: "will receive", isCorrect: false },
+      { text: "would receive", isCorrect: false }
+    ],
+    triggerWord: "If the logistics department had dispatched",
+    hint: "단서: If절의 'had dispatched (had p.p.)'",
+    gPoint: "G-POINT 2: If + had p.p. -> 주절 would have p.p.",
+    explanation: "If절에 'had dispatched'가 주어졌으므로 주절에는 가정법 과거완료 짝인 'would have received'가 정답입니다."
+  },
+  {
+    id: "SUB-08",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > 가정법 과거완료 (If절 had reviewed)",
+    question: "If the quality assurance division ___________ the manufacturing batch before packaging, they could have detected the micro-fractures in the glass components.",
+    options: [
+      { text: "had reviewed", isCorrect: true },
+      { text: "reviewed", isCorrect: false },
+      { text: "reviews", isCorrect: false },
+      { text: "would have reviewed", isCorrect: false }
+    ],
+    triggerWord: "could have detected",
+    hint: "단서: 주절의 'could have detected (could have p.p.)'",
+    gPoint: "G-POINT 2: If + had p.p. -> could have p.p.",
+    explanation: "주절에 'could have detected'가 있으므로 If절에는 'had reviewed'가 정답입니다."
+  },
+  {
+    id: "SUB-09",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > 가정법 과거완료 (주절 could have p.p.)",
+    question: "If Dr. Gallagher had consulted with the chief legal counsel regarding patent infringement risks, the laboratory ___________ this expensive lawsuit.",
+    options: [
+      { text: "could have avoided", isCorrect: true },
+      { text: "avoided", isCorrect: false },
+      { text: "will avoid", isCorrect: false },
+      { text: "could avoid", isCorrect: false }
+    ],
+    triggerWord: "If Dr. Gallagher had consulted",
+    hint: "단서: If절의 'had consulted (had p.p.)'",
+    gPoint: "G-POINT 2: If + had p.p. -> could have p.p.",
+    explanation: "If절에 had consulted가 쓰였으므로 주절에는 과거완료 귀결절인 'could have avoided'가 정답입니다."
+  },
+  {
+    id: "SUB-10",
+    category: "subjunctive",
+    subCategory: "가정법과거완료",
+    subCategoryName: "가정법 > If생략 도치 구문 (Had S p.p.)",
+    question: "___________ the pharmaceutical researchers conducted the preliminary toxicity screen earlier, the laboratory would have identified the harmful compound immediately.",
+    options: [
+      { text: "Had", isCorrect: true },
+      { text: "If", isCorrect: false },
+      { text: "Did", isCorrect: false },
+      { text: "Were", isCorrect: false }
+    ],
+    triggerWord: "would have identified",
+    hint: "단서: 주절 'would have identified' + 빈칸 뒤 'the researchers conducted (S + p.p.)'",
+    gPoint: "G-POINT 3: Had + S + p.p. (If생략 도치) -> 주절 would have p.p.",
+    explanation: "If가 생략되고 Had가 주어 앞으로 튀어나온 가정법 과거완료 도치 구문입니다. 빈칸에 'Had'가 들어가 'Had S p.p.'를 완성해야 합니다."
   },
 
   // =========================================================================
-  // 4. Should 생략 (주장·제안·요구·명령 동사원형)
+  // 4. Should 생략 (주장·제안·요구·명령 동사 & 당위성 형용사 10문항 완비)
   // =========================================================================
   {
     id: "SHOULD-01",
     category: "should_omission",
     subCategory: "should생략",
-    subCategoryName: "Should 생략 > 제안/요구/주장/명령 동사원형",
+    subCategoryName: "Should 생략 > recommended that + 동사원형",
     question: "The senior safety inspector strongly recommended that all factory workers ___________ protective goggles while operating the heavy machinery.",
     options: [
       { text: "wear", isCorrect: true },
@@ -532,13 +670,167 @@ const QUESTIONS_DATABASE = [
       { text: "wears", isCorrect: false },
       { text: "wearing", isCorrect: false }
     ],
+    triggerWord: "recommended that",
     hint: "단서: 주절의 제안/권고 동사 'recommended that + S + (should) 동사원형'",
     gPoint: "G-TELP 당위성 공식: recommend + that + S + (should) 동사원형",
-    explanation: "recommend, suggest, insist 등의 동사 뒤의 that절에는 당위성을 뜻하는 조동사 should가 생략되어 주어의 수나 시제와 무관하게 '동사원형(wear)'이 정답입니다."
+    explanation: "recommend 뒤의 that절에는 당위성을 뜻하는 조동사 should가 생략되어 주어의 수나 시제와 무관하게 무조건 '동사원형(wear)'이 정답입니다."
+  },
+  {
+    id: "SHOULD-02",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > insisted that + 3인칭 단수 주어 함정",
+    question: "The chief financial officer insisted that each regional branch manager ___________ the audited expenditure receipts prior to the Friday noon deadline.",
+    options: [
+      { text: "submit", isCorrect: true },
+      { text: "submits", isCorrect: false },
+      { text: "submitted", isCorrect: false },
+      { text: "submitting", isCorrect: false }
+    ],
+    triggerWord: "insisted that",
+    hint: "단서: 주장/요구 동사 'insisted that' + S + (should) 동사원형",
+    gPoint: "G-POINT 11: insist that S + (should) 동사원형",
+    explanation: "that절 주어가 'each manager'로 3인칭 단수이지만, should가 생략되어 있으므로 -s나 -ed를 붙이지 않은 동사원형 'submit'이 정답입니다."
+  },
+  {
+    id: "SHOULD-03",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > demanded that + 동사원형",
+    question: "The executive committee demanded that the facility supervisor ___________ a comprehensive safety inspection before the factory resumed operations.",
+    options: [
+      { text: "conduct", isCorrect: true },
+      { text: "conducts", isCorrect: false },
+      { text: "conducted", isCorrect: false },
+      { text: "conducting", isCorrect: false }
+    ],
+    triggerWord: "demanded that",
+    hint: "단서: 요구 동사 'demanded that' + S + (should) 동사원형",
+    gPoint: "G-POINT 11: demand that S + (should) 동사원형",
+    explanation: "demanded that 뒤의 that절에는 should가 생략되므로 동사원형 'conduct'가 정답입니다."
+  },
+  {
+    id: "SHOULD-04",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > requested that + 동사원형",
+    question: "The human resources director requested that every department head ___________ a detailed quarterly staffing plan by tomorrow morning.",
+    options: [
+      { text: "provide", isCorrect: true },
+      { text: "provides", isCorrect: false },
+      { text: "provided", isCorrect: false },
+      { text: "providing", isCorrect: false }
+    ],
+    triggerWord: "requested that",
+    hint: "단서: 요청 동사 'requested that' + S + (should) 동사원형",
+    gPoint: "G-POINT 11: request that S + (should) 동사원형",
+    explanation: "요구/요청 동사 requested that 뒤에는 동사원형 'provide'가 정답입니다."
+  },
+  {
+    id: "SHOULD-05",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > suggested that + 동사원형",
+    question: "The lead software architect suggested that our engineering team ___________ the production database migration until off-peak weekend hours.",
+    options: [
+      { text: "postpone", isCorrect: true },
+      { text: "postpones", isCorrect: false },
+      { text: "postponed", isCorrect: false },
+      { text: "postponing", isCorrect: false }
+    ],
+    triggerWord: "suggested that",
+    hint: "단서: 제안 동사 'suggested that' + S + (should) 동사원형",
+    gPoint: "G-POINT 11: suggest that S + (should) 동사원형",
+    explanation: "suggest that 뒤에는 조동사 should가 생략되므로 동사원형 'postpone'이 정답입니다."
+  },
+  {
+    id: "SHOULD-06",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > required that + 동사원형",
+    question: "Environmental compliance guidelines required that the industrial chemical refinery ___________ its operating discharge permit every two years.",
+    options: [
+      { text: "renew", isCorrect: true },
+      { text: "renews", isCorrect: false },
+      { text: "renewed", isCorrect: false },
+      { text: "renewing", isCorrect: false }
+    ],
+    triggerWord: "required that",
+    hint: "단서: 요구 동사 'required that' + S + (should) 동사원형",
+    gPoint: "G-POINT 11: require that S + (should) 동사원형",
+    explanation: "require that 절에서는 should가 생략되어 동사원형 'renew'가 정답입니다."
+  },
+  {
+    id: "SHOULD-07",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > It is essential that (당위성 형용사)",
+    question: "In light of recent cyber attacks, it is essential that every newly hired computer programmer ___________ the corporate security briefing today.",
+    options: [
+      { text: "attend", isCorrect: true },
+      { text: "attends", isCorrect: false },
+      { text: "attended", isCorrect: false },
+      { text: "will attend", isCorrect: false }
+    ],
+    triggerWord: "it is essential that",
+    hint: "단서: 당위성 형용사 'It is essential that + S + (should) 동사원형'",
+    gPoint: "G-POINT 12: It is essential that S + (should) 동사원형",
+    explanation: "It is essential that 구문에서는 당위성 조동사 should가 생략되므로 주어의 단수 형태에 낚이지 말고 동사원형 'attend'를 골라야 합니다."
+  },
+  {
+    id: "SHOULD-08",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > It is imperative that (당위성 형용사)",
+    question: "To prevent structural collapse, it is imperative that the lead civil engineer ___________ the municipal safety bureau immediately upon noticing any cracks.",
+    options: [
+      { text: "notify", isCorrect: true },
+      { text: "notifies", isCorrect: false },
+      { text: "notified", isCorrect: false },
+      { text: "notifying", isCorrect: false }
+    ],
+    triggerWord: "it is imperative that",
+    hint: "단서: 당위성 형용사 'It is imperative that + S + (should) 동사원형'",
+    gPoint: "G-POINT 12: It is imperative that S + (should) 동사원형",
+    explanation: "It is imperative that 뒤에 이어지는 절에는 should가 생략되므로 동사원형 'notify'가 정답입니다."
+  },
+  {
+    id: "SHOULD-09",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > It is vital that (수동태 be p.p. 함정)",
+    question: "Before pouring the deep foundation concrete, it is vital that the structural load calculations ___________ by an independent certified engineer.",
+    options: [
+      { text: "be verified", isCorrect: true },
+      { text: "are verified", isCorrect: false },
+      { text: "were verified", isCorrect: false },
+      { text: "verified", isCorrect: false }
+    ],
+    triggerWord: "it is vital that",
+    hint: "단서: 당위성 형용사 'it is vital that' + 수동 관계(계산이 검증되는 것)",
+    gPoint: "G-POINT 12: It is vital that S + (should) be p.p.",
+    explanation: "계산이 '검증되어야 한다'는 수동 의미이므로 (should) be verified 공식에 따라 Be동사의 원형인 'be verified'가 정답입니다."
+  },
+  {
+    id: "SHOULD-10",
+    category: "should_omission",
+    subCategory: "should생략",
+    subCategoryName: "Should 생략 > insisted that (수동태 be p.p. 함정)",
+    question: "The aviation safety inspector insisted that all hazardous chemical cargo containers ___________ with waterproof reflective labels before loading.",
+    options: [
+      { text: "be labeled", isCorrect: true },
+      { text: "are labeled", isCorrect: false },
+      { text: "were labeled", isCorrect: false },
+      { text: "labeled", isCorrect: false }
+    ],
+    triggerWord: "insisted that",
+    hint: "단서: 요구 동사 'insisted that' + 수동 관계(용기가 라벨 부착되는 것)",
+    gPoint: "G-POINT 11: insist that S + (should) be p.p.",
+    explanation: "insisted that 뒤의 절이며 용기가 라벨링되어야 한다는 수동태이므로 should 생략 후 Be동사 원형인 'be labeled'가 정답입니다."
   },
 
   // =========================================================================
-  // 5. 관계사 / 조동사 / 연결어
+  // 5. 관계사 / 조동사 / 연결어 (각 6문항 완비)
   // =========================================================================
   {
     id: "REL-01",
@@ -552,10 +844,98 @@ const QUESTIONS_DATABASE = [
       { text: "who", isCorrect: false },
       { text: "what", isCorrect: false }
     ],
+    triggerWord: ", (콤마)",
     hint: "단서: 콤마(,) 뒤 사물 선행사 BioGen Laboratories (that은 콤마 뒤 불가)",
     gPoint: "G-TELP 관계사 공식: 콤마(,) 뒤에는 that 절대 불가 -> which",
     explanation: "선행사가 회사(사물)이고 콤마(,) 뒤 계속적 용법이므로 관계대명사 that은 쓸 수 없습니다. 따라서 주격 관계대명사 'which'가 정답입니다."
   },
+  {
+    id: "REL-02",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 사람 선행사 주격 관계대명사 (who)",
+    question: "The board of trustees commended the dedicated engineer ___________ designed the energy-efficient water filtration module.",
+    options: [
+      { text: "who", isCorrect: true },
+      { text: "which", isCorrect: false },
+      { text: "whom", isCorrect: false },
+      { text: "whose", isCorrect: false }
+    ],
+    triggerWord: "the dedicated engineer (사람 선행사)",
+    hint: "단서: 사람 선행사 + 주어가 없는 불완전 절",
+    gPoint: "G-TELP 관계사 공식: 사람 선행사 + 주격 = who",
+    explanation: "선행사가 사람이고 뒤에 동사(designed)가 오므로 주격 관계대명사 'who'가 정답입니다."
+  },
+  {
+    id: "REL-03",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 소유격 관계대명사 (whose)",
+    question: "The university awarded a research grant to the young scientist ___________ groundbreaking thesis was published in Nature.",
+    options: [
+      { text: "whose", isCorrect: true },
+      { text: "who", isCorrect: false },
+      { text: "whom", isCorrect: false },
+      { text: "which", isCorrect: false }
+    ],
+    triggerWord: "scientist [ ] groundbreaking thesis",
+    hint: "단서: 선행사 명사와 뒤의 명사(thesis)가 소유격 관계",
+    gPoint: "G-TELP 관계사 공식: 선행사 + whose + 무관사 명사",
+    explanation: "뒤에 완전한 명사구(groundbreaking thesis)가 오며 '~의 논문'이라는 소유 관계이므로 'whose'가 정답입니다."
+  },
+  {
+    id: "REL-04",
+    category: "relative",
+    subCategory: "관계부사",
+    subCategoryName: "관계사 > 장소 선행사 관계부사 (where)",
+    question: "The tech corporation built an advanced research facility ___________ automated robotic systems are tested daily.",
+    options: [
+      { text: "where", isCorrect: true },
+      { text: "which", isCorrect: false },
+      { text: "what", isCorrect: false },
+      { text: "whom", isCorrect: false }
+    ],
+    triggerWord: "research facility (장소 선행사)",
+    hint: "단서: 장소 선행사 + 수동태 완전한 절(systems are tested daily)",
+    gPoint: "G-TELP 관계사 공식: 장소 선행사 + 완전한 절 = where",
+    explanation: "선행사가 장소이고 뒤따르는 절이 수동태로 완전하므로 관계부사 'where'가 정답입니다."
+  },
+  {
+    id: "REL-05",
+    category: "relative",
+    subCategory: "관계부사",
+    subCategoryName: "관계사 > 시간 선행사 관계부사 (when)",
+    question: "The corporate leadership fondly remembered the historic milestone year ___________ the innovative clean-energy engine was launched globally.",
+    options: [
+      { text: "when", isCorrect: true },
+      { text: "which", isCorrect: false },
+      { text: "where", isCorrect: false },
+      { text: "whom", isCorrect: false }
+    ],
+    triggerWord: "the historic milestone year",
+    hint: "단서: 시간 선행사(year) + 뒤에 완전한 절",
+    gPoint: "G-POINT 20: 시간 선행사 + 완전한 절 = when",
+    explanation: "선행사가 시간이고 뒤에 수동태 완전한 절이 오므로 관계부사 'when'이 정답입니다."
+  },
+  {
+    id: "REL-06",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 전치사 + 관계대명사 (in which)",
+    question: "The environmental symposium addressed the critical socio-economic context ___________ developing nations must transition away from fossil fuels.",
+    options: [
+      { text: "in which", isCorrect: true },
+      { text: "which", isCorrect: false },
+      { text: "that", isCorrect: false },
+      { text: "where in", isCorrect: false }
+    ],
+    triggerWord: "the critical context [ ] S + V",
+    hint: "단서: context를 수식하며 뒤에 완전한 절을 이끄는 전치사+관계대명사",
+    gPoint: "G-POINT 21: 전치사 + 관계대명사(which) + 완전한 절",
+    explanation: "선행사 context와 어울려 '그 맥락 속에서'의 의미를 구성하며 뒤에 완전한 절이 오므로 'in which'가 정답입니다."
+  },
+
+  // 조동사 (MODAL)
   {
     id: "MOD-01",
     category: "modal",
@@ -568,15 +948,103 @@ const QUESTIONS_DATABASE = [
       { text: "would", isCorrect: false },
       { text: "could", isCorrect: false }
     ],
+    triggerWord: "strict aviation safety regulations",
     hint: "단서: 엄격한 항공 안전 규정 (strict regulations) -> 강한 의무/법칙",
     gPoint: "G-TELP 조동사 해석: 법규/규정에 따른 필수 의무 = must",
     explanation: "문맥상 안전 규정에 따라 '반드시 좌석 벨트를 착용해야 한다'는 강한 의무를 나타내므로 조동사 'must'가 정답입니다."
   },
   {
+    id: "MOD-02",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 건강/업무 권고 (should)",
+    question: "To prevent chronic repetitive strain injuries, ergonomic experts advise that desk workers ___________ take brief stretch breaks every hour.",
+    options: [
+      { text: "should", isCorrect: true },
+      { text: "might", isCorrect: false },
+      { text: "would", isCorrect: false },
+      { text: "may", isCorrect: false }
+    ],
+    triggerWord: "experts advise (권고)",
+    hint: "단서: 전문가의 조언 및 권고 상황",
+    gPoint: "G-POINT 23: 충고/권고 = should (~하는 것이 좋다)",
+    explanation: "건강 예방을 위해 스트레칭을 하는 것이 바람직하다는 충고/권고의 의미이므로 'should'가 정답입니다."
+  },
+  {
+    id: "MOD-03",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 기능적 능력 및 가능성 (can)",
+    question: "Thanks to newly installed solar panels, the automated greenhouse ___________ generate all its own electricity year-round.",
+    options: [
+      { text: "can", isCorrect: true },
+      { text: "must", isCorrect: false },
+      { text: "should", isCorrect: false },
+      { text: "might", isCorrect: false }
+    ],
+    triggerWord: "Thanks to panels (능력 가능)",
+    hint: "단서: 시설의 기능적 발전 능력(~할 수 있다)",
+    gPoint: "G-POINT 24: 가능/능력 = can",
+    explanation: "태양광 패널 설치로 자체 전력을 생산할 능력이 생겼음을 나타내므로 'can'이 정답입니다."
+  },
+  {
+    id: "MOD-04",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 불확실한 미래 추측 (may)",
+    question: "Weather forecasts indicate high ocean winds tomorrow, which ___________ cause minor shipping delays at the container terminal.",
+    options: [
+      { text: "may", isCorrect: true },
+      { text: "must", isCorrect: false },
+      { text: "should", isCorrect: false },
+      { text: "can", isCorrect: false }
+    ],
+    triggerWord: "forecasts indicate (추측)",
+    hint: "단서: 일기예보에 근거한 불확실한 가능성/추측",
+    gPoint: "G-POINT 25: 불확실한 추측 = may (~일지도 모른다)",
+    explanation: "강풍으로 인해 지연이 발생할 수도 있다는 가능성/추측 문맥이므로 'may'가 정답입니다."
+  },
+  {
+    id: "MOD-05",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 과거의 능력 및 가능성 (could)",
+    question: "Decades before modern computer simulations were invented, visionary architects ___________ draft intricate structural blueprints entirely by hand.",
+    options: [
+      { text: "could", isCorrect: true },
+      { text: "must", isCorrect: false },
+      { text: "should", isCorrect: false },
+      { text: "may", isCorrect: false }
+    ],
+    triggerWord: "Decades before were invented (과거)",
+    hint: "단서: 과거(Decades before) 시점에서의 능력",
+    gPoint: "G-POINT 24: 과거의 능력 = could",
+    explanation: "과거 시점에 손으로 정밀 청사진을 그릴 수 있었다는 과거의 능력을 뜻하므로 'could'가 정답입니다."
+  },
+  {
+    id: "MOD-06",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 확정적 미래 예정 (will)",
+    question: "According to the corporate scheduling release, the newly appointed chief executive officer ___________ address the shareholders next Monday.",
+    options: [
+      { text: "will", isCorrect: true },
+      { text: "must", isCorrect: false },
+      { text: "should", isCorrect: false },
+      { text: "might", isCorrect: false }
+    ],
+    triggerWord: "next Monday (확정된 미래 일정)",
+    hint: "단서: 다음 주 월요일로 예정된 확정적 미래 일정",
+    gPoint: "G-POINT 26: 미래 예정 = will",
+    explanation: "공식 발표에 따른 확정적 미래 일정을 나타내므로 'will'이 정답입니다."
+  },
+
+  // 연결어 (CONJUNCTION)
+  {
     id: "CONJ-01",
     category: "conjunction",
     subCategory: "연결어",
-    subCategoryName: "연결어 > 양보 접속사 (although/though)",
+    subCategoryName: "연결어 > 양보 접속사 (Although + 절)",
     question: "___________ the sales team encountered unexpected supply chain disruptions, they managed to surpass their annual revenue target.",
     options: [
       { text: "Although", isCorrect: true },
@@ -584,9 +1052,95 @@ const QUESTIONS_DATABASE = [
       { text: "Because of", isCorrect: false },
       { text: "However", isCorrect: false }
     ],
+    triggerWord: "Although vs Despite",
     hint: "단서: 뒤에 주어+동사 절(the sales team encountered ...)이 오고 양보의 의미",
     gPoint: "G-TELP 연결어 공식: 절을 이끄는 양보 접속사 = Although (Despite는 전치사)",
     explanation: "뒤에 '주어 + 동사'를 갖춘 절이 이어지며, '공급망 혼란을 겪었음에도 불구하고'라는 역접/양보의 관계이므로 접속사 'Although'가 정답입니다."
+  },
+  {
+    id: "CONJ-02",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 양보 전치사 (Despite + 명사구)",
+    question: "___________ torrential rainstorms during the morning rush hour, all scheduled express commuter trains arrived on time.",
+    options: [
+      { text: "Despite", isCorrect: true },
+      { text: "Although", isCorrect: false },
+      { text: "Even though", isCorrect: false },
+      { text: "Whereas", isCorrect: false }
+    ],
+    triggerWord: "torrential rainstorms (명사구)",
+    hint: "단서: 뒤에 동사가 없는 순수 명사구(torrential rainstorms)",
+    gPoint: "G-TELP 연결어 공식: 명사(구)를 목적어로 취하는 양보 전치사 = Despite",
+    explanation: "뒤에 주어+동사 절이 아닌 명사구만 이어지므로 전치사 'Despite'가 정답입니다."
+  },
+  {
+    id: "CONJ-03",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 역접 연결부사 (However)",
+    question: "The prototype showed remarkable test results in lab simulations. ___________, unexpected hardware overheating was detected during field testing.",
+    options: [
+      { text: "However", isCorrect: true },
+      { text: "Therefore", isCorrect: false },
+      { text: "Furthermore", isCorrect: false },
+      { text: "Consequently", isCorrect: false }
+    ],
+    triggerWord: "remarkable vs overheating (대조)",
+    hint: "단서: 앞문장(긍정 결과)과 뒷문장(발열 문제) 간의 역접 대조",
+    gPoint: "G-TELP 연결어: 앞뒤 문맥 반전 = However (그러나)",
+    explanation: "시뮬레이션 호평과 실제 필드 테스트에서의 문제점이라는 상반된 두 문장을 잇는 역접 연결부사 'However'가 정답입니다."
+  },
+  {
+    id: "CONJ-04",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 인과 연결부사 (Therefore)",
+    question: "Severe blizzards grounded all regional cargo flights last night. ___________, delivery packages will be delayed by one business day.",
+    options: [
+      { text: "Therefore", isCorrect: true },
+      { text: "However", isCorrect: false },
+      { text: "Nevertheless", isCorrect: false },
+      { text: "Otherwise", isCorrect: false }
+    ],
+    triggerWord: "grounded flights -> delayed packages (인과)",
+    hint: "단서: 앞문장(원인)과 뒷문장(결과)의 명확한 인과관계",
+    gPoint: "G-TELP 연결어: 원인과 결과 = Therefore (따라서, 그러므로)",
+    explanation: "비행기 결항이라는 원인으로 인해 배송이 지연된다는 당연한 결과가 이어지므로 인과 접속부사 'Therefore'가 정답입니다."
+  },
+  {
+    id: "CONJ-05",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 이유 접속사 (Because + 절)",
+    question: "___________ the raw component materials were held up in customs for two weeks, the assembly plant temporarily halted production lines.",
+    options: [
+      { text: "Because", isCorrect: true },
+      { text: "Because of", isCorrect: false },
+      { text: "Due to", isCorrect: false },
+      { text: "Owing to", isCorrect: false }
+    ],
+    triggerWord: "the materials were held up (절)",
+    hint: "단서: 뒤에 주어+동사 절이 이어짐",
+    gPoint: "G-POINT 31: 절을 이끄는 이유 접속사 = Because",
+    explanation: "뒤에 완전한 주어+동사 절이 오므로 접속사 'Because'가 정답입니다."
+  },
+  {
+    id: "CONJ-06",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 첨가 연결부사 (Furthermore)",
+    question: "The upgraded mobile application offers streamlined biometric authentication. ___________, it reduces battery consumption by twenty percent.",
+    options: [
+      { text: "Furthermore", isCorrect: true },
+      { text: "However", isCorrect: false },
+      { text: "Instead", isCorrect: false },
+      { text: "Nevertheless", isCorrect: false }
+    ],
+    triggerWord: "streamlined auth + reduced battery (장점 첨가)",
+    hint: "단서: 앞문장의 장점에 이어 또 다른 장점을 추가하는 순접 첨가",
+    gPoint: "G-POINT 29: 순접/정보 추가 연결부사 = Furthermore / Moreover",
+    explanation: "인증 간소화에 이어 배터리 절감이라는 긍정적 기능을 추가하는 문맥이므로 'Furthermore'가 정답입니다."
   }
 ];
 
@@ -595,9 +1149,9 @@ const CATEGORIES = [
   { id: "all", name: "전체 종합 (전 문법 모의고사)", icon: "sparkles", badge: "실전 종합 10제" },
   { id: "tense", name: "시제 (Tense)", icon: "clock", badge: "6대 시제 60제 완비" },
   { id: "gerund_infinitive", name: "준동사 (동명사 vs to부정사)", icon: "git-commit", badge: "실전 20제 탑재" },
-  { id: "subjunctive", name: "가정법 (과거 & 과거완료)", icon: "wand-2", badge: "공식 짝맞추기" },
-  { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "주장·제안 동사원형" },
-  { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "that불가 공식" },
-  { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "의무·가능성" },
-  { id: "conjunction", name: "연결어 (접속사/부사)", icon: "share-2", badge: "논리 관계" }
+  { id: "subjunctive", name: "가정법 (과거 & 과거완료)", icon: "wand-2", badge: "실전 10제 완비" },
+  { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "실전 10제 완비" },
+  { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 6제 탑재" },
+  { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 6제 탑재" },
+  { id: "conjunction", name: "연결어 (접속사/부사)", icon: "share-2", badge: "실전 6제 탑재" }
 ];
