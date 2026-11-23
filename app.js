@@ -3,12 +3,16 @@
 class GTelpApp {
   constructor() {
     this.questions = [...QUESTIONS_DATABASE];
-    this.currentCategory = 'gerund_infinitive'; // 방금 준동사 자료를 주셨으므로 준동사를 우선 기본 선택
+    this.currentCategory = 'gerund_infinitive';
     this.currentQuestions = [];
     this.currentIndex = 0;
     this.selectedAnswers = {};
     this.isAnswered = {};
     this.history = { totalSolved: 0, totalCorrect: 0, streak: 1, wrongIds: [] };
+
+    // 타이머 변수
+    this.timerInterval = null;
+    this.elapsedSeconds = 0;
 
     this.loadUserData();
     this.initDOM();
@@ -57,6 +61,9 @@ class GTelpApp {
       selectedCatDesc: document.getElementById('selected-cat-desc'),
       selectedCatCount: document.getElementById('selected-cat-count'),
 
+      // 타이머 DOM
+      timerDisplay: document.getElementById('timer-display'),
+
       progressText: document.getElementById('progress-text'),
       progressBar: document.getElementById('progress-bar'),
       questionText: document.getElementById('question-text'),
@@ -64,15 +71,24 @@ class GTelpApp {
       feedbackBox: document.getElementById('feedback-box'),
       feedbackContent: document.getElementById('feedback-content'),
       btnNextQuestion: document.getElementById('btn-next-question'),
+      btnPrevQuestion: document.getElementById('btn-prev-question'),
       quickDots: document.getElementById('quick-dots')
     };
   }
 
   bindEvents() {
-    document.getElementById('btn-start-session').addEventListener('click', () => this.startQuizSession(this.currentCategory));
+    document.getElementById('btn-start-session').addEventListener('click', () => this.startQuizSession(this.currentCategory, 10));
+    
+    // 26문제 풀세트 모의고사 버튼
+    const btn26 = document.getElementById('btn-start-full-26');
+    if (btn26) {
+      btn26.addEventListener('click', () => this.startQuizSession('full_26', 26));
+    }
+
     document.getElementById('btn-home').addEventListener('click', () => this.showDashboard());
     document.getElementById('btn-quit-quiz').addEventListener('click', () => {
-      if (confirm('현재 풀던 10문제 세트를 종료하고 메인으로 돌아갈까요?')) {
+      if (confirm('현재 풀던 세트를 종료하고 메인으로 돌아갈까요?')) {
+        this.stopTimer();
         this.showDashboard();
       }
     });
@@ -85,12 +101,11 @@ class GTelpApp {
     document.getElementById('form-add-question').addEventListener('submit', (e) => this.handleSaveNewQuestion(e));
 
     this.dom.btnNextQuestion.addEventListener('click', () => this.goNextQuestion());
-    this.dom.btnPrevQuestion = document.getElementById('btn-prev-question');
     if (this.dom.btnPrevQuestion) {
       this.dom.btnPrevQuestion.addEventListener('click', () => this.goPrevQuestion());
     }
 
-    document.getElementById('btn-retry-session').addEventListener('click', () => this.startQuizSession(this.currentCategory));
+    document.getElementById('btn-retry-session').addEventListener('click', () => this.startQuizSession(this.currentCategory, this.currentQuestions.length));
     document.getElementById('btn-result-home').addEventListener('click', () => this.showDashboard());
 
     window.addEventListener('keydown', (e) => {
@@ -100,13 +115,11 @@ class GTelpApp {
       }
       if (!this.dom.quizView.classList.contains('hidden')) {
         const currentQ = this.currentQuestions[this.currentIndex];
-        // Enter 키 또는 오른쪽 화살표: 다음 문제
         if (e.key === 'Enter') {
           if (this.isAnswered[currentQ.id]) {
             this.goNextQuestion();
           }
         } else if (e.key === 'ArrowLeft') {
-          // 왼쪽 화살표: 이전 문제로 가기
           this.goPrevQuestion();
         } else if (e.key === 'ArrowRight') {
           if (this.isAnswered[currentQ.id]) {
@@ -115,6 +128,32 @@ class GTelpApp {
         }
       }
     });
+  }
+
+  // 타이머 제어
+  startTimer() {
+    this.stopTimer();
+    this.elapsedSeconds = 0;
+    this.updateTimerDisplay();
+    this.timerInterval = setInterval(() => {
+      this.elapsedSeconds++;
+      this.updateTimerDisplay();
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  }
+
+  updateTimerDisplay() {
+    const el = document.getElementById('timer-time') || this.dom.timerDisplay;
+    if (!el) return;
+    const m = Math.floor(this.elapsedSeconds / 60);
+    const s = this.elapsedSeconds % 60;
+    el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }
 
   renderDashboard() {
@@ -204,19 +243,20 @@ class GTelpApp {
   }
 
   // =========================================================================
-  // 10문제 추출 및 무한 실전 동적 생성 엔진 연동
+  // 10문제 또는 26문제 무한 실전 동적 생성 엔진 연동
   // =========================================================================
-  startQuizSession(categoryId) {
+  startQuizSession(categoryId, count = 10) {
+    this.startTimer();
     let selected = [];
 
-    // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 10문제 생성
+    // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 문제 생성
     if (typeof GTELP_GENERATOR !== 'undefined') {
-      selected = GTELP_GENERATOR.generate10Set(categoryId);
+      selected = GTELP_GENERATOR.generateSet(categoryId, count);
     } else {
       let pool = categoryId === 'all' ? [...this.questions] : this.questions.filter(q => q.category === categoryId);
       if (pool.length === 0) pool = [...this.questions];
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
-      selected = shuffled.slice(0, Math.min(10, pool.length));
+      selected = shuffled.slice(0, Math.min(count, pool.length));
     }
 
     // 문제 추출 후 완벽한 무작위 셔플 (Fisher-Yates 셔플로 순서 완전히 섞기)
@@ -255,6 +295,7 @@ class GTelpApp {
     const wrongPool = this.questions.filter(q => this.history.wrongIds.includes(q.id));
     if (wrongPool.length === 0) return;
 
+    this.startTimer();
     this.currentQuestions = wrongPool.slice(0, 10).map(q => {
       const labels = ['A', 'B', 'C', 'D'];
       const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
@@ -292,7 +333,18 @@ class GTelpApp {
 
     this.renderQuickDots();
 
-    const formatted = currentQ.question.replace(/___________/g, '<span class="px-2 py-0.5 mx-1 font-bold text-indigo-700 bg-indigo-50 border-b-2 border-indigo-500 rounded">___________</span>');
+    let formatted = currentQ.question.replace(/___________/g, '<span class="px-2 py-0.5 mx-1 font-bold text-indigo-700 bg-indigo-50 border-b-2 border-indigo-500 rounded">___________</span>');
+    if (isAlreadyAnswered && currentQ.triggerWord) {
+      const tw = currentQ.triggerWord.trim();
+      if (formatted.includes(tw)) {
+        formatted = formatted.replace(tw, `<mark class="bg-amber-200 text-amber-950 px-1 py-0.5 rounded font-bold">${tw}</mark>`);
+      } else {
+        const cleanTw = tw.split('(')[0].trim();
+        if (cleanTw && formatted.includes(cleanTw)) {
+          formatted = formatted.replace(cleanTw, `<mark class="bg-amber-200 text-amber-950 px-1 py-0.5 rounded font-bold">${cleanTw}</mark>`);
+        }
+      }
+    }
     this.dom.questionText.innerHTML = formatted;
 
     // 보기 렌더링 (실제 G-TELP 시험지 폰트 100% 반영)
@@ -477,13 +529,19 @@ class GTelpApp {
   }
 
   showFinalResult() {
+    this.stopTimer();
     this.dom.quizView.classList.add('hidden');
     this.dom.resultView.classList.remove('hidden');
 
     let correctCount = 0;
+    const wrongQuestions = [];
     this.currentQuestions.forEach(q => {
       const selIdx = this.selectedAnswers[q.id];
-      if (q.shuffledOptions[selIdx]?.isCorrect) correctCount++;
+      if (q.shuffledOptions[selIdx]?.isCorrect) {
+        correctCount++;
+      } else {
+        wrongQuestions.push(q);
+      }
     });
 
     const total = this.currentQuestions.length;
@@ -492,9 +550,77 @@ class GTelpApp {
     document.getElementById('final-score').textContent = `${correctCount} / ${total}`;
     document.getElementById('final-rate').textContent = `${rate}%`;
 
+    // 타이머 결과 통계 표시
+    const m = Math.floor(this.elapsedSeconds / 60);
+    const s = this.elapsedSeconds % 60;
+    const timeFormatted = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const avgSec = total > 0 ? Math.round(this.elapsedSeconds / total) : 0;
+    const elFinalTime = document.getElementById('final-time');
+    const elFinalAvg = document.getElementById('final-avg-time');
+    if (elFinalTime) elFinalTime.textContent = timeFormatted;
+    if (elFinalAvg) elFinalAvg.textContent = `문제당 평균 ${avgSec}초`;
+
+    // 취약점 정밀 진단 리포트 생성
+    const reportBox = document.getElementById('weakness-report');
+    if (reportBox) {
+      if (wrongQuestions.length === 0) {
+        reportBox.innerHTML = `
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">🎯</span>
+            <div>
+              <h4 class="font-bold text-emerald-800 text-sm">취약점 없음 - 전 문항 정답!</h4>
+              <p class="text-xs text-slate-600 mt-0.5">이번 세트의 모든 문항을 완벽하게 맞혔습니다. 실전 감각이 최고조입니다!</p>
+            </div>
+          </div>
+        `;
+        reportBox.className = "text-left bg-emerald-50 border border-emerald-200 rounded-2xl p-4.5 space-y-2";
+      } else {
+        const wrongByCat = {};
+        wrongQuestions.forEach(q => {
+          const catKey = q.subCategoryName || q.subCategory || q.category;
+          wrongByCat[catKey] = (wrongByCat[catKey] || 0) + 1;
+        });
+
+        const sortedCats = Object.entries(wrongByCat).sort((a, b) => b[1] - a[1]);
+        const [topWeakCat, topCount] = sortedCats[0];
+
+        let tip = "오답 문제의 '🔑 단서 & 공식' 박스를 유심히 확인하고 우측 상단 '📖 공식표'를 복습해보세요.";
+        if (topWeakCat.includes('시제') || topWeakCat.includes('진행')) {
+          tip = "시제 문제는 문장의 특정 시간 부사(right now, when+과거, for+기간)를 먼저 찾는 연습을 집중하세요.";
+        } else if (topWeakCat.includes('준동사') || topWeakCat.includes('동명사') || topWeakCat.includes('to부정사')) {
+          tip = "동사 뒤 목적어 공식표(suggest -ing, decide to V 등)를 소리 내어 3번 반복 암기하면 1초 컷 가능합니다.";
+        } else if (topWeakCat.includes('가정법')) {
+          tip = "If절과 주절의 짝맞추기 공식(If 과거->would 원형 / If had p.p.->would have p.p.)에 집중하세요.";
+        } else if (topWeakCat.includes('Should') || topWeakCat.includes('should')) {
+          tip = "주장·제안·요구 동사(suggest, insist) 뒤 that절에는 주어 인칭 상관없이 무조건 동사원형입니다.";
+        } else if (topWeakCat.includes('관계사')) {
+          tip = "콤마(,) 뒤 that 불가 규칙과 선행사(사람 who vs 사물 which) 구분을 점검하세요.";
+        }
+
+        reportBox.innerHTML = `
+          <div class="flex items-start gap-2.5">
+            <span class="text-xl">⚠️</span>
+            <div class="space-y-1 w-full">
+              <div class="flex items-center justify-between">
+                <h4 class="font-extrabold text-slate-900 text-sm">🎯 집중 보완이 필요한 취약 파트</h4>
+                <span class="text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full">${topCount}문항 오답</span>
+              </div>
+              <p class="text-xs font-bold text-indigo-700 bg-white p-2 rounded-lg border border-slate-200">
+                ${topWeakCat}
+              </p>
+              <p class="text-xs text-slate-600 leading-relaxed pt-1">
+                <span class="font-semibold text-slate-800">💡 족집게 처방:</span> ${tip}
+              </p>
+            </div>
+          </div>
+        `;
+        reportBox.className = "text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2";
+      }
+    }
+
     let message = "🎉 축하합니다! 완벽하게 마스터하고 계시네요!";
     if (rate < 60) {
-      message = "💪 괜찮아요! 단서와 공식을 복습하며 오답노트를 다시 풀어보세요.";
+      message = "💪 괜찮아요! 단서와 공식을 복습하며 취약 파트를 다시 정복해보세요.";
     } else if (rate < 90) {
       message = "👍 아주 훌륭합니다! 헷갈린 문항만 보완하면 실전 만점입니다.";
     }
