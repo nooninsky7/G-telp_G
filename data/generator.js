@@ -920,88 +920,188 @@ const GTELP_GENERATOR = {
   ],
 
   // =========================================================================
-  // 6. 조동사 (Modals) - 10종 고유 실전 문제
+  // 6. 조동사 (Modals) - 교재 G-POINT 27~31 & 켈리쌤 3대 찐팁 & 손글씨 메모 완벽 반영 풀
   // =========================================================================
   modalPool: [
     {
-      sub: "법규/규정에 따른 절대적 의무 (must)",
-      q: "According to rigorous international aviation safety protocols, all passengers ___________ fasten their seatbelts whenever the illuminate sign is active.",
-      correct: "must",
-      dist: ["might", "would", "could"],
-      trig: "According to protocols (규정)",
-      hint: "단서: 엄격한 항공 안전 법규 및 규정에 따른 강한 의무",
-      gp: "G-POINT 22: 규정/법률 준수 의무 = must (~해야만 한다)",
-      exp: "항공 안전 규정에 의해 반드시 지켜야 하는 강한 의무이므로 must가 정답입니다."
-    },
-    {
-      sub: "건강/업무 권고 및 당위 (should)",
-      q: "To prevent chronic repetitive strain injuries, ergonomic experts advise that computer programmers ___________ take brief stretch breaks every hour.",
-      correct: "should",
-      dist: ["might", "would", "may"],
-      trig: "experts advise (권고 문맥)",
-      hint: "단서: 전문가의 조언 및 권고 상황 (~하는 것이 바람직하다)",
-      gp: "G-POINT 23: 충고/권고 = should (~하는 것이 좋다)",
-      exp: "건강 예방을 위해 스트레칭을 하는 것이 바람직하다는 전문가의 권고 문맥이므로 should가 정답입니다."
-    },
-    {
-      sub: "설비의 기능적 능력 및 가능성 (can)",
-      q: "Thanks to newly installed high-efficiency photovoltaic panels, the automated greenhouse ___________ generate all its own electricity year-round.",
+      sub: "동물 주어의 고유한 생체 능력 (can)",
+      q: "Chameleons possess specialized pigment cells in their skin layers, which means they ___________ rapidly alter their body colors to blend into foliage or deter predators.",
       correct: "can",
-      dist: ["must", "should", "might"],
-      trig: "Thanks to panels (능력 가능)",
-      hint: "단서: 태양광 패널 설치로 인한 기능적 발전 능력(~할 수 있다)",
-      gp: "G-POINT 24: 가능/능력 = can",
-      exp: "설비 도입으로 자체 전력을 생산할 능력이 생겼음을 나타내므로 can이 정답입니다."
+      dist: ["shall", "must", "should"],
+      trig: "Chameleons (동물 주어) + 생체 능력",
+      hint: "켈리 찐팁 2: 동물이 주어이고 고유한 신체/생체 능력을 나타낼 때는 'can'이 정답!",
+      gp: "G-POINT 27: 동물/생물의 선천적 신체 능력 = can",
+      exp: "주어가 동물(Chameleons)이고 주변 환경에 맞춰 피부색을 바꾸는 생체적 능력을 설명하므로 'can'이 정답입니다. 켈리쌤의 찐팁 1대로 shall은 오답 1순위로 즉시 소거됩니다."
     },
     {
-      sub: "기상/상황에 근거한 불확실한 추측 (may)",
-      q: "Meteorological forecasts indicate severe ocean gale winds tomorrow, which ___________ cause minor shipping delays at the container terminal.",
-      correct: "may",
-      dist: ["must", "should", "can"],
-      trig: "forecasts indicate (불확실한 추측)",
-      hint: "단서: 일기예보에 근거한 개연성 있는 불확실한 가능성/추측",
-      gp: "G-POINT 25: 불확실한 추측 = may (~일지도 모른다)",
-      exp: "강풍으로 인해 지연이 발생할 수도 있다는 가능성/추측 문맥이므로 may가 정답입니다."
+      sub: "동물 주어의 고유한 감각 능력 (can)",
+      q: "Bats emit ultrasonic echolocation signals in rapid bursts, so they ___________ effortlessly navigate obstacle-filled caves and capture small insects in total darkness.",
+      correct: "can",
+      dist: ["shall", "should", "would"],
+      trig: "Bats (동물 주어) + 초음파 탐지 능력",
+      hint: "켈리 찐팁 2: 동물 주어의 초음파 야간 비행 및 사냥 능력 -> can",
+      gp: "G-POINT 27: 생체적 능력/가능성 = can",
+      exp: "박쥐(Bats)가 초음파를 쏘아 어둠 속에서 장애물을 피하고 곤충을 잡을 수 있는 '생물학적 능력'을 나타내므로 can이 정답입니다. shall은 대표적 오답 보기입니다."
     },
     {
-      sub: "공식 문서 작성 시 지침 준수 의무 (must)",
-      q: "Applicants seeking government research grants ___________ submit all certified financial balance sheets prior to the portal closure.",
+      sub: "동물 주어의 본능적 항해 능력 (can)",
+      q: "Arctic terns are equipped with remarkable magnetic sensors in their eyes, allowing them to migrate thousands of miles, where they ___________ complete journeys from the Arctic to Antarctica.",
+      correct: "can",
+      dist: ["shall", "must", "might"],
+      trig: "Arctic terns (새/동물 주어) + 이동 능력",
+      hint: "켈리 찐팁 2: 동물의 본능적 장거리 비행 능력 -> can",
+      gp: "G-POINT 27: 동물 주어의 신체 능력 = can",
+      exp: "극제비갈매기(Arctic terns)의 경이로운 장거리 비행 및 이동 능력을 설명하는 문맥이므로 능력을 나타내는 can이 정답입니다."
+    },
+    {
+      sub: "보안 규정 준수 필수 의무 (in order to V + must)",
+      q: "In order to safeguard classified laboratory records from cyber intrusions, all research staff members ___________ change their system security credentials every thirty days.",
       correct: "must",
-      dist: ["might", "could", "would"],
-      trig: "seeking grants (필수 자격 요건)",
-      hint: "단서: 연구비 수혜를 위해 필수적으로 제출해야 하는 절대적 요건",
-      gp: "G-POINT 22: 필수 요건 = must",
-      exp: "지원 자격을 얻기 위해 반드시 제출해야 하는 의무 조건이므로 must가 정답입니다."
+      dist: ["shall", "would", "could"],
+      trig: "In order to safeguard (목적) + 회사 보안 규정",
+      hint: "켈리 찐팁 3: 'In order to V' 목적 구문 + 사내 규정의 외부 강제성 -> must",
+      gp: "G-POINT 29: 무조건 해야 하는 의무 (의지 개입 불가, 외부 강제성) = must",
+      exp: "보안 침해를 막기 위하여(In order to safeguard) 연구원들이 반드시 따라야 하는 강제적 사내 규정이므로 must가 정답입니다. 개인의 의지가 개입될 수 없는 외부 강제 규정입니다."
     },
     {
-      sub: "과거의 능력 및 가능성 (could)",
-      q: "Decades before modern computer simulations were invented, visionary architects ___________ draft intricate structural blueprints entirely by hand.",
-      correct: "could",
-      dist: ["must", "should", "may"],
-      trig: "Decades before were invented (과거)",
-      hint: "단서: 과거(Decades before) 시점에서의 선천적/후천적 능력",
-      gp: "G-POINT 24: 과거의 능력 = could",
-      exp: "과거 시점에 손으로 직접 정밀 청사진을 그릴 수 있었다는 과거의 능력을 뜻하므로 could가 정답입니다."
-    },
-    {
-      sub: "의학적 처방에 따른 필수 권고 (should)",
-      q: "Patients undergoing the novel immunotherapy treatment ___________ monitor their body temperature twice daily as directed by their physician.",
+      sub: "건강 증진 권고 (To V + should)",
+      q: "To prevent chronic repetitive eye strain while working on digital displays, ergonomic consultants recommend that office workers ___________ look at distant objects for twenty seconds every twenty minutes.",
       correct: "should",
-      dist: ["might", "could", "would"],
-      trig: "as directed by physician",
-      hint: "단서: 의사의 지시에 따른 권고 및 주의사항",
-      gp: "G-POINT 23: 의학적 권고 = should",
-      exp: "의사의 처방 지침에 따라 체온을 측정하는 것이 권장된다는 당위적 표현이므로 should가 정답입니다."
+      dist: ["shall", "would", "can"],
+      trig: "To prevent eye strain (목적) + consultants recommend (권고)",
+      hint: "켈리 찐팁 3: 'To V' 목적 + 전문가의 충고/권고 -> should",
+      gp: "G-POINT 28: 충고, 권유, 도덕성 = should",
+      exp: "눈의 피로를 예방하기 위하여(To prevent...) 전문가가 권고하는 바람직한 행동 지침이므로 충고/권유의 조동사 should가 정답입니다."
     },
     {
-      sub: "확정적 미래 의지 및 예정 (will)",
-      q: "According to the corporate scheduling release, the newly appointed chief executive officer ___________ address the shareholders next Monday.",
+      sub: "공식 지원 필수 자격 요건 (To V + must)",
+      q: "To qualify for the prestigious doctoral fellowship in quantum physics, prospective applicants ___________ submit three verified faculty recommendation letters by Friday.",
+      correct: "must",
+      dist: ["shall", "could", "might"],
+      trig: "To qualify for fellowship (목적) + 제출 필수 요건",
+      hint: "켈리 찐팁 3: 'To qualify' 목적 구문 + 장학금 심사 필수 요건 -> must",
+      gp: "G-POINT 29: 필수적 자격 요건 = must",
+      exp: "펠로우십 장학 자격을 얻기 위해 지원자가 반드시 제출해야만 하는 필수 의무 조건이므로 must가 정답입니다. shall은 오답으로 소거됩니다."
+    },
+    {
+      sub: "교통 법규 준수 절대 의무 (must)",
+      q: "According to national highway safety statutes, automobile operators ___________ yield the right-of-way immediately when an emergency siren approaches.",
+      correct: "must",
+      dist: ["shall", "may", "would"],
+      trig: "According to statutes (법률/규정)",
+      hint: "단서: 교통 법규에 따른 외부 강제성 (개인 의지 개입 불가능) -> must",
+      gp: "G-POINT 29: 법률/규정에 의한 절대 의무 = must",
+      exp: "교통 안전 법규에 명시된 법적 의무이므로 개인의 선택이나 의지가 개입될 수 없는 강제 규정입니다. 따라서 must가 정답입니다."
+    },
+    {
+      sub: "산업 현장 필수 안전 규정 (must)",
+      q: "Under municipal construction safety protocols, all heavy equipment technicians ___________ wear certified protective helmets at all times within the hazardous zone.",
+      correct: "must",
+      dist: ["shall", "could", "would"],
+      trig: "Under safety protocols (안전 규정)",
+      hint: "단서: 공사 현장 안전 규정의 절대적 강제성 -> must",
+      gp: "G-POINT 29: 안전 수칙 준수 의무 = must",
+      exp: "위험 구역 내 헬멧 착용은 선택이 아닌 엄격한 규정 준수 의무이므로 must가 정답입니다."
+    },
+    {
+      sub: "계약 체결 전 전문가 자문 권유 (should)",
+      q: "Before signing an exclusive commercial partnership agreement, prospective enterprise owners ___________ review the liability provisions thoroughly with a licensed attorney.",
+      correct: "should",
+      dist: ["shall", "may", "can"],
+      trig: "Before signing agreement (권유 문맥)",
+      hint: "단서: 법적 분쟁 예방을 위해 변호사와 검토하는 것이 바람직하다는 충고/권고",
+      gp: "G-POINT 28: 충고, 권유, 도덕성 = should",
+      exp: "계약서에 서명하기 전 변호사와 조항을 면밀히 검토하는 것이 바람직하다는 권유이므로 should가 정답입니다."
+    },
+    {
+      sub: "기상 악화 대비 안전 권고 (should)",
+      q: "Because mountain summit temperatures drop drastically after sunset, alpine hikers ___________ pack thermal emergency garments before beginning their ascent.",
+      correct: "should",
+      dist: ["shall", "will", "could"],
+      trig: "temperatures drop drastically (안전 권유)",
+      hint: "단서: 급격한 기온 저하에 대비해 방한복을 챙길 것을 권고하는 문맥",
+      gp: "G-POINT 28: 권유 및 충고 = should",
+      exp: "급격한 기온 하강에 대비해 등산객이 방한복을 챙겨가는 것이 매우 바람직하다는 안전 권유이므로 should가 정답입니다."
+    },
+    {
+      sub: "공식 시설 이용 허가 (can)",
+      q: "Visitors who present a valid identification pass at the reception desk ___________ access the university's rare historical archives between 9 AM and 4 PM.",
+      correct: "can",
+      dist: ["shall", "must", "should"],
+      trig: "Visitors who present a pass (허가 조건)",
+      hint: "손글씨 메모: can의 허가 용법 (~해도 좋다, 이용할 수 있다)",
+      gp: "G-POINT 27: 가능 및 허가 = can",
+      exp: "신분증을 제시한 방문객은 희귀 기록물 보관실을 이용할 수 있다는 '허가'의 의미이므로 can이 정답입니다."
+    },
+    {
+      sub: "과거 시점의 탁월한 수작업 능력 (could)",
+      q: "Long before modern automated navigational radar was engineered, experienced oceanic navigators ___________ pinpoint their vessel coordinates using only celestial constellations.",
+      correct: "could",
+      dist: ["shall", "should", "must"],
+      trig: "Long before was engineered (과거 시점)",
+      hint: "손글씨 메모: can의 과거 표현 (~할 수 있었다) -> could",
+      gp: "G-POINT 27: 과거의 능력 = could",
+      exp: "현대식 레이더가 발명되기 훨씬 전(과거 시점) 항해사들이 별자리를 보고 배의 위치를 정확히 파악할 수 있었다는 과거의 능력을 나타내므로 could가 정답입니다."
+    },
+    {
+      sub: "낮은 가능성 및 불확실한 상황 (could)",
+      q: "Although the regional economy currently seems stable, sudden fluctuations in global commodity prices ___________ trigger temporary inflation in domestic markets.",
+      correct: "could",
+      dist: ["shall", "must", "should"],
+      trig: "sudden fluctuations (불확실하지만 가능한 일)",
+      hint: "손글씨 메모: can보다 가능성이 떨어질 때의 추측/가능성 -> could",
+      gp: "G-POINT 27: can보다 낮은 가능성 = could",
+      exp: "원자재 가격 변동으로 인해 일시적 인플레이션이 촉발될 수도 있다는 낮은 가능성을 나타내므로 could가 정답입니다."
+    },
+    {
+      sub: "공식 발표된 확실한 미래 일정 및 환불 약속 (will)",
+      q: "The railway management officially announced that passengers whose departures were canceled due to electrical malfunction ___________ receive a full voucher reimbursement next Tuesday.",
       correct: "will",
-      dist: ["must", "should", "might"],
-      trig: "next Monday (확정된 미래 일정)",
-      hint: "단서: 다음 주 월요일로 예정된 확정적 미래 일정",
-      gp: "G-POINT 26: 미래 예정 = will",
-      exp: "공식 일정 발표에 따른 확정적 미래 일정을 나타내므로 will이 정답입니다."
+      dist: ["shall", "must", "could"],
+      trig: "next Tuesday (확실한 미래 일정) + 공식 약속",
+      hint: "단서: 철도청 공식 발표에 따른 확정적 미래 일정 및 보상 약속 -> will",
+      gp: "G-POINT 30: 미래에 있을 확실한 일, 의지 = will",
+      exp: "공식 발표에 의해 다음 주 화요일에 환불 바우처를 지급하겠다는 확실한 미래 일정과 약속을 나타내므로 will이 정답입니다."
+    },
+    {
+      sub: "물질의 고유한 물리적 속성 (will)",
+      q: "Due to chemical surface tension differences, untreated refined mineral oil ___________ invariably remain separated when poured into distilled water.",
+      correct: "will",
+      dist: ["shall", "should", "could"],
+      trig: "chemical differences (물질의 고유 속성) + invariably",
+      hint: "손글씨 메모: 사물/자연의 고유한 속성 및 법칙 -> will",
+      gp: "G-POINT 30: 고유한 속성/법칙 = will",
+      exp: "물과 기름의 화학적 특성상 언제나 분리된 상태를 유지한다는 '물질의 고유한 속성'을 나타내므로 will이 정답입니다."
+    },
+    {
+      sub: "과거의 정기적인 습관 (would)",
+      q: "During his retirement years by the scenic lake, the elderly painter ___________ set up his wooden easel at sunrise and sketch the misty shoreline for hours.",
+      correct: "would",
+      dist: ["shall", "can", "must"],
+      trig: "During his retirement years (과거 시점) + 과거의 규칙적 습관",
+      hint: "손글씨 메모: would의 과거의 습관 (~하곤 했다)",
+      gp: "G-POINT 30: 과거의 습관 = would",
+      exp: "은퇴 시절 호숫가에서 아침마다 이젤을 펴고 스케치를 하곤 했다는 '과거의 규칙적인 습관'을 나타내므로 would가 정답입니다."
+    },
+    {
+      sub: "경기 분석에 근거한 약한 추측 (may)",
+      q: "Financial analysts speculate that while consumer spending increased slightly last quarter, the monetary board ___________ keep the base interest rate unchanged next month.",
+      correct: "may",
+      dist: ["shall", "must", "should"],
+      trig: "analysts speculate (불확실한 추측)",
+      hint: "손글씨 메모: 불확실한 가능성 / 약한 추측 -> may",
+      gp: "G-POINT 31: 약한 추측 = may",
+      exp: "금융 분석가들의 불확실한 전망에 따라 기준금리를 동결할지도 모른다는 개연성 있는 약한 추측이므로 may가 정답입니다."
+    },
+    {
+      sub: "미지의 생명체에 대한 과학적 약한 추측 (might)",
+      q: "Astrobiologists studying frozen oceanic crusts on Europa suggest that subsurface thermal vents ___________ harbor microscopic primitive organisms.",
+      correct: "might",
+      dist: ["shall", "must", "will"],
+      trig: "suggest that (불확실한 가설/추측)",
+      hint: "손글씨 메모: 매우 불확실한 가능성에 대한 조심스러운 추측 -> might",
+      gp: "G-POINT 31: 약한 추측 = might",
+      exp: "목성의 위성 유로파의 얼음 지각 아래에 미생물이 존재할지도 모른다는 매우 조심스럽고 불확실한 과학적 가설을 제시하므로 might가 정답입니다."
     }
   ],
 

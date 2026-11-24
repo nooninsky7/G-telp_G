@@ -1003,108 +1003,176 @@ const QUESTIONS_DATABASE = [
     explanation: "'those who + 동사'는 '~하는 사람들'을 뜻하는 빈출 표현입니다. 선행사가 사람(those)이며 they가 중복된 보기는 오답이므로 'who stole...'가 정답입니다."
   },
 
-  // 조동사 (MODAL)
+  // 조동사 (MODAL) - 켈리쌤 G-POINT 27~31 및 3대 찐팁 반영
   {
     id: "MOD-01",
     category: "modal",
     subCategory: "조동사",
-    subCategoryName: "조동사 > 엄격한 규칙/의무 (must)",
-    question: "According to strict aviation safety regulations, all passengers ___________ fasten their seatbelts whenever the seatbelt light is illuminated.",
+    subCategoryName: "조동사 > 동물 주어의 고유 생체 능력 (can)",
+    question: "Chameleons possess specialized pigment cells in their skin layers, which means they ___________ rapidly alter their body colors to blend into foliage or deter predators.",
     options: [
-      { text: "must", isCorrect: true },
-      { text: "might", isCorrect: false },
-      { text: "would", isCorrect: false },
-      { text: "could", isCorrect: false }
+      { text: "can", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "must", isCorrect: false },
+      { text: "should", isCorrect: false }
     ],
-    triggerWord: "strict aviation safety regulations",
-    hint: "단서: 엄격한 항공 안전 규정 (strict regulations) -> 강한 의무/법칙",
-    gPoint: "G-TELP 조동사 해석: 법규/규정에 따른 필수 의무 = must",
-    explanation: "문맥상 안전 규정에 따라 '반드시 좌석 벨트를 착용해야 한다'는 강한 의무를 나타내므로 조동사 'must'가 정답입니다."
+    triggerWord: "Chameleons (동물 주어) + 생체 능력",
+    hint: "켈리 찐팁 2: 동물이 주어이고 고유한 신체/생체 능력을 나타낼 때는 'can'이 정답! (shall은 1초 컷 오답 소거)",
+    gPoint: "G-POINT 27: 동물/생물의 선천적 신체 능력 = can",
+    explanation: "주어가 동물(Chameleons)이고 주변 환경에 맞춰 피부색을 바꾸는 생체적 능력을 설명하므로 'can'이 정답입니다. 켈리쌤의 찐팁 1대로 shall은 오답 1순위로 즉시 소거됩니다."
   },
   {
     id: "MOD-02",
     category: "modal",
     subCategory: "조동사",
-    subCategoryName: "조동사 > 건강/업무 권고 (should)",
-    question: "To prevent chronic repetitive strain injuries, ergonomic experts advise that desk workers ___________ take brief stretch breaks every hour.",
+    subCategoryName: "조동사 > 보안 규정 준수 필수 의무 (in order to V + must)",
+    question: "In order to safeguard classified laboratory records from cyber intrusions, all research staff members ___________ change their system security credentials every thirty days.",
     options: [
-      { text: "should", isCorrect: true },
-      { text: "might", isCorrect: false },
+      { text: "must", isCorrect: true },
+      { text: "shall", isCorrect: false },
       { text: "would", isCorrect: false },
-      { text: "may", isCorrect: false }
+      { text: "could", isCorrect: false }
     ],
-    triggerWord: "experts advise (권고)",
-    hint: "단서: 전문가의 조언 및 권고 상황",
-    gPoint: "G-POINT 23: 충고/권고 = should (~하는 것이 좋다)",
-    explanation: "건강 예방을 위해 스트레칭을 하는 것이 바람직하다는 충고/권고의 의미이므로 'should'가 정답입니다."
+    triggerWord: "In order to safeguard (목적) + 회사 보안 규정",
+    hint: "켈리 찐팁 3: 'In order to V' 목적 구문 + 사내 규정의 외부 강제성 -> must",
+    gPoint: "G-POINT 29: 무조건 해야 하는 의무 (의지 개입 불가, 외부 강제성) = must",
+    explanation: "보안 침해를 막기 위하여(In order to safeguard) 연구원들이 반드시 따라야 하는 강제적 사내 규정이므로 must가 정답입니다. 개인의 의지가 개입될 수 없는 외부 강제 규정입니다."
   },
   {
     id: "MOD-03",
     category: "modal",
     subCategory: "조동사",
-    subCategoryName: "조동사 > 기능적 능력 및 가능성 (can)",
-    question: "Thanks to newly installed solar panels, the automated greenhouse ___________ generate all its own electricity year-round.",
+    subCategoryName: "조동사 > 건강 증진 권고 (To V + should)",
+    question: "To prevent chronic repetitive eye strain while working on digital displays, ergonomic consultants recommend that office workers ___________ look at distant objects for twenty seconds every twenty minutes.",
     options: [
-      { text: "can", isCorrect: true },
-      { text: "must", isCorrect: false },
-      { text: "should", isCorrect: false },
-      { text: "might", isCorrect: false }
+      { text: "should", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "would", isCorrect: false },
+      { text: "can", isCorrect: false }
     ],
-    triggerWord: "Thanks to panels (능력 가능)",
-    hint: "단서: 시설의 기능적 발전 능력(~할 수 있다)",
-    gPoint: "G-POINT 24: 가능/능력 = can",
-    explanation: "태양광 패널 설치로 자체 전력을 생산할 능력이 생겼음을 나타내므로 'can'이 정답입니다."
+    triggerWord: "To prevent eye strain (목적) + consultants recommend (권고)",
+    hint: "켈리 찐팁 3: 'To V' 목적 + 전문가의 충고/권고 -> should",
+    gPoint: "G-POINT 28: 충고, 권유, 도덕성 = should",
+    explanation: "눈의 피로를 예방하기 위하여(To prevent...) 전문가가 권고하는 바람직한 행동 지침이므로 충고/권유의 조동사 should가 정답입니다."
   },
   {
     id: "MOD-04",
     category: "modal",
     subCategory: "조동사",
-    subCategoryName: "조동사 > 불확실한 미래 추측 (may)",
-    question: "Weather forecasts indicate high ocean winds tomorrow, which ___________ cause minor shipping delays at the container terminal.",
+    subCategoryName: "조동사 > 기상 상황에 근거한 불확실한 추측 (may)",
+    question: "Meteorological forecasts indicate severe ocean gale winds tomorrow, which ___________ cause minor shipping delays at the container terminal.",
     options: [
       { text: "may", isCorrect: true },
+      { text: "shall", isCorrect: false },
       { text: "must", isCorrect: false },
-      { text: "should", isCorrect: false },
-      { text: "can", isCorrect: false }
+      { text: "should", isCorrect: false }
     ],
-    triggerWord: "forecasts indicate (추측)",
-    hint: "단서: 일기예보에 근거한 불확실한 가능성/추측",
-    gPoint: "G-POINT 25: 불확실한 추측 = may (~일지도 모른다)",
-    explanation: "강풍으로 인해 지연이 발생할 수도 있다는 가능성/추측 문맥이므로 'may'가 정답입니다."
+    triggerWord: "forecasts indicate (불확실한 추측)",
+    hint: "단서: 일기예보에 근거한 개연성 있는 약한 추측/불확실한 가능성 -> may",
+    gPoint: "G-POINT 31: 약한 추측, 불확실한 가능성 = may",
+    explanation: "강풍으로 인해 지연이 발생할 수도 있다는 가능성/추측 문맥이므로 may가 정답입니다. shall은 지텔프 대표적 오답 보기입니다."
   },
   {
     id: "MOD-05",
     category: "modal",
     subCategory: "조동사",
     subCategoryName: "조동사 > 과거의 능력 및 가능성 (could)",
-    question: "Decades before modern computer simulations were invented, visionary architects ___________ draft intricate structural blueprints entirely by hand.",
+    question: "Long before modern automated navigational radar was engineered, experienced oceanic navigators ___________ pinpoint their vessel coordinates using only celestial constellations.",
     options: [
       { text: "could", isCorrect: true },
-      { text: "must", isCorrect: false },
+      { text: "shall", isCorrect: false },
       { text: "should", isCorrect: false },
-      { text: "may", isCorrect: false }
+      { text: "must", isCorrect: false }
     ],
-    triggerWord: "Decades before were invented (과거)",
-    hint: "단서: 과거(Decades before) 시점에서의 능력",
-    gPoint: "G-POINT 24: 과거의 능력 = could",
-    explanation: "과거 시점에 손으로 정밀 청사진을 그릴 수 있었다는 과거의 능력을 뜻하므로 'could'가 정답입니다."
+    triggerWord: "Long before was engineered (과거 시점)",
+    hint: "단서: can의 과거 표현 (~할 수 있었다) -> could",
+    gPoint: "G-POINT 27: 과거의 능력 = could",
+    explanation: "현대식 레이더가 발명되기 훨씬 전(과거 시점) 항해사들이 별자리를 보고 배의 위치를 정확히 파악할 수 있었다는 과거의 능력을 나타내므로 could가 정답입니다."
   },
   {
     id: "MOD-06",
     category: "modal",
     subCategory: "조동사",
-    subCategoryName: "조동사 > 확정적 미래 예정 (will)",
-    question: "According to the corporate scheduling release, the newly appointed chief executive officer ___________ address the shareholders next Monday.",
+    subCategoryName: "조동사 > 공식 발표된 확실한 미래 일정 및 환불 약속 (will)",
+    question: "The railway management officially announced that passengers whose departures were canceled due to electrical malfunction ___________ receive a full voucher reimbursement next Tuesday.",
     options: [
       { text: "will", isCorrect: true },
+      { text: "shall", isCorrect: false },
       { text: "must", isCorrect: false },
-      { text: "should", isCorrect: false },
-      { text: "might", isCorrect: false }
+      { text: "could", isCorrect: false }
     ],
-    triggerWord: "next Monday (확정된 미래 일정)",
-    hint: "단서: 다음 주 월요일로 예정된 확정적 미래 일정",
-    gPoint: "G-POINT 26: 미래 예정 = will",
-    explanation: "공식 발표에 따른 확정적 미래 일정을 나타내므로 'will'이 정답입니다."
+    triggerWord: "next Tuesday (확실한 미래 일정) + 공식 약속",
+    hint: "단서: 철도청 공식 발표에 따른 확정적 미래 일정 및 보상 약속 -> will",
+    gPoint: "G-POINT 30: 미래에 있을 확실한 일, 의지 = will",
+    explanation: "공식 발표에 의해 다음 주 화요일에 환불 바우처를 지급하겠다는 확실한 미래 일정과 약속을 나타내므로 will이 정답입니다."
+  },
+  {
+    id: "MOD-07",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 동물 주어의 초음파 감각 능력 (can)",
+    question: "Bats emit ultrasonic echolocation signals in rapid bursts, so they ___________ effortlessly navigate obstacle-filled caves and capture small insects in total darkness.",
+    options: [
+      { text: "can", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "should", isCorrect: false },
+      { text: "would", isCorrect: false }
+    ],
+    triggerWord: "Bats (동물 주어) + 초음파 탐지 능력",
+    hint: "켈리 찐팁 2: 동물 주어의 초음파 야간 비행 및 사냥 능력 -> can",
+    gPoint: "G-POINT 27: 생체적 능력/가능성 = can",
+    explanation: "박쥐(Bats)가 초음파를 쏘아 어둠 속에서 장애물을 피하고 곤충을 잡을 수 있는 '생물학적 능력'을 나타내므로 can이 정답입니다."
+  },
+  {
+    id: "MOD-08",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 교통 법규 준수 절대 의무 (must)",
+    question: "According to national highway safety statutes, automobile operators ___________ yield the right-of-way immediately when an emergency siren approaches.",
+    options: [
+      { text: "must", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "may", isCorrect: false },
+      { text: "would", isCorrect: false }
+    ],
+    triggerWord: "According to statutes (법률/규정)",
+    hint: "단서: 교통 법규에 따른 외부 강제성 (개인 의지 개입 불가능) -> must",
+    gPoint: "G-POINT 29: 법률/규정에 의한 절대 의무 = must",
+    explanation: "교통 안전 법규에 명시된 법적 의무이므로 개인의 선택이나 의지가 개입될 수 없는 강제 규정입니다. 따라서 must가 정답입니다."
+  },
+  {
+    id: "MOD-09",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 과거의 정기적 습관 (would)",
+    question: "During his retirement years by the scenic lake, the elderly painter ___________ set up his wooden easel at sunrise and sketch the misty shoreline for hours.",
+    options: [
+      { text: "would", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "can", isCorrect: false },
+      { text: "must", isCorrect: false }
+    ],
+    triggerWord: "During his retirement years (과거 시점) + 과거의 규칙적 습관",
+    hint: "손글씨 메모: would의 과거의 습관 (~하곤 했다)",
+    gPoint: "G-POINT 30: 과거의 습관 = would",
+    explanation: "은퇴 시절 호숫가에서 아침마다 이젤을 펴고 스케치를 하곤 했다는 '과거의 규칙적인 습관'을 나타내므로 would가 정답입니다."
+  },
+  {
+    id: "MOD-10",
+    category: "modal",
+    subCategory: "조동사",
+    subCategoryName: "조동사 > 계약 체결 전 전문가 자문 권유 (should)",
+    question: "Before signing an exclusive commercial partnership agreement, prospective enterprise owners ___________ review the liability provisions thoroughly with a licensed attorney.",
+    options: [
+      { text: "should", isCorrect: true },
+      { text: "shall", isCorrect: false },
+      { text: "may", isCorrect: false },
+      { text: "can", isCorrect: false }
+    ],
+    triggerWord: "Before signing agreement (권유 문맥)",
+    hint: "단서: 법적 분쟁 예방을 위해 변호사와 검토하는 것이 바람직하다는 충고/권고 -> should",
+    gPoint: "G-POINT 28: 충고, 권유, 도덕성 = should",
+    explanation: "계약서에 서명하기 전 변호사와 조항을 면밀히 검토하는 것이 바람직하다는 권유이므로 should가 정답입니다."
   },
 
   // 연결어 (CONJUNCTION)
