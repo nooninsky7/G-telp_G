@@ -331,7 +331,10 @@ class GTelpApp {
       this.dom.btnPrevQuestion.addEventListener('click', () => this.goPrevQuestion());
     }
 
-    document.getElementById('btn-retry-session').addEventListener('click', () => this.startQuizSession(this.currentCategory, this.currentQuestions.length));
+    document.getElementById('btn-retry-session').addEventListener('click', () => {
+      const is26 = this.currentSessionType === 'full_26' || this.currentQuestions.length === 26;
+      this.startQuizSession(is26 ? 'full_26' : this.currentCategory, is26 ? 26 : 10);
+    });
     document.getElementById('btn-result-home').addEventListener('click', () => this.showDashboard());
 
     window.addEventListener('keydown', (e) => {
@@ -380,7 +383,13 @@ class GTelpApp {
     if (!el) return;
     const m = Math.floor(this.elapsedSeconds / 60);
     const s = this.elapsedSeconds % 60;
-    el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const is26 = this.currentSessionType === 'full_26' || (this.currentQuestions && this.currentQuestions.length === 26);
+    if (is26) {
+      const isOver = this.elapsedSeconds > 1200;
+      el.innerHTML = `<span class="${isOver ? 'text-rose-500 font-extrabold' : ''}">${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}</span><span class="text-[10px] text-slate-400 font-normal ml-1">/ 20:00</span>`;
+    } else {
+      el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
   }
 
   renderDashboard() {
@@ -942,11 +951,92 @@ class GTelpApp {
       dailyBadge.innerHTML = `<span>📅</span> 오늘 <strong>${catStats.name}</strong> 누적 <strong>${catStats.sets}세트 (${catStats.questions}문제)</strong> 완료!`;
     }
 
+    // 실전 26제 모의고사 전용 G-TELP 100점 환산 및 6대 영역 분석 리포트
+    const isFull26 = this.currentSessionType === 'full_26' || total === 26;
+    let full26ScoreHtml = '';
+
+    if (isFull26) {
+      const catMap = {
+        tense: { name: '시제', total: 6, correct: 0 },
+        subjunctive: { name: '가정법', total: 6, correct: 0 },
+        gerund_infinitive: { name: '준동사', total: 5, correct: 0 },
+        should_omission: { name: 'Should생략', total: 3, correct: 0 },
+        relative: { name: '관계사', total: 2, correct: 0 },
+        modal_conjunction: { name: '조동사/연결어', total: 4, correct: 0 }
+      };
+
+      this.currentQuestions.forEach(q => {
+        const selIdx = this.selectedAnswers[q.id];
+        const isCorr = q.shuffledOptions[selIdx]?.isCorrect;
+        let cKey = q.category;
+        if (cKey === 'modal' || cKey === 'conjunction') cKey = 'modal_conjunction';
+        if (catMap[cKey]) {
+          if (isCorr) catMap[cKey].correct++;
+        }
+      });
+
+      const gtelpScore = Math.round((correctCount / 26) * 100);
+      let gradeBadge = '';
+      if (gtelpScore >= 92) {
+        gradeBadge = `<span class="px-3 py-1 rounded-full bg-emerald-500 text-white text-xs font-black">🏆 문법 만점권 (초고득점)</span>`;
+      } else if (gtelpScore >= 80) {
+        gradeBadge = `<span class="px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-black">🎯 65점 합격 안정권 (공무원/자격증)</span>`;
+      } else if (gtelpScore >= 65) {
+        gradeBadge = `<span class="px-3 py-1 rounded-full bg-amber-500 text-white text-xs font-black">⚡ 32/43점 합격권 (군무원/노무사)</span>`;
+      } else {
+        gradeBadge = `<span class="px-3 py-1 rounded-full bg-rose-500 text-white text-xs font-black">📚 공식 집중 보완 필요</span>`;
+      }
+
+      let timeEval = '';
+      if (this.elapsedSeconds <= 1200) {
+        const savedMin = Math.round((1200 - this.elapsedSeconds) / 60);
+        timeEval = `<span class="text-emerald-700 font-bold">⚡ 20분 제한시간보다 약 ${savedMin}분 단축! (독해/청취 시간 확보 대성공)</span>`;
+      } else {
+        const overMin = Math.round((this.elapsedSeconds - 1200) / 60);
+        timeEval = `<span class="text-rose-700 font-bold">⚠️ 본시험 기준 20분에서 ${overMin}분 초과 (공식 1초 컷으로 시간 단축 권장)</span>`;
+      }
+
+      full26ScoreHtml = `
+        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4.5 space-y-3 mb-3 text-left">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 pb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🏆</span>
+              <div>
+                <h4 class="font-black text-indigo-950 text-sm md:text-base">G-TELP 실전 26제 문법 환산 성적표</h4>
+                <p class="text-[11px] text-indigo-600">본시험 공식 문항 비율 100% 반영 모의고사</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-extrabold text-indigo-900">${gtelpScore}점</span>
+              ${gradeBadge}
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between text-xs text-slate-700 bg-white/80 p-2.5 rounded-xl border border-indigo-100">
+            <span class="font-bold">⏱️ 실전 시간: ${timeFormatted} / 20:00</span>
+            ${timeEval}
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+            ${Object.values(catMap).map(c => {
+              const pass = c.correct === c.total;
+              return `
+                <div class="bg-white p-2.5 rounded-xl border ${pass ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200'} flex items-center justify-between text-xs">
+                  <span class="font-bold text-slate-700">${c.name}</span>
+                  <span class="font-black ${pass ? 'text-emerald-600' : 'text-slate-800'}">${c.correct} / ${c.total} ${pass ? '💮' : ''}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     // 취약점 정밀 진단 리포트 생성
     const reportBox = document.getElementById('weakness-report');
     if (reportBox) {
       if (wrongQuestions.length === 0) {
-        reportBox.innerHTML = `
+        reportBox.innerHTML = full26ScoreHtml + `
           <div class="flex items-start gap-3">
             <span class="text-2xl">🎯</span>
             <div>
@@ -979,7 +1069,7 @@ class GTelpApp {
           tip = "콤마(,) 뒤 that 불가 규칙과 선행사(사람 who vs 사물 which) 구분을 점검하세요.";
         }
 
-        reportBox.innerHTML = `
+        reportBox.innerHTML = full26ScoreHtml + `
           <div class="flex items-start gap-2.5">
             <span class="text-xl">⚠️</span>
             <div class="space-y-1 w-full">
@@ -998,6 +1088,11 @@ class GTelpApp {
         `;
         reportBox.className = "text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2";
       }
+    }
+
+    const retryBtn = document.getElementById('btn-retry-session');
+    if (retryBtn) {
+      retryBtn.textContent = isFull26 ? '🔄 새로운 26제 모의고사 또 풀기' : '🔄 새로운 10문제 또 풀기';
     }
 
     let message = "🎉 축하합니다! 완벽하게 마스터하고 계시네요!";
