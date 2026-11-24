@@ -836,103 +836,171 @@ const QUESTIONS_DATABASE = [
     id: "REL-01",
     category: "relative",
     subCategory: "관계대명사",
-    subCategoryName: "관계사 > 콤마(,) 뒤 계속적 용법 (that 불가)",
-    question: "The global pharmaceutical firm acquired BioGen Laboratories, ___________ developed the revolutionary vaccine last winter.",
+    subCategoryName: "관계사 > 콤마(,) 뒤 사물 계속적 용법 (that 불가 + 대명사 중복 오답)",
+    question: "He had created great works of art, ___________ to the development of art history. So it's no wonder he is considered by many a great artist.",
     options: [
-      { text: "which", isCorrect: true },
-      { text: "that", isCorrect: false },
-      { text: "who", isCorrect: false },
-      { text: "what", isCorrect: false }
+      { text: "which inspired artists and contributed greatly", isCorrect: true },
+      { text: "that inspired artists and contributed greatly", isCorrect: false },
+      { text: "who he inspired artists and contributed greatly", isCorrect: false },
+      { text: "whose they inspired artists and contributed greatly", isCorrect: false }
     ],
-    triggerWord: ", (콤마)",
-    hint: "단서: 콤마(,) 뒤 사물 선행사 BioGen Laboratories (that은 콤마 뒤 불가)",
-    gPoint: "G-TELP 관계사 공식: 콤마(,) 뒤에는 that 절대 불가 -> which",
-    explanation: "선행사가 회사(사물)이고 콤마(,) 뒤 계속적 용법이므로 관계대명사 that은 쓸 수 없습니다. 따라서 주격 관계대명사 'which'가 정답입니다."
+    triggerWord: ", (콤마) + great works of art (사물 선행사)",
+    hint: "단서: 콤마(,) 뒤 사물 선행사 (that은 콤마 뒤 불가, 대명사 he/they 중복 선지 오답)",
+    gPoint: "G-POINT 23 & 25: 사물 선행사 + 콤마 뒤 that 불가 = which",
+    explanation: "선행사가 사물 복수명사(great works of art)이고 콤마 뒤 계속적 용법이므로 that은 올 수 없습니다. 또한 절 내에 he나 they 대명사가 불필요하게 중복 삽입된 보기는 지텔프 전형적 오답 함정입니다."
   },
   {
     id: "REL-02",
     category: "relative",
     subCategory: "관계대명사",
     subCategoryName: "관계사 > 사람 선행사 주격 관계대명사 (who)",
-    question: "The board of trustees commended the dedicated engineer ___________ designed the energy-efficient water filtration module.",
+    question: "According to a research, eight out of ten people ___________ responded they felt lonely, especially when they had some degree of uncertainty in their lives.",
     options: [
-      { text: "who", isCorrect: true },
-      { text: "which", isCorrect: false },
-      { text: "whom", isCorrect: false },
-      { text: "whose", isCorrect: false }
+      { text: "who were looking for a job", isCorrect: true },
+      { text: "whom they were looking for a job", isCorrect: false },
+      { text: "when were looking for a job", isCorrect: false },
+      { text: "where were looking for a job", isCorrect: false }
     ],
-    triggerWord: "the dedicated engineer (사람 선행사)",
-    hint: "단서: 사람 선행사 + 주어가 없는 불완전 절",
-    gPoint: "G-TELP 관계사 공식: 사람 선행사 + 주격 = who",
-    explanation: "선행사가 사람이고 뒤에 동사(designed)가 오므로 주격 관계대명사 'who'가 정답입니다."
+    triggerWord: "people (사람 선행사) + 주어 결여",
+    hint: "단서: 사람 선행사(people) + 동사 were looking의 주어 역할 (whom they~ 대명사 중복 오답)",
+    gPoint: "G-POINT 21: 사람 선행사 + 주어 없음 = who",
+    explanation: "선행사가 사람(people)이고 뒤에 주어가 빠진 불완전한 절이 오므로 주격 관계대명사 who가 정답입니다. whom they~는 목적격 whom에 they가 중복 삽입되어 오답입니다."
   },
   {
     id: "REL-03",
     category: "relative",
     subCategory: "관계대명사",
-    subCategoryName: "관계사 > 소유격 관계대명사 (whose)",
-    question: "The university awarded a research grant to the young scientist ___________ groundbreaking thesis was published in Nature.",
+    subCategoryName: "관계사 > 콤마 뒤 that 불가 + it 중복 오답 함정",
+    question: "These days, there are many children suffering from smartphone addiction, ___________ but also cognitive and emotional development.",
     options: [
-      { text: "whose", isCorrect: true },
-      { text: "who", isCorrect: false },
-      { text: "whom", isCorrect: false },
-      { text: "which", isCorrect: false }
+      { text: "which hinders not only physical development", isCorrect: true },
+      { text: "that it hinders not only physical development", isCorrect: false },
+      { text: "who hinders not only physical development", isCorrect: false },
+      { text: "what it hinders not only physical development", isCorrect: false }
     ],
-    triggerWord: "scientist [ ] groundbreaking thesis",
-    hint: "단서: 선행사 명사와 뒤의 명사(thesis)가 소유격 관계",
-    gPoint: "G-TELP 관계사 공식: 선행사 + whose + 무관사 명사",
-    explanation: "뒤에 완전한 명사구(groundbreaking thesis)가 오며 '~의 논문'이라는 소유 관계이므로 'whose'가 정답입니다."
+    triggerWord: ", (콤마) + smartphone addiction (사물 선행사)",
+    hint: "단서: 콤마 뒤 that 불가! + it 대명사 중복 선지 즉시 소거!",
+    gPoint: "G-POINT 23 & 25: 콤마 뒤 that 불가 + 대명사 중복 제거",
+    explanation: "선행사가 사물(smartphone addiction)이고 콤마 뒤이므로 that은 불가하며, 대명사 it이 중복 삽입된 보기는 대표적 지텔프 오답 함정입니다. 따라서 which hinders...가 정답입니다."
   },
   {
     id: "REL-04",
     category: "relative",
     subCategory: "관계부사",
     subCategoryName: "관계사 > 장소 선행사 관계부사 (where)",
-    question: "The tech corporation built an advanced research facility ___________ automated robotic systems are tested daily.",
+    question: "Tomorrow, Amy is going to go to the football stadium ___________ . Strict rules will be applied, which encourage players to play fair, thus satisfying spectators.",
     options: [
-      { text: "where", isCorrect: true },
-      { text: "which", isCorrect: false },
-      { text: "what", isCorrect: false },
-      { text: "whom", isCorrect: false }
+      { text: "where the final game will be held", isCorrect: true },
+      { text: "when the final game will be held", isCorrect: false },
+      { text: "who the final game will be held", isCorrect: false },
+      { text: "what will hold the final game", isCorrect: false }
     ],
-    triggerWord: "research facility (장소 선행사)",
-    hint: "단서: 장소 선행사 + 수동태 완전한 절(systems are tested daily)",
-    gPoint: "G-TELP 관계사 공식: 장소 선행사 + 완전한 절 = where",
-    explanation: "선행사가 장소이고 뒤따르는 절이 수동태로 완전하므로 관계부사 'where'가 정답입니다."
+    triggerWord: "the football stadium (장소 선행사)",
+    hint: "단서: 장소 선행사 + 수동태 완전한 절 (the final game will be held)",
+    gPoint: "G-POINT 26: 장소 선행사 + 완전한 문장 = 관계부사 where",
+    explanation: "선행사가 장소(stadium)이고 뒤에 주어+수동태 동사를 갖춘 완전한 절이 오므로 관계부사 where가 이끄는 절이 정답입니다."
   },
   {
     id: "REL-05",
     category: "relative",
     subCategory: "관계부사",
     subCategoryName: "관계사 > 시간 선행사 관계부사 (when)",
-    question: "The corporate leadership fondly remembered the historic milestone year ___________ the innovative clean-energy engine was launched globally.",
+    question: "The release day of the last Avengers movie had been announced. Yesterday was the day ___________, but the movie tickets were sold out in no time.",
     options: [
-      { text: "when", isCorrect: true },
-      { text: "which", isCorrect: false },
-      { text: "where", isCorrect: false },
-      { text: "whom", isCorrect: false }
+      { text: "when people could book the movie ticket", isCorrect: true },
+      { text: "where could book the movie ticket", isCorrect: false },
+      { text: "which people could book the movie ticket", isCorrect: false },
+      { text: "who could book the movie ticket", isCorrect: false }
     ],
-    triggerWord: "the historic milestone year",
-    hint: "단서: 시간 선행사(year) + 뒤에 완전한 절",
-    gPoint: "G-POINT 20: 시간 선행사 + 완전한 절 = when",
-    explanation: "선행사가 시간이고 뒤에 수동태 완전한 절이 오므로 관계부사 'when'이 정답입니다."
+    triggerWord: "the day (시간 선행사) + 완전한 절",
+    hint: "단서: 시간 선행사(the day) + 주어(people)와 목적어(the ticket)를 모두 갖춘 완전한 절",
+    gPoint: "G-POINT 26: 시간 선행사 + 완전한 문장 = 관계부사 when",
+    explanation: "선행사가 시간(the day)이고 뒤에 주어+타동사+목적어가 완전하게 갖추어져 있으므로 관계부사 when이 정답입니다."
   },
   {
     id: "REL-06",
     category: "relative",
     subCategory: "관계대명사",
-    subCategoryName: "관계사 > 전치사 + 관계대명사 (in which)",
-    question: "The environmental symposium addressed the critical socio-economic context ___________ developing nations must transition away from fossil fuels.",
+    subCategoryName: "관계사 > 소유격 관계대명사 (whose)",
+    question: "Most infants acquire linguistic competence naturally through various stimuli. Because babies ___________ are exposed to rich verbal environments, it is beneficial.",
     options: [
-      { text: "in which", isCorrect: true },
-      { text: "which", isCorrect: false },
-      { text: "that", isCorrect: false },
-      { text: "where in", isCorrect: false }
+      { text: "whose parents say a lot of words", isCorrect: true },
+      { text: "who parents say a lot of words", isCorrect: false },
+      { text: "which say a lot of words", isCorrect: false },
+      { text: "whom parents say a lot of words", isCorrect: false }
     ],
-    triggerWord: "the critical context [ ] S + V",
-    hint: "단서: context를 수식하며 뒤에 완전한 절을 이끄는 전치사+관계대명사",
-    gPoint: "G-POINT 21: 전치사 + 관계대명사(which) + 완전한 절",
-    explanation: "선행사 context와 어울려 '그 맥락 속에서'의 의미를 구성하며 뒤에 완전한 절이 오므로 'in which'가 정답입니다."
+    triggerWord: "babies [ ] parents (소유격 관계)",
+    hint: "단서: 선행사(babies)와 뒤의 무관사 명사 주어(parents) 사이의 소유 관계(~의)",
+    gPoint: "G-POINT 24: 선행사 + 소유 관계(~의) + 뒷문장 완전 = whose",
+    explanation: "선행사 babies와 뒤의 명사 parents 사이에 '아기들의 부모'라는 소유 관계가 성립하고 뒷절이 완전하므로 소유격 관계대명사 whose가 정답입니다."
+  },
+  {
+    id: "REL-07",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 사물 선행사 주격 관계대명사 (that)",
+    question: "An international e-commerce platform ___________ is facing an existential crisis due to defective merchandise and fraudulent merchant accounts.",
+    options: [
+      { text: "that is the most popular in Southeast Asia", isCorrect: true },
+      { text: "when it is the most popular in Southeast Asia", isCorrect: false },
+      { text: "which it is the most popular in Southeast Asia", isCorrect: false },
+      { text: "who is the most popular in Southeast Asia", isCorrect: false }
+    ],
+    triggerWord: "platform (사물 선행사) + is의 주어 결여",
+    hint: "단서: 사물 선행사 + 주격 (which it~ 대명사 it 중복 오답 소거!)",
+    gPoint: "G-POINT 23: 사물 선행사 + 주격 = that (대명사 it 중복 제거)",
+    explanation: "선행사가 사물(platform)이고 뒤에 주어가 없는 불완전한 절이므로 that이 정답입니다. which it~은 선행사를 받는 it이 불필요하게 중복되어 지텔프 단골 오답입니다."
+  },
+  {
+    id: "REL-08",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 사람 고유명사 콤마 계속적 용법 (who)",
+    question: "Douglas, ___________, enjoyed reciting poems sometimes. He especially liked the poem titled 'Youth', which inspired many local listeners.",
+    options: [
+      { text: "who was an English teacher in Maryland", isCorrect: true },
+      { text: "which an English teacher in Maryland was", isCorrect: false },
+      { text: "where he was an English teacher in Maryland", isCorrect: false },
+      { text: "whom he was an English teacher in Maryland", isCorrect: false }
+    ],
+    triggerWord: "Douglas (사람 이름) + 콤마 계속적 용법",
+    hint: "단서: 사람 고유명사 선행사 + 주어가 비어있는 불완전한 절",
+    gPoint: "G-POINT 21: 사람 선행사 + 주격 = who",
+    explanation: "선행사가 사람 이름(Douglas)이며 동사 was 앞의 주어가 빠져 있으므로 주격 관계대명사 who가 정답입니다. which는 사물에 쓰이며, he가 중복 삽입된 보기는 오답입니다."
+  },
+  {
+    id: "REL-09",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > 장소 선행사 + 불완전 절 (관계부사 오답 함정)",
+    question: "There are intense debates about cultural diversity. This is illustrated by ongoing controversy in some countries ___________ under traditional laws.",
+    options: [
+      { text: "that oppress women severely", isCorrect: true },
+      { text: "which women oppress severely", isCorrect: false },
+      { text: "where oppress women severely", isCorrect: false },
+      { text: "when oppress women severely", isCorrect: false }
+    ],
+    triggerWord: "some countries (선행사) + oppress의 주어 결여",
+    hint: "단서: 선행사가 국가(countries)이지만 뒤에 주어가 없는 '불완전한 절'이므로 where가 아닌 관계대명사 that 필요!",
+    gPoint: "G-POINT 23: 불완전 절 -> 관계대명사 (where는 완전한 절에만 사용)",
+    explanation: "선행사가 장소/국가(countries)처럼 보이지만, 뒤에 주어가 빠진 불완전한 절(동사 oppress...)이 오므로 관계부사 where는 절대 쓸 수 없고 관계대명사 that이 정답입니다."
+  },
+  {
+    id: "REL-10",
+    category: "relative",
+    subCategory: "관계대명사",
+    subCategoryName: "관계사 > those who 관용 구문 (사람 복수 선행사)",
+    question: "The executive director announced that there would be immediate termination and legal action against those ___________ without official authorization.",
+    options: [
+      { text: "who stole confidential client documents", isCorrect: true },
+      { text: "where they stole confidential client documents", isCorrect: false },
+      { text: "which they stole confidential client documents", isCorrect: false },
+      { text: "when stole confidential client documents", isCorrect: false }
+    ],
+    triggerWord: "those (~하는 사람들: 사람 복수 선행사)",
+    hint: "단서: 'those who ~' (~하는 사람들) 필수 관용 표현 + they 중복 소거",
+    gPoint: "G-POINT 21: those(사람들) + who + 동사",
+    explanation: "'those who + 동사'는 '~하는 사람들'을 뜻하는 빈출 표현입니다. 선행사가 사람(those)이며 they가 중복된 보기는 오답이므로 'who stole...'가 정답입니다."
   },
 
   // 조동사 (MODAL)

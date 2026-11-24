@@ -714,88 +714,208 @@ const GTELP_GENERATOR = {
   ],
 
   // =========================================================================
-  // 5. 관계사 (Relative Clauses) - 10종 고유 실전 문제
+  // 5. 관계사 (Relative Clauses) - 교재 20문항 실전 패턴 및 오답 함정 완벽 반영 풀
   // =========================================================================
   relativePool: [
     {
-      sub: "관계대명사 계속적 용법 (that 불가)",
-      q: "The international pharmaceutical conglomerate acquired BioNova Therapeutics, ___________ developed the breakthrough oncology treatment last year.",
-      correct: "which",
-      dist: ["that", "who", "what"],
-      trig: ", (콤마)",
-      hint: "단서: 콤마(,) 뒤 사물 선행사 (that은 콤마 뒤 절대 불가)",
-      gp: "G-POINT 17: 콤마(,) 뒤 that 사용 불가 -> which",
-      exp: "선행사가 회사(사물)이며 콤마 뒤 계속적 용법이므로 that은 올 수 없고 which가 정답입니다."
+      sub: "사람 선행사 목적격 관계대명사 (whom)",
+      q: "A strange man came up to her at the charity event and greeted her, but she didn't recognize him. It wasn't until he introduced himself as the man ___________ that she remembered who he was.",
+      correct: "whom she had met in Cairo",
+      dist: ["which had met in Cairo", "when she had met him in Cairo", "where she had met in Cairo"],
+      trig: "the man (사람 선행사) + had met의 목적어 결여",
+      hint: "선행사가 사람(man)이고 타동사 had met의 목적어가 빠진 목적격 자리",
+      gp: "G-POINT 22: 사람 선행사 + 뒤에 목적어 없음 -> whom / who",
+      exp: "선행사가 사람(the man)이며, had met의 목적어 역할을 하는 목적격 관계대명사 절 'whom she had met in Cairo'가 정답입니다. which는 사물 선행사, when/where는 관계부사라 오답입니다."
     },
     {
-      sub: "사람 선행사 주격 관계대명사 (who)",
-      q: "The board of trustees commended the dedicated aerospace engineer ___________ designed the energy-efficient satellite propulsion module.",
-      correct: "who",
-      dist: ["which", "whom", "whose"],
-      trig: "the dedicated engineer (사람 선행사)",
-      hint: "단서: 사람 선행사 + 뒤에 주어가 없는 불완전한 절(designed...)",
-      gp: "G-POINT 15: 사람 선행사 + 주격 = who",
-      exp: "선행사가 사람(engineer)이고 뒤에 동사(designed)가 이어지므로 주격 관계대명사 who가 정답입니다."
-    },
-    {
-      sub: "소유격 관계대명사 (whose)",
-      q: "The university awarded an honorary fellowship to the young biochemist ___________ groundbreaking research thesis was published in Science.",
-      correct: "whose",
-      dist: ["who", "whom", "which"],
-      trig: "biochemist [ ] groundbreaking research thesis",
-      hint: "단서: 선행사(biochemist)와 뒤의 명사(thesis) 사이의 소유격 관계 (~의 논문)",
-      gp: "G-POINT 18: 선행사 + whose + 무관사 명사",
-      exp: "뒤에 완전한 형태의 명사구(groundbreaking thesis)가 오며 '생화학자의 논문'이라는 소유 관계이므로 whose가 정답입니다."
+      sub: "사물 선행사 콤마 계속적 용법 (that 불가 + 대명사 중복 오답)",
+      q: "He had created great works of art, ___________ to the development of art history. So it's no wonder he is considered by many a great artist.",
+      correct: "which inspired artists and contributed greatly",
+      dist: ["that inspired artists and contributed greatly", "who he inspired artists and contributed greatly", "whose they inspired artists and contributed greatly"],
+      trig: ", (콤마) + great works of art (사물 선행사)",
+      hint: "콤마(,) 뒤 계속적 용법은 that 소거! 선행사가 사물이므로 who 소거 및 대명사(he, they) 중복 선지 소거!",
+      gp: "G-POINT 23 & 25: 사물 선행사 + 콤마 뒤 that 불가 = which",
+      exp: "선행사가 사물 복수명사(great works of art)이고 콤마 뒤 계속적 용법이므로 that은 쓸 수 없습니다. 또한 관계사 절 내에 주어 대명사 he나 they가 중복 삽입된 보기는 대표적 지텔프 오답 함정입니다. 따라서 which inspired...가 정답입니다."
     },
     {
       sub: "장소 선행사 관계부사 (where)",
-      q: "The technological corporation constructed an advanced research facility ___________ automated robotic manufacturing systems are tested daily.",
-      correct: "where",
-      dist: ["which", "what", "whom"],
-      trig: "an advanced research facility (장소 선행사)",
-      hint: "단서: 장소 선행사 + 뒤에 주어, 수동태 동사를 갖춘 완전한 절",
-      gp: "G-POINT 19: 장소 선행사 + 완전한 절 = where",
-      exp: "선행사가 장소이고 뒤따르는 절(systems are tested daily)이 수동태로 완전하므로 관계부사 where가 정답입니다."
+      q: "Tomorrow, Amy is going to go to the football stadium ___________ . Strict rules will be applied, which encourage players to play fair, thus satisfying spectators.",
+      correct: "where the final game will be held",
+      dist: ["when the final game will be held", "who the final game will be held", "what will hold the final game"],
+      trig: "the football stadium (장소 선행사) + 수동태 완전한 절",
+      hint: "선행사가 장소(stadium)이며 뒤에 주어+수동태 동사를 갖춘 완전한 절",
+      gp: "G-POINT 26: 장소 선행사 + 완전한 문장 = 관계부사 where",
+      exp: "선행사가 구체적 장소(stadium)이고 뒷문장 'the final game will be held'가 수동태로 완전하므로 관계부사 where가 이끄는 절이 정답입니다."
+    },
+    {
+      sub: "사람 선행사 주격 관계대명사 (who)",
+      q: "According to a research, eight out of ten people ___________ responded they felt lonely, especially when they had some degree of uncertainty in their lives.",
+      correct: "who were looking for a job",
+      dist: ["whom they were looking for a job", "when were looking for a job", "where were looking for a job"],
+      trig: "people (사람 선행사) + 주어가 빠진 불완전 절",
+      hint: "사람 선행사(people) + 동사 were looking의 주어 역할 (whom + they 대명사 중복 오답 소거)",
+      gp: "G-POINT 21: 사람 선행사 + 주어 없음 = who",
+      exp: "선행사가 사람(people)이고 뒤에 주어가 비어있는 불완전한 절이 오므로 주격 관계대명사 who가 정답입니다. whom they~는 목적격 whom에 they가 중복 삽입되어 오답입니다."
+    },
+    {
+      sub: "사물 선행사 콤마 계속적 용법 (that 불가 + it 대명사 중복 오답)",
+      q: "These days, there are many children suffering from smartphone addiction, ___________ but also cognitive and emotional development.",
+      correct: "which hinders not only physical development",
+      dist: ["that it hinders not only physical development", "who hinders not only physical development", "what it hinders not only physical development"],
+      trig: ", (콤마) + smartphone addiction (사물 선행사)",
+      hint: "콤마 뒤 that 불가! + 선행사를 받는 대명사 it 중복 오답 1초 컷 소거!",
+      gp: "G-POINT 23 & 25: 사물 선행사 + 콤마 뒤 that 불가 + it 중복 제거",
+      exp: "선행사가 사물(smartphone addiction)이고 콤마 뒤이므로 that은 절대 불가합니다. 또한 절 내에 it이 중복 삽입된 (a)와 (d)는 지텔프 전형적 오답 트랩입니다. 따라서 which hinders...가 정답입니다."
+    },
+    {
+      sub: "사물 선행사 주격 관계대명사 (which)",
+      q: "'Popcorn brain' is a phenomenon ___________ and is insensitive to others. It is often seen in people using electronic devices excessively.",
+      correct: "which responds only to powerful stimuli",
+      dist: ["when responds only to powerful stimuli", "what the brain responds only to powerful stimuli", "where the brain responds only to powerful stimuli"],
+      trig: "a phenomenon (사물 선행사) + 주어 결여",
+      hint: "사물 선행사(phenomenon) + 뒤에 동사 responds가 바로 오는 주격 자리",
+      gp: "G-POINT 23: 사물 선행사 + 주격 = which / that",
+      exp: "선행사가 사물(현상)이고 뒤에 주어가 없는 불완전한 절이 이어지므로 주격 관계대명사 which가 정답입니다. when이나 where는 뒤에 완전한 절이 와야 하므로 오답입니다."
     },
     {
       sub: "시간 선행사 관계부사 (when)",
-      q: "The corporate leadership fondly remembered the historic milestone year ___________ the innovative clean-energy engine was launched globally.",
-      correct: "when",
-      dist: ["which", "where", "whom"],
-      trig: "the historic milestone year (시간 선행사)",
-      hint: "단서: 시간 선행사(year) + 뒤에 완전한 절",
-      gp: "G-POINT 20: 시간 선행사 + 완전한 절 = when",
-      exp: "선행사가 시간(year)이고 뒤에 주어+수동태 완전한 절이 오므로 관계부사 when이 정답입니다."
+      q: "The release day of the last Avengers movie had been announced. Yesterday was the day ___________, but the movie tickets were sold out in no time.",
+      correct: "when people could book the movie ticket",
+      dist: ["where could book the movie ticket", "which people could book the movie ticket", "who could book the movie ticket"],
+      trig: "the day (시간 선행사) + 완전한 절",
+      hint: "시간 선행사(the day) + 주어(people)와 목적어(the ticket)를 모두 갖춘 완전한 문장",
+      gp: "G-POINT 26: 시간 선행사 + 완전한 문장 = 관계부사 when",
+      exp: "선행사가 시간(the day)이고 뒤에 주어+타동사+목적어가 완전하게 갖추어져 있으므로 관계부사 when이 정답입니다. which 뒤에는 불완전한 문장이 와야 합니다."
     },
     {
-      sub: "전치사 + 관계대명사 (in which)",
-      q: "The environmental symposium addressed the critical socio-economic context ___________ developing nations must transition away from fossil fuels.",
-      correct: "in which",
-      dist: ["which", "that", "where in"],
-      trig: "the critical context [ ] S + V",
-      hint: "단서: context를 수식하며 뒤에 완전한 절을 이끄는 전치사+관계대명사",
-      gp: "G-POINT 21: 전치사 + 관계대명사(which) + 완전한 절",
-      exp: "선행사 context와 어울려 '그 맥락 속에서'의 의미를 구성하며 뒤에 완전한 절이 오므로 'in which'가 정답입니다."
+      sub: "사람 고유명사 선행사 콤마 계속적 용법 (who)",
+      q: "Douglas, ___________, enjoyed reciting poems sometimes. He especially liked the poem titled 'Youth', which inspired many local listeners.",
+      correct: "who was an English teacher in Maryland",
+      dist: ["which an English teacher in Maryland was", "where he was an English teacher in Maryland", "whom he was an English teacher in Maryland"],
+      trig: "Douglas (사람 이름) + 콤마 계속적 용법",
+      hint: "사람 고유명사 선행사 + 주어가 비어있는 불완전한 절",
+      gp: "G-POINT 21: 사람 선행사 + 주격 = who",
+      exp: "선행사가 사람 이름(Douglas)이며 동사 was 앞의 주어가 빠져 있으므로 주격 관계대명사 who가 정답입니다. which는 사물에 쓰이며, he가 중복 삽입된 보기는 오답입니다."
     },
     {
-      sub: "사물 선행사 목적격 관계대명사 (which)",
-      q: "The quality assurance inspector examined the specialized precision tools ___________ the senior machinist had ordered from Germany.",
-      correct: "which",
-      dist: ["who", "whom", "where"],
-      trig: "specialized precision tools (사물 선행사)",
-      hint: "단서: 사물 선행사(tools) + 목적어가 없는 불완전한 절",
-      gp: "G-POINT 16: 사물 선행사 + 목적격 = which / that",
-      exp: "선행사가 사물(tools)이며 ordered의 목적어가 비어 있으므로 사물 관계대명사 which가 정답입니다."
+      sub: "사물 선행사 주격 관계대명사 (that)",
+      q: "Some educators suggest learning occurs through repetition. From this point of view, knowledge tends to be reinforced through a mechanical way ___________.",
+      correct: "that is helpful to memorize the learning content",
+      dist: ["which it is helpful to memorize the learning content", "whom it is helpful to memorize the learning content", "when is helpful to memorize the learning content"],
+      trig: "a mechanical way (사물 선행사) + 주어 결여",
+      hint: "사물 선행사 + 주격 자리 (which it~ 대명사 it 중복 함정 즉시 소거!)",
+      gp: "G-POINT 23: 사물 선행사 + 주격 = that / which",
+      exp: "선행사가 사물(a mechanical way)이고 뒤에 is의 주어가 빠져 있으므로 that이 정답입니다. which it~은 선행사를 받는 대명사 it이 중복 삽입된 지텔프 대표 오답 함정입니다."
     },
     {
-      sub: "사람 선행사 목적격 관계대명사 (whom)",
-      q: "The hospital chief commended the veteran nurse ___________ the patient advisory council had nominated for the exceptional service award.",
-      correct: "whom",
-      dist: ["which", "whose", "where"],
-      trig: "the veteran nurse (사람 선행사)",
-      hint: "단서: 사람 선행사 + had nominated의 목적어 자리",
-      gp: "G-POINT 15: 사람 선행사 + 목적격 = whom (또는 who)",
-      exp: "선행사가 사람이고 타동사 nominated의 목적어 역할을 하므로 목적격 관계대명사 whom이 정답입니다."
+      sub: "시간 선행사 관계부사 (when)",
+      q: "Jack was eagerly looking forward to the upcoming concert of Maroon 5. But he was so busy that he couldn't realize that last Wednesday was the day ___________.",
+      correct: "when ticket sales started",
+      dist: ["where ticket sales started", "who ticket sales started", "what it started ticket sales"],
+      trig: "the day (시간 선행사) + 1형식 완전한 절",
+      hint: "시간 선행사(the day) + 주어(ticket sales) + 자동사(started)의 완전한 절",
+      gp: "G-POINT 26: 시간 선행사 + 완전한 절 = 관계부사 when",
+      exp: "선행사가 시간 명사(the day)이고 뒤에 '티켓 판매가 시작되다'라는 완전한 1형식 문장이 이어지므로 관계부사 when이 정답입니다."
+    },
+    {
+      sub: "소유격 관계대명사 (whose + 무관사 명사)",
+      q: "Most infants acquire linguistic competence naturally through various stimuli. Because babies ___________ are exposed to rich verbal environments, it is beneficial.",
+      correct: "whose parents say a lot of words",
+      dist: ["who parents say a lot of words", "which say a lot of words", "whom parents say a lot of words"],
+      trig: "babies [ ] parents (아기들의 부모님 - 소유격 관계)",
+      hint: "선행사(babies)와 뒤의 무관사 명사 주어(parents)가 소유격 관계 (~의)",
+      gp: "G-POINT 24: 선행사 + 소유 관계(~의) + 뒷문장 완전 = whose",
+      exp: "선행사 babies와 뒤의 명사 parents 사이에 '아기들의 부모'라는 소유 관계가 성립하고 뒷절이 완전하므로 소유격 관계대명사 whose가 정답입니다."
+    },
+    {
+      sub: "사물 선행사 목적격 관계대명사 (that)",
+      q: "The photograph of the supermassive black hole ___________ was made public for the first time in astrophysics history.",
+      correct: "that Event Horizon Telescope had observed",
+      dist: ["which had observed Event Horizon Telescope", "when Event Horizon Telescope had observed", "where Event Horizon Telescope had observed"],
+      trig: "black hole (사물 선행사) + had observed의 목적어 결여",
+      hint: "사물 선행사 + 능동태 타동사 observed의 목적어가 빠진 목적격 절",
+      gp: "G-POINT 23: 사물 선행사 + 목적격 = that / which",
+      exp: "선행사가 사물(black hole)이고 뒤에 망원경(EHT)이 관측했던 목적어 자리가 비어 있으므로 목적격 관계대명사 that이 정답입니다."
+    },
+    {
+      sub: "단체 선행사 콤마 계속적 용법 (which + they 중복 오답)",
+      q: "Many wildlife species affected by the oil spill were not protected properly. Thus, various animal rescue coalitions, ___________, rushed to provide emergency care.",
+      correct: "which had tried to treat and rescue animals",
+      dist: ["who they had tried to treat and rescue animals", "what they had tried to treat and rescue animals", "where had tried to treat and rescue animals"],
+      trig: "coalitions (단체/사물 선행사) + 콤마 계속적 용법",
+      hint: "단체/조직 선행사(사물 취급) + 콤마 뒤 + they 중복 소거",
+      gp: "G-POINT 23 & 25: 단체 선행사 + 콤마 뒤 = which (they 중복 제거)",
+      exp: "선행사가 단체/조직(coalitions)으로 사물 취급되며, 콤마 뒤 계속적 용법이고 they 대명사가 중복되지 않은 'which had tried to treat...'가 정답입니다."
+    },
+    {
+      sub: "장소 명사 선행사 + 불완전 절 (관계부사 오답 함정)",
+      q: "There are intense debates about cultural diversity. This is illustrated by ongoing controversy in some countries ___________ under traditional laws.",
+      correct: "that oppress women severely",
+      dist: ["which women oppress severely", "where oppress women severely", "when oppress women severely"],
+      trig: "some countries (선행사) + oppress의 주어 결여",
+      hint: "선행사가 국가(countries)이지만 뒤에 주어가 없는 '불완전한 절'이므로 where가 아닌 관계대명사 that 필요!",
+      gp: "G-POINT 23: 불완전 절 -> 관계대명사 (where는 완전한 절에만 사용)",
+      exp: "선행사가 장소/국가(countries)처럼 보이지만, 뒤에 주어가 빠진 불완전한 절(동사 oppress...)이 오므로 관계부사 where는 절대 쓸 수 없고 관계대명사 that이 정답입니다."
+    },
+    {
+      sub: "사물 선행사 주격 관계대명사 (which)",
+      q: "The problem with illicit narcotics in metropolitan centers has surfaced. Authorities must conduct an intensive inquiry into the illegal drug trade ___________.",
+      correct: "which causes serious socio-economic effects",
+      dist: ["what it causes serious socio-economic effects", "where causes serious socio-economic effects", "when causes serious socio-economic effects"],
+      trig: "the drug trade (사물 선행사) + causes의 주어 결여",
+      hint: "사물 선행사 + 주어가 빠진 불완전한 절 (what 및 it 중복 소거)",
+      gp: "G-POINT 23: 사물 선행사 + 주격 = which / that",
+      exp: "선행사가 사물(the drug trade)이며 동사 causes 앞 주어 자리가 비어있으므로 사물 주격 관계대명사 which가 정답입니다. what it은 선행사 수식 불가 및 it 중복으로 오답입니다."
+    },
+    {
+      sub: "사물 선행사 콤마 계속적 용법 (that 불가)",
+      q: "The local bakery became remarkably famous through social media. Furthermore, it is recording unprecedented sales after appearing on a popular TV show, ___________.",
+      correct: "which has a great influence on domestic consumers",
+      dist: ["that has a great influence on domestic consumers", "who has a great influence on domestic consumers", "when has a great influence on domestic consumers"],
+      trig: ", (콤마) + TV show (사물 선행사)",
+      hint: "콤마 뒤 that 절대 불가 법칙! + 사물 선행사 -> which",
+      gp: "G-POINT 25: 콤마(,) 뒤 that 소거 -> which",
+      exp: "콤마(,) 뒤 계속적 용법에서는 that을 절대 쓸 수 없습니다! 선행사가 사물(TV show)이므로 'which has a great influence...'가 정답입니다."
+    },
+    {
+      sub: "사물 선행사 주격 관계대명사 (that)",
+      q: "An international e-commerce platform ___________ is facing an existential crisis due to defective merchandise and fraudulent merchant accounts.",
+      correct: "that is the most popular in Southeast Asia",
+      dist: ["when it is the most popular in Southeast Asia", "which it is the most popular in Southeast Asia", "who is the most popular in Southeast Asia"],
+      trig: "platform (사물 선행사) + is의 주어 결여",
+      hint: "사물 선행사 + 주격 (which it~ 대명사 it 중복 오답 소거!)",
+      gp: "G-POINT 23: 사물 선행사 + 주격 = that (대명사 it 중복 제거)",
+      exp: "선행사가 사물(platform)이고 뒤에 주어가 없는 불완전한 절이므로 that이 정답입니다. which it~은 선행사를 받는 it이 불필요하게 중복되어 지텔프 단골 오답입니다."
+    },
+    {
+      sub: "사람 선행사 주격 관계대명사 (who)",
+      q: "The veteran stage actor ___________ was deeply touched because the vintage black-and-white films he had starred in decades ago were still widely beloved.",
+      correct: "who had a long and prestigious acting career",
+      dist: ["which had a long and prestigious acting career", "where he had a long and prestigious acting career", "when had a long and prestigious acting career"],
+      trig: "The veteran stage actor (사람 선행사) + had의 주어 결여",
+      hint: "사람 선행사(actor) + 주어 빠진 불완전 절 -> who",
+      gp: "G-POINT 21: 사람 선행사 + 주격 = who",
+      exp: "선행사가 사람(actor)이고 뒤에 주어가 비어있는 불완전한 절이므로 주격 관계대명사 who가 정답입니다. which는 사물, where/when은 관계부사이므로 오답입니다."
+    },
+    {
+      sub: "사물 선행사 콤마 계속적 용법 (that 불가)",
+      q: "Global consumers had eagerly anticipated the flagship smartphone release. The unexpected server traffic spike paralyzed the ordering portal, ___________.",
+      correct: "which had attracted millions of buyers worldwide",
+      dist: ["that had attracted millions of buyers worldwide", "when had attracted millions of buyers worldwide", "whose had attracted millions of buyers worldwide"],
+      trig: ", (콤마) + 사물 선행사",
+      hint: "콤마 뒤 that 소거 + 동사 had attracted 앞 주어 결여 -> which",
+      gp: "G-POINT 25: 콤마 뒤 that 소거 -> which",
+      exp: "선행사 뒤에 콤마(,)가 있으므로 that은 1초 만에 소거됩니다. 주어가 빠진 불완전 절이므로 관계부사 when이나 소유격 whose는 올 수 없어 which가 정답입니다."
+    },
+    {
+      sub: "those who 관용 구문 (사람 복수 선행사)",
+      q: "The executive director announced that there would be immediate termination and legal action against those ___________ without official authorization.",
+      correct: "who stole confidential client documents",
+      dist: ["where they stole confidential client documents", "which they stole confidential client documents", "when stole confidential client documents"],
+      trig: "those (~하는 사람들: 사람 복수 선행사)",
+      hint: "'those who ~' (~하는 사람들) 필수 표현 + they 중복 소거",
+      gp: "G-POINT 21: those(사람들) + who + 동사",
+      exp: "'those who + 동사'는 '~하는 사람들'을 뜻하는 빈출 표현입니다. 선행사가 사람(those)이며 they가 중복된 보기는 오답이므로 'who stole...'가 정답입니다."
     }
   ],
 

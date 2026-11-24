@@ -79,10 +79,20 @@ const CHEATSHEET = {
   relative: {
     title: "5. 관계사 (관계대명사 & 관계부사)",
     rules: [
-      { name: "선행사 구분", desc: "사람 선행사 -> who / whom, 사물/동물 선행사 -> which" },
-      { name: "that 절대 불가 2가지", desc: "1) 콤마 뒤 (, that X), 2) 전치사 바로 뒤 (in that X)" },
-      { name: "관계부사", desc: "완전한 문장 뒤따름: where(장소), when(시간), why(이유), how(방법)" },
-      { name: "소유격 관계대명사 whose", desc: "선행사의 소유격 역할 + 뒤에 무관사 명사가 옴" }
+      { name: "🔍 관계사 문제 식별법", desc: "선택지(A, B, C, D)가 who, which, that, where, when 등 관계사 절로 시작하면 100% 관계사 문제!" },
+      { name: "G-POINT 21 (사람 주격)", desc: "사람 선행사 + 뒤에 주어 없음 ➔ ① who ② that" },
+      { name: "G-POINT 22 (사람 목적격)", desc: "사람 선행사 + 뒤에 목적어 없음 ➔ ① whom ② who ③ that" },
+      { name: "G-POINT 23 (사물 주격/목적격)", desc: "사물 선행사 + 뒤에 주어나 목적어 없음 ➔ ① which ② that" },
+      { name: "G-POINT 24 (소유격 whose)", desc: "선행사 존재 + 뒤 명사와 소유 관계(~의) + 뒷문장 완전 ➔ whose" },
+      { name: "G-POINT 25 (콤마 뒤 계속적용법)", desc: ",(콤마) 뒤 빈칸 ➔ that은 무조건 오답 소거! (사물이면 which, 사람이면 who)" },
+      { name: "G-POINT 26 (관계부사 where / when)", desc: "선행사가 장소나 때 + 뒷문장이 완전한 절 ➔ 관계부사 where / when" }
+    ],
+    traps: [
+      { name: "🚨 켈리쌤의 관계사 찐팁 1 (콤마 뒤 that 소거)", desc: ",(콤마) 뒤에 빈칸이 있는 경우 보기에서 'that'으로 시작하는 선지는 1초 만에 소거!" },
+      { name: "🚨 켈리쌤의 관계사 찐팁 2 (선행사 성격 파악)", desc: "빈칸 바로 앞 선행사가 '사람'인지 '사물'인지 파악하면 문제의 절반은 해결!" },
+      { name: "🚨 지텔프 최고 빈출 오답 함정 1: 절 내 대명사 중복 오답!", desc: "보기 중에 관계대명사 절 속에 선행사를 가리키는 대명사(it, they, he, him)를 불필요하게 중복으로 넣어놓은 선지는 100% 오답!\n(예: which it hinders X ➔ which hinders O / who they were looking X ➔ who were looking O)" },
+      { name: "🚨 지텔프 최고 빈출 오답 함정 2: 관계대명사 vs 관계부사 뒷문장 구조", desc: "선행사가 장소(countries, stadium)나 시간(day)이어도, 뒷문장에 주어나 목적어가 빠진 '불완전한 절'이라면 관계부사(where/when)가 아니라 관계대명사(which/that)가 정답!" },
+      { name: "🚨 필수 출제 관용구: those who + 복수동사", desc: "'those who ~'는 '~하는 사람들'을 뜻하는 대명사 구문으로 매 시험 빈출 출제!" }
     ]
   },
   modal: {
