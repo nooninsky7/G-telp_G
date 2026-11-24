@@ -518,6 +518,24 @@ const GTELP_GENERATOR = {
       hint: "단서: 주절의 'would not suffer (would + 동사원형)'",
       gp: "G-POINT 1: If + were -> would + 동사원형",
       exp: "주절에 'would not suffer'가 있으므로 If절에는 Be동사 'were'가 정답입니다."
+    },
+    {
+      q: (s) => `If the research laboratory had sufficient funding for advanced spectroscopy, ${s} ___________ the chemical compound structure easily.`,
+      correct: "could analyze",
+      dist: ["analyzed", "will analyze", "could have analyzed"],
+      trig: "If + had funding (had + 명사)",
+      hint: "단서: [🚨 오답-POINT 2 주의!] 'had funding'의 had는 pp가 없는 일반동사 '가지다'의 과거형 -> 가정법 과거!",
+      gp: "G-POINT 1 / 오답-POINT 2: If + had + 명사 -> 주절 would/could + 동사원형",
+      exp: "had 뒤에 p.p.가 아닌 명사(sufficient funding)가 왔으므로 had는 조동사가 아닌 일반동사의 과거형입니다! 따라서 가정법 과거 공식(If 과거, would/could 동원)에 의해 'could analyze'가 정답입니다. (출제 단골 1순위 함정!)"
+    },
+    {
+      q: (s) => `If the compliance auditor could verify all digital transaction hashes, ${s} ___________ the official certification today.`,
+      correct: "would issue",
+      dist: ["issued", "will issue", "would have issued"],
+      trig: "If + could verify (조동사 과거)",
+      hint: "단서: [🚨 오답-POINT 3 주의!] If절의 'could verify'는 과거 시제 -> 가정법 과거 공식 적용",
+      gp: "G-POINT 1 / 오답-POINT 3: If + could/did + 동사원형 -> 주절 would + 동사원형",
+      exp: "If절에 과거형 조동사 'could'가 쓰였으므로 가정법 과거입니다. 주절에는 'would + 동사원형'인 'would issue'가 정답입니다."
     }
   ],
 
@@ -591,8 +609,17 @@ const GTELP_GENERATOR = {
       dist: ["engages", "engaging", "would engage"],
       trig: "Had S [ ] ... could have been averted",
       hint: "단서: 도치 구문 'Had + S + p.p.' + 주절 'could have been averted'",
-      gp: "G-POINT 3: Had + S + p.p. 도치 구문",
-      exp: "문두의 Had와 결합하여 had p.p.를 구성하는 과거분사 'engaged'가 정답입니다."
+      gp: "G-POINT 3 / 오답-POINT 1: Had + S + p.p. (If생략 도치 구문)",
+      exp: "문두의 Had와 결합하여 had p.p.를 구성하는 과거분사 'engaged'가 정답입니다. (If 생략 도치 구문)"
+    },
+    {
+      q: (s) => `If the international research consortium had received federal approval last year, they ___________ the life-saving therapeutic vaccine across hospitals today.`,
+      correct: "would distribute",
+      dist: ["distributed", "will distribute", "would have distributed"],
+      trig: "If had received (과거) ... today (현재)",
+      hint: "단서: [🚨 오답-POINT 6 주의!] If절 'had received(과거)' + 주절 끝 'today(현재)' -> 혼합가정법!",
+      gp: "G-POINT 2 / 오답-POINT 6: If + had p.p., 주절 would/could + 동사원형 + today/now (혼합가정법)",
+      exp: "If절은 과거 사실의 반대(had received last year)이지만, 주절 끝에 현재 시점 부사 'today'가 있으므로 '혼합가정법'입니다! 따라서 would have p.p.가 아니라 'would + 동사원형'인 'would distribute'가 정답입니다. (출제 단골 함정!)"
     }
   ],
 

@@ -11,6 +11,10 @@ const CHEATSHEET = {
       { name: "과거완료진행 (had been -ing)", desc: "before/until 과거시점 + for/since 기간" },
       { name: "현재완료진행 (have/has been -ing)", desc: "now + for 기간, for + 기간(현재문맥), since + 과거시점" },
       { name: "미래완료진행 (will have been -ing)", desc: "by 미래시점 + for 기간, by the time 현재 + for 기간" }
+    ],
+    traps: [
+      { name: "🚨 시제 오답-POINT 1", desc: "for가 나왔다고 해서 무조건 완료진행 시제가 정답은 아니다! (문맥상 단순 과거 기간인지, 미래 시점 힌트가 함께 있는지 반드시 확인)" },
+      { name: "🚨 시제 오답-POINT 2", desc: "since 뒤에 과거시점(since 2018, since he joined 등)이 나오는 경우 주절은 '현재완료진행형(has/have been -ing)'이 정답!" }
     ]
   },
   gerund_infinitive: {
@@ -47,8 +51,16 @@ const CHEATSHEET = {
     rules: [
       { name: "가정법 과거 공식", desc: "If + S + 과거동사(were), S + would / could / might + 동사원형" },
       { name: "가정법 과거완료 공식", desc: "If + S + had p.p., S + would / could / might + have p.p." },
-      { name: "혼합가정법", desc: "If S + had p.p. (과거), S + would/could/might + 동사원형 + now (현재)" },
-      { name: "If 도치 생략", desc: "Had + S + p.p., S + would have p.p. (If가 생략되면 Had가 문두로)" }
+      { name: "혼합가정법", desc: "If S + had p.p. (과거), S + would/could/might + 동사원형 + now / today (현재)" },
+      { name: "If 도치 생략", desc: "Had + S + p.p., S + would have p.p. (If가 생략되면 Had가 문두로 도치)" }
+    ],
+    traps: [
+      { name: "🚨 가정법 오답-POINT 1 (도치 구문)", desc: "had + 주어 + pp = If + 주어 + had pp (If 생략 도치 구문! 주절은 would/could/might + have pp)" },
+      { name: "🚨 가정법 오답-POINT 2 (출제 1순위 함정!)", desc: "if + 주어 + had + 명사(time, money 등) -> had 뒤에 pp가 없으면 조동사가 아니라 일반동사 '가지다'의 과거형이므로 '가정법 과거'! 주절은 would + 동사원형!" },
+      { name: "🚨 가정법 오답-POINT 3 (조동사 과거)", desc: "if + 주어 + could / did / were -> could/did도 과거동사이므로 가정법 과거! 주절은 would + 동사원형!" },
+      { name: "🚨 가정법 오답-POINT 4 (조건문 함정)", desc: "if + 주어 + 현재시제 -> 가정법 문제 아님! (단순 시간·조건 부사절 -> 주절은 will/can 등 미래)" },
+      { name: "🚨 가정법 오답-POINT 5 (명사절 if)", desc: "동사 뒤 if가 '~인지 아닌지'로 해석될 경우 -> 가정법 문제 아님! (명사절 목적어)" },
+      { name: "🚨 가정법 오답-POINT 6 (혼합가정법)", desc: "if 주어 had pp, 주어 would/could/might + 동사원형 + right (now), today (과거에 그랬다면 지금 ~할 텐데)" }
     ]
   },
   should_omission: {

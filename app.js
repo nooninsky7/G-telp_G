@@ -1173,10 +1173,31 @@ class GTelpApp {
       </div>
     `).join('');
 
+    let trapsHtml = '';
+    if (data.traps && data.traps.length > 0) {
+      trapsHtml = `
+        <div class="mt-3 p-3.5 bg-amber-50 rounded-2xl border-2 border-amber-300 space-y-2">
+          <div class="flex items-center gap-1.5 text-amber-950 font-black text-xs">
+            <span class="text-base">🚨</span>
+            <span>출제자의 낚시 주의! 핵심 오답 POINT</span>
+          </div>
+          <div class="space-y-1.5">
+            ${data.traps.map(t => `
+              <div class="bg-white p-2.5 rounded-xl border border-amber-200">
+                <div class="font-black text-rose-700 text-xs mb-0.5">${t.name}</div>
+                <div class="text-[11px] text-slate-700 leading-relaxed font-medium">${t.desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     document.getElementById('cheat-content').innerHTML = `
       <div class="space-y-2">
         <h4 class="font-extrabold text-slate-900 text-sm mb-2">${data.title}</h4>
         ${rulesHtml}
+        ${trapsHtml}
       </div>
     `;
   }
