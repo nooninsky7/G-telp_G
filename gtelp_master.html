@@ -1013,7 +1013,37 @@ const GTELP_GENERATOR = {
     { v: "resisted", obj: "accepting", plain: "accept", toV: "to accept", ctx: "the acquisition buyout offer from the rival multinational conglomerate" },
     { v: "imagined", obj: "leading", plain: "lead", toV: "to lead", ctx: "the pioneering deep-sea exploration mission across the Pacific ridge" },
     { v: "put off", obj: "submitting", plain: "submit", toV: "to submit", ctx: "the completed environmental assessment dossier until final lab verification" },
-    { v: "enjoyed", obj: "collaborating", plain: "collaborate", toV: "to collaborate", ctx: "with international aerospace scientists on satellite orbit simulation" }
+    { v: "enjoyed", obj: "collaborating", plain: "collaborate", toV: "to collaborate", ctx: "with international aerospace scientists on satellite orbit simulation" },
+    { 
+      v: "recommended", 
+      obj: "upgrading", 
+      plain: "upgrade", 
+      toV: "to upgrade", 
+      ctx: "the enterprise firewalls to prevent potential cyber intrusions",
+      customHint: "단서: [🚨 준동사 오답-POINT 1 주의!] recommend 바로 뒤에 목적어가 없을 때는 동명사(-ing)가 목적어!",
+      customGp: "G-POINT 13 / 준동사 오답-POINT 1: recommend + -ing (동사 바로 뒤)",
+      customExp: "recommend 뒤에 사람 목적어가 끼어있지 않고 바로 빈칸이 오면 동명사 목적어가 와야 하므로 'upgrading'이 정답입니다."
+    },
+    { 
+      v: "prevented the industrial chemical from", 
+      obj: "contaminating", 
+      plain: "contaminate", 
+      toV: "to contaminate", 
+      ctx: "the municipal drinking reservoir during the flash flood",
+      customHint: "단서: [📌 관용표현 TOP 1] prevent A from ~ing (A가 ~하는 것을 막다)",
+      customGp: "G-POINT 20: prevent [stop, keep] A from ~ing",
+      customExp: "전치사 from 뒤에는 동명사가 오며, 'prevent A from ~ing'는 지텔프 최빈출 관용표현이므로 'contaminating'이 정답입니다."
+    },
+    { 
+      v: "looked forward to", 
+      obj: "receiving", 
+      plain: "receive", 
+      toV: "to receive", 
+      ctx: "the certified patent clearance certificate from the federal intellectual bureau",
+      customHint: "단서: [📌 관용표현 TOP 2] look forward to ~ing (to가 전치사이므로 동명사가 정답!)",
+      customGp: "G-POINT 20: look forward to ~ing",
+      customExp: "look forward to에서 'to'는 to부정사가 아니라 전치사이므로 뒤에 동명사인 'receiving'이 정답입니다. (단골 낚시 표현!)"
+    }
   ],
 
   infinitiveVerbs: [
@@ -1036,7 +1066,37 @@ const GTELP_GENERATOR = {
     { v: "struggled", obj: "to balance", plain: "balance", ing: "balancing", ctx: "the stringent operational budget constraints with employee safety training" },
     { v: "demanded", obj: "to inspect", plain: "inspect", ing: "inspecting", ctx: "the unredacted financial transaction records during the audit proceeding" },
     { v: "strove", obj: "to maintain", plain: "maintain", ing: "maintaining", ctx: "exceptional customer satisfaction ratings across all global service centers" },
-    { v: "resolved", obj: "to overhaul", plain: "overhaul", ing: "overhauling", ctx: "the legacy cloud infrastructure to minimize latency for mobile users" }
+    { v: "resolved", obj: "to overhaul", plain: "overhaul", ing: "overhauling", ctx: "the legacy cloud infrastructure to minimize latency for mobile users" },
+    { 
+      v: "encouraged the young researchers", 
+      obj: "to pursue", 
+      plain: "pursue", 
+      ing: "pursuing", 
+      ctx: "groundbreaking genomic experiments independently",
+      customHint: "단서: [🚨 준동사 오답-POINT 1 주의!] encourage + 목적어(A) 뒤 목적격보어는 to부정사!",
+      customGp: "G-POINT 19 / 준동사 오답-POINT 1: encourage A to V",
+      customExp: "encourage 뒤에 목적어(the young researchers)가 있으므로 5형식 목적격보어 자리에는 to부정사인 'to pursue'가 정답입니다. (출제 단골 1순위 함정!)"
+    },
+    { 
+      v: "advised the regional sales managers", 
+      obj: "to review", 
+      plain: "review", 
+      ing: "reviewing", 
+      ctx: "the revised distribution partnership terms carefully before signing",
+      customHint: "단서: [🚨 준동사 오답-POINT 1 주의!] advise + 목적어(A) 뒤 목적격보어는 to부정사!",
+      customGp: "G-POINT 19 / 준동사 오답-POINT 1: advise A to V",
+      customExp: "advise 뒤에 목적어(the managers)가 있으므로 목적격보어로 to부정사인 'to review'가 정답입니다."
+    },
+    { 
+      v: "required all factory personnel", 
+      obj: "to wear", 
+      plain: "wear", 
+      ing: "wearing", 
+      ctx: "approved safety goggles and respirators in hazardous chemical zones",
+      customHint: "단서: [🚨 준동사 오답-POINT 1 주의!] require + 목적어(A) 뒤 목적격보어는 to부정사!",
+      customGp: "G-POINT 19 / 준동사 오답-POINT 1: require A to V",
+      customExp: "require 뒤에 목적어(all factory personnel)가 있으므로 목적격보어 자리에 to부정사인 'to wear'가 정답입니다."
+    }
   ],
 
   // =========================================================================
@@ -1600,9 +1660,9 @@ const GTELP_GENERATOR = {
         question: question,
         options: options,
         triggerWord: item.v,
-        hint: `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표: ${item.v} + 동명사)`,
-        gPoint: `G-POINT 13: ${item.v} + 동명사(-ing)`,
-        explanation: `동사 '${item.v}'는 동명사만을 목적어로 취하는 지텔프 빈출 대표 동사이므로 '${item.obj}'가 정답입니다.`
+        hint: item.customHint || `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표: ${item.v} + 동명사)`,
+        gPoint: item.customGp || `G-POINT 13: ${item.v} + 동명사(-ing)`,
+        explanation: item.customExp || `동사 '${item.v}'는 동명사만을 목적어로 취하는 지텔프 빈출 대표 동사이므로 '${item.obj}'가 정답입니다.`
       };
     } else {
       const options = [
@@ -1620,9 +1680,9 @@ const GTELP_GENERATOR = {
         question: question,
         options: options,
         triggerWord: item.v,
-        hint: `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표: ${item.v} + to부정사)`,
-        gPoint: `G-POINT 14: ${item.v} + to부정사(to V)`,
-        explanation: `동사 '${item.v}'는 미래지향적인 to부정사만을 목적어로 취하므로 '${item.obj}'가 정답입니다.`
+        hint: item.customHint || `단서: 동사 '${item.v}' 뒤 목적어 자리 (암기표: ${item.v} + to부정사)`,
+        gPoint: item.customGp || `G-POINT 14: ${item.v} + to부정사(to V)`,
+        explanation: item.customExp || `동사 '${item.v}'는 미래지향적인 to부정사만을 목적어로 취하므로 '${item.obj}'가 정답입니다.`
       };
     }
   },
