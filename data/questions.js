@@ -1345,6 +1345,95 @@ const QUESTIONS_DATABASE = [
     hint: "단서: 앞문장의 조건을 지켜야 하며, '그렇지 않으면' 추가 요금을 지불해야 한다는 반대 조건",
     gPoint: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 조건 Otherwise (그렇지 않으면)",
     explanation: "명령·당위 표현 뒤에서 '그렇지 않으면 다른 불이익이 따른다'는 조건적 반전 경고를 나타내므로 'Otherwise'가 정답입니다."
+  },
+
+  // =========================================================================
+  // 8. 선생님 맞춤 오답 & 특훈 문항 (켈리 G-TELP 매일 문법 5제 완벽 디지털화)
+  // =========================================================================
+  {
+    id: "KELLY-DAILY-01",
+    category: "custom",
+    subCategory: "준동사 (to부정사)",
+    subCategoryName: "켈리 매일문법 1번 > 가주어 it 진주어 to부정사",
+    question: "It is beneficial for adult caregivers ___________ positive facial expressions for babies. Talking with babies also helps the brain develop. [출제자 켈리]",
+    options: [
+      { text: "having shown", isCorrect: false },
+      { text: "to show", isCorrect: true },
+      { text: "to be showing", isCorrect: false },
+      { text: "showing", isCorrect: false }
+    ],
+    triggerWord: "It is beneficial ... [to V]",
+    hint: "단서: 문두의 가주어 It + 형용사 beneficial + 의미상 주어 for adult caregivers ➔ 진주어 to부정사 자리!",
+    gPoint: "G-POINT 18: 가주어 it ... 진주어 to부정사 (to V)",
+    explanation: "가주어 it이 문두에 있고 의미상 주어(for adult caregivers) 뒤에 진주어가 와야 하는 자리이므로 to부정사인 'to show'가 정답입니다. (준동사 진주어 공식: It is 형용사 + for 목적격 + to V)"
+  },
+  {
+    id: "KELLY-DAILY-02",
+    category: "custom",
+    subCategory: "시제 (미래진행)",
+    subCategoryName: "켈리 매일문법 2번 [내 오답] > 시간부사절(before) + 주절 미래진행형",
+    question: "Before the professor gives a lecture, students ___________ quizzes to identify what they know and what they don't know. Their scores in quizzes will be reflected on their final grade. [출제자 켈리]",
+    options: [
+      { text: "is taking", isCorrect: false },
+      { text: "will be taking", isCorrect: true },
+      { text: "would take", isCorrect: false },
+      { text: "had taken", isCorrect: false }
+    ],
+    triggerWord: "Before the professor gives (현재) + will be reflected",
+    hint: "단서 1: 지텔프 시제는 진행형(-ing)만 정답 (c, d 즉시 소거) / 단서 2: 시간부사절(Before) 현재동사 ➔ 주절 미래진행형 (will be -ing) / 단서 3: 복수주어 students이므로 is taking 수일치 탈락!",
+    gPoint: "G-POINT 7: 시간·조건 부사절(before, when) 현재동사 ➔ 주절 미래진행형 (will be -ing)",
+    explanation: "[켈리쌤의 1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) would take와 (d) had taken은 바로 소거합니다.\n2. (a) is taking은 주어가 복수(students)인데 단수동사 is를 썼으므로 수일치 오류로 탈락합니다.\n3. 시간부사절인 Before절에 현재시제(gives)가 쓰였으므로 '시간/조건 부사절에서 현재가 미래를 대신한다'는 문법 규칙에 따라 주절에는 미래진행형인 'will be taking'이 정답입니다!"
+  },
+  {
+    id: "KELLY-DAILY-03",
+    category: "custom",
+    subCategory: "준동사 (to부정사)",
+    subCategoryName: "켈리 매일문법 3번 > 명사 수식 to부정사 (ability to V)",
+    question: "Unlike animals, humans have the ability ___________, which allows humans to thrive. Those abilities also make it possible to create innovative solutions when they face adversity in life. [출제자 켈리]",
+    options: [
+      { text: "to infer", isCorrect: true },
+      { text: "inferring", isCorrect: false },
+      { text: "having inferred", isCorrect: false },
+      { text: "to have inferred", isCorrect: false }
+    ],
+    triggerWord: "the ability to V",
+    hint: "단서: 빈칸 앞 명사 'ability(능력)'를 뒤에서 수식하는 형용사 역할 ➔ to부정사 (to infer)",
+    gPoint: "G-POINT 17: 명사 + to부정사 (~할 명사: ability to V)",
+    explanation: "선지를 보면 준동사 문제로 (a)와 (b)로 압축됩니다. 빈칸 앞에 있는 명사 ability를 뒤에서 수식해 주는 형용사 역할을 해야 하므로 to부정사인 'to infer'가 정답입니다."
+  },
+  {
+    id: "KELLY-DAILY-04",
+    category: "custom",
+    subCategory: "조동사 (must)",
+    subCategoryName: "켈리 매일문법 4번 [내 오답] > 무조건 해야 하는 의무 (must)",
+    question: "Chandler ___________ renew his driver's license to extend his license expiration date. Otherwise, he can't drive any more. Because he is not a U.S. citizen, his driver's license isn't allowed to renew online. [출제자 켈리]",
+    options: [
+      { text: "should", isCorrect: false },
+      { text: "can", isCorrect: false },
+      { text: "might", isCorrect: false },
+      { text: "must", isCorrect: true }
+    ],
+    triggerWord: "Otherwise, he can't drive any more (의무 강제성)",
+    hint: "단서: 뒷문장 'Otherwise, he can't drive any more(그렇지 않으면 더 이상 운전할 수 없다)' ➔ 단순 권고가 아닌 법적/강제적 의무 must!",
+    gPoint: "G-POINT 29: 무조건 해야 하는 의무, 법적 강제성 = must (should는 권유/충고)",
+    explanation: "[켈리쌤의 1초 컷 오답 분석]\n운전면허증을 갱신하지 않으면 '더 이상 운전할 수 없다(Otherwise, he can't drive any more)'라고 법적 제재가 뒤따르므로, 이는 '단순히 하는 게 좋다'는 권고(should)가 아니라 운전을 하기 위해 '무조건 해야 하는 필수적 의무'입니다. 따라서 절대적 의무를 나타내는 'must'가 정답입니다."
+  },
+  {
+    id: "KELLY-DAILY-05",
+    category: "custom",
+    subCategory: "시제 (현재완료진행)",
+    subCategoryName: "켈리 매일문법 5번 [내 오답] > Since + 과거동사 ➔ 주절 현재완료진행형",
+    question: "Since she learned how to make French toast, she ___________ it for dinner. Although it tastes awful, Jack pretends to like her cooking. [출제자 켈리]",
+    options: [
+      { text: "has been making", isCorrect: true },
+      { text: "was making", isCorrect: false },
+      { text: "had made", isCorrect: false },
+      { text: "will make", isCorrect: false }
+    ],
+    triggerWord: "Since she learned (과거)",
+    hint: "단서 1: 지텔프 시제는 진행형(-ing)만 정답 (c, d 즉시 소거) / 단서 2: 'Since + 과거시점' ➔ 주절은 무조건 'have/has been -ing'!",
+    gPoint: "G-POINT 9: since + 과거동사 ➔ 현재완료진행형 (has/have been -ing)",
+    explanation: "[켈리쌤의 1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) had made와 (d) will make는 1초 만에 소거합니다.\n2. 문두에 '~이후로 쭉'을 뜻하는 'Since + 과거동사(learned)'가 나왔으므로, 주절에는 과거부터 현재까지 동작이 이어져 오는 현재완료진행형 'has been making'이 정답입니다!"
   }
 ];
 
@@ -1358,5 +1447,5 @@ const CATEGORIES = [
   { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 18제 완비" },
   { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 18제 완비" },
   { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" },
-  { id: "custom", name: "선생님 맞춤 오답 & 특훈", icon: "bookmark", badge: "사진 등록 대기" }
+  { id: "custom", name: "선생님 맞춤 오답 & 특훈", icon: "bookmark", badge: "켈리 매일문법 5제 완비" }
 ];

@@ -74,6 +74,19 @@ class GTelpApp {
       } else {
         this.dailyStats = this.getDefaultDailyStats();
       }
+
+      // 켈리 매일 문법 5제 중 사용자 오답(2, 4, 5번) 오답노트 보관함 초기 연동
+      if (!this.history.kellyDailyInitialized) {
+        if (!this.history.wrongIds) this.history.wrongIds = [];
+        const kellyWrongIds = ['KELLY-DAILY-02', 'KELLY-DAILY-04', 'KELLY-DAILY-05'];
+        kellyWrongIds.forEach(id => {
+          if (!this.history.wrongIds.includes(id)) {
+            this.history.wrongIds.push(id);
+          }
+        });
+        this.history.kellyDailyInitialized = true;
+        this.saveUserData();
+      }
     } catch (e) {
       console.error(e);
     }
