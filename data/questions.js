@@ -1355,7 +1355,7 @@ const CATEGORIES = [
   { id: "gerund_infinitive", name: "준동사 (동명사 vs to부정사)", icon: "git-commit", badge: "실전 20제 탑재" },
   { id: "subjunctive", name: "가정법 (과거 & 과거완료)", icon: "wand-2", badge: "실전 10제 완비" },
   { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "실전 10제 완비" },
-  { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 6제 탑재" },
-  { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 6제 탑재" },
+  { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 18제 완비" },
+  { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 18제 완비" },
   { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" }
 ];

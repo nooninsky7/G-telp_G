@@ -916,6 +916,56 @@ const GTELP_GENERATOR = {
       hint: "'those who ~' (~하는 사람들) 필수 표현 + they 중복 소거",
       gp: "G-POINT 21: those(사람들) + who + 동사",
       exp: "'those who + 동사'는 '~하는 사람들'을 뜻하는 빈출 표현입니다. 선행사가 사람(those)이며 they가 중복된 보기는 오답이므로 'who stole...'가 정답입니다."
+    },
+    {
+      sub: "시간 명사 선행사 + 불완전 절 (관계부사 when 오답 함정)",
+      q: "The Renaissance era was a pivotal period ___________ due to its revolutionary breakthroughs in perspective and human anatomy.",
+      correct: "that art historians admire greatly",
+      dist: ["when art historians admire it greatly", "where art historians admire greatly", "whom art historians admire greatly"],
+      trig: "a pivotal period (시간 명사) + admire의 목적어 결여",
+      hint: "선행사가 시간(period)이지만 타동사 admire의 목적어가 빠진 불완전 절이므로 when이 아닌 관계대명사 that/which 필요!",
+      gp: "G-POINT 23: 불완전 절은 관계대명사 (관계부사 when은 완전 절에만 가능)",
+      exp: "선행사가 시간 명사(period)처럼 보이지만, 뒤에 admire의 목적어가 없는 불완전한 절이 이어지므로 관계부사 when은 쓸 수 없고 관계대명사 that이 정답입니다."
+    },
+    {
+      sub: "전치사 + 목적격 관계대명사 (to whom)",
+      q: "The veteran project supervisor ___________ the junior engineers reported every morning was renowned for his patience and technical expertise.",
+      correct: "to whom the junior engineers reported",
+      dist: ["to which the junior engineers reported", "whom the junior engineers reported to him", "that to the junior engineers reported"],
+      trig: "supervisor (사람 선행사) + report to(~에게 보고하다)",
+      hint: "사람 선행사 + 전치사 to 뒤 목적격 관계대명사 whom",
+      gp: "G-POINT 22: 전치사 + 사람 목적격 = 전치사 + whom (that 불가)",
+      exp: "선행사가 사람(supervisor)이며 'report to ~'의 전치사 to가 관계대명사 앞으로 이동한 형태이므로 'to whom'이 정답입니다. 전치사 뒤에는 that을 쓸 수 없습니다."
+    },
+    {
+      sub: "사물 선행사 계속적 용법 (which + 수동태)",
+      q: "The city council unanimously approved the green initiative proposal, ___________ to decrease metropolitan carbon emissions by thirty percent by 2030.",
+      correct: "which is expected to decrease carbon emissions",
+      dist: ["that is expected to decrease carbon emissions", "where it is expected to decrease carbon emissions", "what is expected to decrease carbon emissions"],
+      trig: ", (콤마) + proposal (사물 선행사)",
+      hint: "콤마(,) 뒤 계속적 용법은 that 소거! 사물 선행사이므로 which",
+      gp: "G-POINT 25: 콤마 뒤 that 소거 -> which",
+      exp: "선행사가 사물 명사(proposal)이고 콤마 뒤 계속적 용법이므로 that은 쓸 수 없으며 which가 정답입니다."
+    },
+    {
+      sub: "소유격 관계대명사 (whose + 무관사 명사)",
+      q: "The biotechnology startup ___________ secured five million dollars in venture capital funding during the medical technology expo.",
+      correct: "whose innovative diagnostic kit detected rare viruses",
+      dist: ["which innovative diagnostic kit detected rare viruses", "who innovative diagnostic kit detected rare viruses", "whom diagnostic kit detected rare viruses"],
+      trig: "startup [ ] kit (스타트업의 진단 키트 - 소유격 관계)",
+      hint: "선행사(startup)와 뒤의 무관사 명사(kit)의 소유 관계 (~의)",
+      gp: "G-POINT 24: 선행사 + 소유 관계(~의) + 완전한 문장 = whose",
+      exp: "선행사 startup과 명사 kit 사이에 '스타트업의 진단 키트'라는 소유격 관계가 성립하므로 whose가 정답입니다."
+    },
+    {
+      sub: "이유 선행사 관계부사 (why + 완전한 절)",
+      q: "The chief financial officer refused to disclose the exact commercial reason ___________ prior to the shareholder conference.",
+      correct: "why the quarterly dividend was reduced",
+      dist: ["which the quarterly dividend was reduced", "whom the quarterly dividend was reduced", "where the quarterly dividend was reduced"],
+      trig: "the reason (이유 선행사) + 수동태 완전한 절",
+      hint: "이유 선행사(reason) + 수동태로 완전한 절 -> why",
+      gp: "G-POINT 26: the reason + 완전한 절 = 관계부사 why",
+      exp: "선행사가 이유(the reason)이고 뒤에 '분기 배당금이 삭감되었다'는 완전한 수동태 절이 오므로 관계부사 why가 정답입니다."
     }
   ],
 
@@ -1102,6 +1152,46 @@ const GTELP_GENERATOR = {
       hint: "손글씨 메모: 매우 불확실한 가능성에 대한 조심스러운 추측 -> might",
       gp: "G-POINT 31: 약한 추측 = might",
       exp: "목성의 위성 유로파의 얼음 지각 아래에 미생물이 존재할지도 모른다는 매우 조심스럽고 불확실한 과학적 가설을 제시하므로 might가 정답입니다."
+    },
+    {
+      sub: "항공 규정상의 절대적 의무 (must)",
+      q: "According to mandatory international civil aviation regulations, all passengers ___________ fasten their seatbelts whenever the illuminated overhead sign is switched on.",
+      correct: "must",
+      dist: ["shall", "could", "may"],
+      trig: "mandatory regulations (강제적 법규)",
+      hint: "손글씨 메모: 무조건 해야 하는 의무, 법적 강제성 -> must",
+      gp: "G-POINT 29: 무조건 해야 하는 의무, 규칙 = must",
+      exp: "국제 항공 규정상 승객이 반드시 지켜야 하는 '절대적 의무 및 법적 강제'를 나타내므로 must가 정답입니다."
+    },
+    {
+      sub: "신체 건강을 위한 전문가 권고/조언 (should)",
+      q: "In order to prevent repetitive wrist strain syndrome, ergonomic health specialists strongly advise that desk workers ___________ perform stretching routines every two hours.",
+      correct: "should",
+      dist: ["shall", "might", "would"],
+      trig: "strongly advise / in order to (권고/조언)",
+      hint: "손글씨 메모: 충고, 권유, 도덕성, (in order) to V와 함께 쓰임 -> should",
+      gp: "G-POINT 28: 충고, 권유, 도덕성 = should (in order to와 결합 빈출)",
+      exp: "손목 증후군을 예방하기 위해 스트레칭을 할 것을 조언하고 권유하는 문맥이므로 should가 정답입니다."
+    },
+    {
+      sub: "과거 특정 위기 상황에서의 능력 발휘 (could)",
+      q: "Despite the dense fog covering the rocky harbor yesterday morning, the seasoned maritime pilot ___________ steer the massive cargo ship into the dry dock without collision.",
+      correct: "could",
+      dist: ["shall", "must", "should"],
+      trig: "yesterday morning (과거 시점) + 능력 발휘",
+      hint: "손글씨 메모: can의 과거 표현 / 과거 시점의 능력 -> could",
+      gp: "G-POINT 27: can의 과거 시점 능력 표현 = could",
+      exp: "어제 아침 짙은 안개 속에서도 안전하게 선박을 정박시킬 수 있었다는 '과거의 능력'을 나타내므로 could가 정답입니다."
+    },
+    {
+      sub: "회원권 공식 혜택상의 허용/권한 (can)",
+      q: "Subscribers who hold the executive premium membership ___________ enter the private business lounge at all international terminals free of charge.",
+      correct: "can",
+      dist: ["shall", "must", "would"],
+      trig: "membership benefit (허가/가능)",
+      hint: "손글씨 메모: 자격/조건에 따른 허가 및 가능성 -> can",
+      gp: "G-POINT 27: 자격 및 허가, 능력 = can",
+      exp: "프리미엄 회원에게 주어지는 전용 라운지 무료 이용 '권한 및 가능성'을 나타내므로 can이 정답입니다."
     }
   ],
 
