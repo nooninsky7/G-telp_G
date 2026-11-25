@@ -12,6 +12,8 @@ class GTelpApp {
     this.wrongQuestionStore = {};
     this.dailyStats = this.getDefaultDailyStats();
     this.currentSessionType = 'gerund_infinitive';
+    this.selectedQuestionCount = 10;
+    this.customCycle = { unvisitedIds: [], round: 1 };
 
     // 타이머 변수
     this.timerInterval = null;
@@ -75,6 +77,14 @@ class GTelpApp {
         this.dailyStats = this.getDefaultDailyStats();
       }
 
+      // 비중복 순환 사이클 로드
+      const savedCycle = localStorage.getItem('gtelp_custom_cycle');
+      if (savedCycle) {
+        this.customCycle = JSON.parse(savedCycle);
+      } else {
+        this.customCycle = { unvisitedIds: [], round: 1 };
+      }
+
       // 켈리 매일 문법 5제 중 사용자 오답(2, 4, 5번) 오답노트 보관함 초기 연동
       if (!this.history.kellyDailyInitialized) {
         if (!this.history.wrongIds) this.history.wrongIds = [];
@@ -96,6 +106,7 @@ class GTelpApp {
     localStorage.setItem('gtelp_user_history', JSON.stringify(this.history));
     localStorage.setItem('gtelp_wrong_questions_store', JSON.stringify(this.wrongQuestionStore));
     localStorage.setItem('gtelp_daily_stats', JSON.stringify(this.dailyStats));
+    localStorage.setItem('gtelp_custom_cycle', JSON.stringify(this.customCycle));
   }
 
   recordDailySet(categoryId, questionCount) {
@@ -321,7 +332,16 @@ class GTelpApp {
   }
 
   bindEvents() {
-    document.getElementById('btn-start-session').addEventListener('click', () => this.startQuizSession(this.currentCategory, 10));
+    document.getElementById('btn-start-session').addEventListener('click', () => {
+      this.startQuizSession(this.currentCategory, this.selectedQuestionCount);
+    });
+
+    ['5', '10', 'all'].forEach(cnt => {
+      const btn = document.getElementById(`btn-count-${cnt}`);
+      if (btn) {
+        btn.addEventListener('click', () => this.setSelectedQuestionCount(cnt));
+      }
+    });
     
     // 26문제 풀세트 모의고사 버튼
     const btn26 = document.getElementById('btn-start-full-26');
@@ -597,6 +617,21 @@ class GTelpApp {
     }
   }
 
+  setSelectedQuestionCount(count) {
+    this.selectedQuestionCount = count === 'all' ? 'all' : parseInt(count, 10);
+    ['5', '10', 'all'].forEach(c => {
+      const btn = document.getElementById(`btn-count-${c}`);
+      if (btn) {
+        if ((c === 'all' && this.selectedQuestionCount === 'all') || (parseInt(c, 10) === this.selectedQuestionCount)) {
+          btn.className = "px-3 py-1 rounded-lg transition bg-white text-indigo-700 shadow-xs";
+        } else {
+          btn.className = "px-3 py-1 rounded-lg transition text-indigo-100 hover:text-white";
+        }
+      }
+    });
+    this.updateSelectedCategoryBanner();
+  }
+
   updateSelectedCategoryBanner() {
     const cat = CATEGORIES.find(c => c.id === this.currentCategory) || CATEGORIES[2];
     const count = this.currentCategory === 'all' 
@@ -615,9 +650,32 @@ class GTelpApp {
     else if (cat.id === 'relative') desc = "콤마 뒤 that 불가, 사람/사물 선행사 구분 등 관계대명사/관계부사 핵심을 훈련합니다.";
     else if (cat.id === 'modal') desc = "문맥에 따른 의무(must/should), 가능성(may/can) 등 조동사 해석을 훈련합니다.";
     else if (cat.id === 'conjunction') desc = "although(접속사) vs despite(전치사), however 등 문맥 연결어 논리 관계를 훈련합니다.";
-    else if (cat.id === 'custom') desc = "선생님이 내주신 과제나 교재에서 직접 찍어 보내주신 오답 및 중요 특훈 문항을 실제 시험 형식으로 집중 복습합니다.";
+    else if (cat.id === 'custom') desc = "선생님이 내주신 과제나 교재 오답 문제를 비중복 순환 문제은행으로 한 번씩 전부 마스터할 때까지 반복 훈련합니다.";
 
     this.dom.selectedCatDesc.textContent = desc;
+
+    // 시작 버튼 텍스트 업데이트
+    const btnTextEl = document.getElementById('btn-start-session-text');
+    if (btnTextEl) {
+      const cntStr = this.selectedQuestionCount === 'all' ? `전체 ${count}문제 모두` : `${this.selectedQuestionCount}문제`;
+      btnTextEl.textContent = `🔥 ${cat.name} ${cntStr} 시작하기 (중복없는 순환 풀이)`;
+    }
+
+    // 순환 뱃지 표시
+    const cycleBadge = document.getElementById('cycle-status-badge');
+    if (cycleBadge) {
+      if (this.currentCategory === 'custom') {
+        cycleBadge.classList.remove('hidden');
+        const customPool = this.questions.filter(q => q.category === 'custom');
+        const unvisitedCount = this.customCycle && this.customCycle.unvisitedIds 
+          ? this.customCycle.unvisitedIds.filter(id => customPool.some(q => q.id === id)).length 
+          : customPool.length;
+        const currentRound = (this.customCycle && this.customCycle.round) ? this.customCycle.round : 1;
+        cycleBadge.textContent = `🔄 ${currentRound}회독 순환 중 (남은 미풀이: ${unvisitedCount}개)`;
+      } else {
+        cycleBadge.classList.add('hidden');
+      }
+    }
   }
 
   // =========================================================================
@@ -632,21 +690,57 @@ class GTelpApp {
       }
       this.currentSessionType = 'custom';
       this.startTimer();
-      const shuffled = [...customPool].sort(() => Math.random() - 0.5);
-      var selected = shuffled.slice(0, Math.min(count, customPool.length));
+
+      const numToPick = (count === 'all' || count > customPool.length) ? customPool.length : count;
+
+      // =========================================================================
+      // 비중복 순환 알고리즘 (모든 문제를 한 번씩 풀 때까지 중복 없이 고루 출제)
+      // =========================================================================
+      if (!this.customCycle) {
+        this.customCycle = { unvisitedIds: [], round: 1 };
+      }
+      this.customCycle.unvisitedIds = (this.customCycle.unvisitedIds || []).filter(id => customPool.some(q => q.id === id));
+      
+      if (this.customCycle.unvisitedIds.length === 0) {
+        this.customCycle.unvisitedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
+      }
+
+      let pickedIds = [];
+      if (count === 'all') {
+        pickedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
+        this.customCycle.unvisitedIds = [];
+        this.customCycle.round = (this.customCycle.round || 1) + 1;
+      } else {
+        while (pickedIds.length < numToPick) {
+          if (this.customCycle.unvisitedIds.length === 0) {
+            this.customCycle.round = (this.customCycle.round || 1) + 1;
+            this.customCycle.unvisitedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
+          }
+          const nextId = this.customCycle.unvisitedIds.shift();
+          if (nextId && !pickedIds.includes(nextId)) {
+            pickedIds.push(nextId);
+          }
+        }
+      }
+
+      this.saveUserData();
+      var selected = pickedIds.map(id => customPool.find(q => q.id === id)).filter(Boolean);
     } else {
-      this.currentSessionType = (categoryId === 'full_26' || count === 26) ? 'full_26' : categoryId;
+      const is26 = categoryId === 'full_26' || count === 26;
+      this.currentSessionType = is26 ? 'full_26' : categoryId;
       this.startTimer();
       var selected = [];
 
+      const targetCount = count === 'all' ? 10 : count;
+
       // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 문제 생성
       if (typeof GTELP_GENERATOR !== 'undefined') {
-        selected = GTELP_GENERATOR.generateSet(categoryId, count);
+        selected = GTELP_GENERATOR.generateSet(categoryId, targetCount);
       } else {
         let pool = categoryId === 'all' ? [...this.questions] : this.questions.filter(q => q.category === categoryId);
         if (pool.length === 0) pool = [...this.questions];
         const shuffled = [...pool].sort(() => Math.random() - 0.5);
-        selected = shuffled.slice(0, Math.min(count, pool.length));
+        selected = shuffled.slice(0, Math.min(targetCount, pool.length));
       }
     }
 
