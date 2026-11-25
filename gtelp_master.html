@@ -57,18 +57,22 @@
         </div>
       </div>
 
-      <div class="flex items-center space-x-1.5 md:space-x-2">
-        <button id="btn-open-sync" class="flex items-center gap-1 px-2.5 md:px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition border border-emerald-200">
-          <span>📱</span>
-          <span>기기 동기화</span>
+      <div class="flex items-center space-x-1 md:space-x-1.5">
+        <button id="btn-refresh" title="최신 업데이트 바로 적용 (캐시 새로고침)" class="flex items-center gap-1 px-2 md:px-2.5 py-1.5 rounded-lg text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 transition border border-sky-200 shadow-2xs">
+          <span id="refresh-icon" class="inline-block text-xs">🔄</span>
+          <span>새로고침</span>
         </button>
-        <button id="btn-open-cheat" class="flex items-center gap-1 px-2.5 md:px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition border border-indigo-200">
+        <button id="btn-open-sync" class="flex items-center gap-1 px-2 md:px-2.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition border border-emerald-200">
+          <span>📱</span>
+          <span class="hidden sm:inline">기기</span><span>동기화</span>
+        </button>
+        <button id="btn-open-cheat" class="flex items-center gap-1 px-2 md:px-2.5 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition border border-indigo-200">
           <span>📖</span>
           <span>공식표</span>
         </button>
-        <button id="btn-open-add" class="flex items-center gap-1 px-2.5 md:px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
+        <button id="btn-open-add" class="flex items-center gap-1 px-2 md:px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
           <span>➕</span>
-          <span>문제 추가</span>
+          <span>추가</span>
         </button>
       </div>
     </div>
@@ -4167,6 +4171,10 @@ class GTelpApp {
     }
 
     document.getElementById('btn-home').addEventListener('click', () => this.showDashboard());
+    const btnRefresh = document.getElementById('btn-refresh');
+    if (btnRefresh) {
+      btnRefresh.addEventListener('click', () => this.forceRefreshApp());
+    }
     document.getElementById('btn-quit-quiz').addEventListener('click', () => {
       if (confirm('현재 풀던 세트를 종료하고 메인으로 돌아갈까요?')) {
         this.stopTimer();
@@ -5073,6 +5081,19 @@ class GTelpApp {
         ${trapsHtml}
       </div>
     `;
+  }
+
+  forceRefreshApp() {
+    const icon = document.getElementById('refresh-icon');
+    if (icon) {
+      icon.style.transition = 'transform 0.6s ease';
+      icon.style.transform = 'rotate(360deg)';
+    }
+    // 캐시 무효화 쿼리스트링 부착하여 완전 새로고침 (최신 업데이트 즉시 반영)
+    setTimeout(() => {
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.location.href = cleanUrl + '?t=' + Date.now();
+    }, 250);
   }
 
   openAddModal() {

@@ -320,6 +320,10 @@ class GTelpApp {
     }
 
     document.getElementById('btn-home').addEventListener('click', () => this.showDashboard());
+    const btnRefresh = document.getElementById('btn-refresh');
+    if (btnRefresh) {
+      btnRefresh.addEventListener('click', () => this.forceRefreshApp());
+    }
     document.getElementById('btn-quit-quiz').addEventListener('click', () => {
       if (confirm('현재 풀던 세트를 종료하고 메인으로 돌아갈까요?')) {
         this.stopTimer();
@@ -1226,6 +1230,19 @@ class GTelpApp {
         ${trapsHtml}
       </div>
     `;
+  }
+
+  forceRefreshApp() {
+    const icon = document.getElementById('refresh-icon');
+    if (icon) {
+      icon.style.transition = 'transform 0.6s ease';
+      icon.style.transform = 'rotate(360deg)';
+    }
+    // 캐시 무효화 쿼리스트링 부착하여 완전 새로고침 (최신 업데이트 즉시 반영)
+    setTimeout(() => {
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.location.href = cleanUrl + '?t=' + Date.now();
+    }, 250);
   }
 
   openAddModal() {
