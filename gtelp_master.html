@@ -3751,7 +3751,8 @@ const CATEGORIES = [
   { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "실전 10제 완비" },
   { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 18제 완비" },
   { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 18제 완비" },
-  { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" }
+  { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" },
+  { id: "custom", name: "선생님 맞춤 오답 & 특훈", icon: "bookmark", badge: "사진 등록 대기" }
 ];
 
 
@@ -4353,6 +4354,7 @@ class GTelpApp {
     else if (cat.id === 'relative') desc = "콤마 뒤 that 불가, 사람/사물 선행사 구분 등 관계대명사/관계부사 핵심을 훈련합니다.";
     else if (cat.id === 'modal') desc = "문맥에 따른 의무(must/should), 가능성(may/can) 등 조동사 해석을 훈련합니다.";
     else if (cat.id === 'conjunction') desc = "although(접속사) vs despite(전치사), however 등 문맥 연결어 논리 관계를 훈련합니다.";
+    else if (cat.id === 'custom') desc = "선생님이 내주신 과제나 교재에서 직접 찍어 보내주신 오답 및 중요 특훈 문항을 실제 시험 형식으로 집중 복습합니다.";
 
     this.dom.selectedCatDesc.textContent = desc;
   }
@@ -4361,18 +4363,30 @@ class GTelpApp {
   // 10문제 또는 26문제 무한 실전 동적 생성 엔진 연동
   // =========================================================================
   startQuizSession(categoryId, count = 10) {
-    this.currentSessionType = (categoryId === 'full_26' || count === 26) ? 'full_26' : categoryId;
-    this.startTimer();
-    let selected = [];
-
-    // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 문제 생성
-    if (typeof GTELP_GENERATOR !== 'undefined') {
-      selected = GTELP_GENERATOR.generateSet(categoryId, count);
+    if (categoryId === 'custom') {
+      const customPool = this.questions.filter(q => q.category === 'custom');
+      if (customPool.length === 0) {
+        alert("📷 [선생님 맞춤 오답 & 특훈 보관함 안내]\n\n아직 등록된 선생님 문제가 없습니다.\n\n선생님이 내주신 과제나 틀렸던 교재 문제 사진을 채팅창에 올려주시면, 지문/선지/정답/해설을 정확히 디지털화하여 이곳에 즉시 등록해 드립니다!");
+        return;
+      }
+      this.currentSessionType = 'custom';
+      this.startTimer();
+      const shuffled = [...customPool].sort(() => Math.random() - 0.5);
+      var selected = shuffled.slice(0, Math.min(count, customPool.length));
     } else {
-      let pool = categoryId === 'all' ? [...this.questions] : this.questions.filter(q => q.category === categoryId);
-      if (pool.length === 0) pool = [...this.questions];
-      const shuffled = [...pool].sort(() => Math.random() - 0.5);
-      selected = shuffled.slice(0, Math.min(count, pool.length));
+      this.currentSessionType = (categoryId === 'full_26' || count === 26) ? 'full_26' : categoryId;
+      this.startTimer();
+      var selected = [];
+
+      // 동적 무한 생성 엔진이 있으면 즉석에서 신선한 G-TELP 규격 문제 생성
+      if (typeof GTELP_GENERATOR !== 'undefined') {
+        selected = GTELP_GENERATOR.generateSet(categoryId, count);
+      } else {
+        let pool = categoryId === 'all' ? [...this.questions] : this.questions.filter(q => q.category === categoryId);
+        if (pool.length === 0) pool = [...this.questions];
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        selected = shuffled.slice(0, Math.min(count, pool.length));
+      }
     }
 
     // 문제 추출 후 완벽한 무작위 셔플 (Fisher-Yates 셔플로 순서 완전히 섞기)
