@@ -1108,86 +1108,189 @@ const GTELP_GENERATOR = {
   // =========================================================================
   // 7. 연결어 (Conjunctions & Connectors) - 10종 고유 실전 문제
   // =========================================================================
+  // 7. 연결어 풀 (접속사 vs 접속부사 vs 전치사 - 18문항 엄선)
+  // G-POINT 32 (접속부사의 자리), G-POINT 33 (접속사의 자리), 전치사 구분
+  // =========================================================================
   conjunctionPool: [
     {
-      sub: "양보 접속사 (Although + 절)",
-      q: "___________ the manufacturing enterprise encountered severe supply chain disruptions throughout the winter, they succeeded in surpassing their revenue target.",
-      correct: "Although",
-      dist: ["Despite", "Because of", "However"],
-      trig: "Although vs Despite",
-      hint: "단서: 뒤에 주어+동사 절(the enterprise encountered...)이 연결됨",
-      gp: "G-POINT 27: S+V 절을 이끄는 양보 접속사 = Although",
-      exp: "뒤에 완전한 주어+동사 절이 오고 역접 양보 의미이므로 접속사 Although가 정답입니다. (Despite는 전치사)"
-    },
-    {
-      sub: "양보 전치사 (Despite + 명사구)",
-      q: "___________ torrential monsoon rainstorms during the early morning rush hour, all scheduled commuter express trains arrived on time.",
-      correct: "Despite",
-      dist: ["Although", "Even though", "Whereas"],
-      trig: "torrential rainstorms (명사구)",
-      hint: "단서: 뒤에 동사가 없는 순수 명사구(torrential rainstorms)",
-      gp: "G-POINT 28: 명사(구)를 목적어로 취하는 양보 전치사 = Despite / In spite of",
-      exp: "뒤에 주어+동사 절이 아닌 명사구만 이어지므로 전치사 Despite가 정답입니다."
-    },
-    {
-      sub: "역접 연결부사 (However)",
-      q: "The aerospace prototype exhibited flawless aerodynamic stability in computer simulations. ___________, unexpected overheating occurred during high-altitude testing.",
+      sub: "역접 접속부사 (However)",
+      q: "The aerospace startup encountered severe funding shortages and technical setbacks during its first two years. ___________, the engineering team persevered and finally launched the satellite into orbit.",
       correct: "However",
       dist: ["Therefore", "Furthermore", "Consequently"],
-      trig: "stability vs overheating (대조)",
-      hint: "단서: 앞문장(긍정 결과)과 뒷문장(발열 문제) 간의 역접 대조",
-      gp: "G-POINT 29: 앞뒤 문맥 반전 연결부사 = However (그러나)",
-      exp: "시뮬레이션 호평과 실제 비행에서의 문제점이라는 상반된 두 문장을 잇는 역접 연결부사 However가 정답입니다."
+      trig: "funding shortages vs launched satellite (반전 대조)",
+      hint: "단서: 앞문장(시련/자금난)과 뒷문장(위성 발사 성공)의 역접 대조. 마침표 뒤 콤마 앞 자리.",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 역접 However (그러나)",
+      exp: "자금난과 실패를 겪었으나 마침내 성공시켰다는 상반된 두 문장을 대등하게 이어주므로 역접 접속부사 However가 정답입니다."
     },
     {
-      sub: "인과 연결부사 (Therefore)",
-      q: "Severe freezing blizzards grounded all regional cargo aircraft last night. ___________, express logistics packages will be delayed by one business day.",
+      sub: "인과 접속부사 (Therefore)",
+      q: "Severe freezing blizzards grounded all regional cargo aircraft throughout the night. ___________, express delivery packages will be delayed by at least one business day.",
       correct: "Therefore",
       dist: ["However", "Nevertheless", "Otherwise"],
       trig: "grounded aircraft -> delayed packages (인과)",
-      hint: "단서: 앞문장(원인)과 뒷문장(결과)의 명확한 인과관계",
-      gp: "G-POINT 30: 원인과 결과 연결부사 = Therefore (따라서, 그러므로)",
-      exp: "항공편 결항이라는 원인으로 인해 배송이 지연된다는 당연한 결과가 이어지므로 인과 접속부사 Therefore가 정답입니다."
+      hint: "단서: 앞문장(항공기 결항 원인)과 뒷문장(배송 지연 결과)의 필연적 인과관계",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 인과 Therefore (따라서, 그러므로)",
+      exp: "폭설 결항이라는 원인으로 인해 배송이 지연된다는 당연한 귀결이 이어지므로 인과 접속부사 Therefore가 정답입니다."
+    },
+    {
+      sub: "첨가 접속부사 (Furthermore)",
+      q: "The redesigned mobile banking application offers streamlined biometric authentication for faster logins. ___________, it reduces smartphone battery consumption by twenty percent.",
+      correct: "Furthermore",
+      dist: ["However", "Instead", "Nonetheless"],
+      trig: "biometric login + reduced battery (장점 나열)",
+      hint: "단서: 앞문장의 장점(간편인증)에 이어 또 다른 긍정적 이점(배터리 절감)을 추가하는 순접 첨가",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 순접/첨가 Furthermore / Moreover (게다가, 더욱이)",
+      exp: "로그인 간소화에 이어 배터리 절약이라는 추가적 장점을 나열하고 있으므로 첨가 접속부사 Furthermore가 정답입니다."
+    },
+    {
+      sub: "양보 접속부사 (Nevertheless)",
+      q: "The chief violinist was suffering from high fever and severe throat inflammation. ___________, she gave an unforgettable solo performance that received a standing ovation.",
+      correct: "Nevertheless",
+      dist: ["Therefore", "Moreover", "As a result"],
+      trig: "severe fever vs standing ovation (양보 반전)",
+      hint: "단서: 고열과 인후염(악조건)에도 불구하고 감동적인 연주로 기립박수(호조건)를 받았다는 양보 흐름",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 양보 Nevertheless / Nonetheless (그럼에도 불구하고)",
+      exp: "건강 이상에도 불구하고 훌륭한 연주를 완수했다는 문맥이므로 '그럼에도 불구하고'를 뜻하는 접속부사 Nevertheless가 정답입니다."
+    },
+    {
+      sub: "조건 접속부사 (Otherwise)",
+      q: "All conference participants must complete the online badge registration before 5:00 PM. ___________, they will be required to pay an additional on-site administrative fee.",
+      correct: "Otherwise",
+      dist: ["In addition", "Consequently", "Meanwhile"],
+      trig: "register before 5 PM or pay fee (조건/경고)",
+      hint: "단서: 앞의 마감 시한을 지켜야 하며, '그렇지 않으면' 추가 요금을 지불해야 한다는 반대 조건",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 조건 Otherwise (그렇지 않으면)",
+      exp: "명령·당위 표현 뒤에서 '그렇지 않으면 다른 불이익이 따른다'는 조건적 반전 경고를 나타내므로 Otherwise가 정답입니다."
+    },
+    {
+      sub: "대조 접속부사 (In contrast)",
+      q: "Sales of traditional desktop computers declined steadily across all domestic retail stores last quarter. ___________, demand for portable lightweight tablets surged by nearly forty percent.",
+      correct: "In contrast",
+      dist: ["Similarly", "Therefore", "Furthermore"],
+      trig: "sales declined vs demand surged (상반 대조)",
+      hint: "단서: 데스크톱 판매 감소와 태블릿 수요 40% 급증이라는 두 통계적 사실의 뚜렷한 대조",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 대조 In contrast / On the contrary (반면에, 대조적으로)",
+      exp: "한쪽의 하락과 다른 쪽의 급증을 정면으로 대비시키고 있으므로 대조 접속부사 In contrast가 정답입니다."
+    },
+    {
+      sub: "예시 접속부사 (For example)",
+      q: "Many nocturnal animals have developed specialized biological adaptations to survive pitch darkness. ___________, owls possess oversized eyes and asymmetric ears to locate prey with pinpoint accuracy.",
+      correct: "For example",
+      dist: ["However", "Therefore", "Instead"],
+      trig: "nocturnal animals -> owls (일반 -> 구체)",
+      hint: "단서: 일반적 진술(야행성 동물의 적응)에 이어 구체적 종(올빼미의 감각 기관)을 예로 듦",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 예시 For example / For instance (예를 들어)",
+      exp: "포괄적 진술에 대한 구체적인 대표 사례를 소개하고 있으므로 예시 접속부사 For example이 정답입니다."
+    },
+    {
+      sub: "대체 접속부사 (Instead)",
+      q: "The board of directors did not approve the risky overseas acquisition plan proposed by management. ___________, they instructed the executive team to focus on expanding domestic market share.",
+      correct: "Instead",
+      dist: ["Moreover", "Therefore", "In spite of"],
+      trig: "did not approve A -> instructed B (부정 후 대안)",
+      hint: "단서: 앞문장의 부정(A안 미승인) 후 대안적 행동(국내 점유율 확대 지시) 제시",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 대체 Instead (대신에)",
+      exp: "앞선 제안을 거부하고 대신 다른 방향을 취했다는 대체 관계이므로 접속부사 Instead가 정답입니다."
+    },
+    {
+      sub: "결과 접속부사 (Consequently)",
+      q: "The pharmaceutical researcher repeatedly failed to follow standard sterilization procedures in the laboratory. ___________, the entire experimental batch was contaminated and had to be discarded.",
+      correct: "Consequently",
+      dist: ["However", "Nevertheless", "On the other hand"],
+      trig: "failed sterilization -> batch contaminated (인과 결과)",
+      hint: "단서: 소독 절차 위반(원인)으로 인해 시료가 오염 폐기되었다는 직접적 결과",
+      gp: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 결과 Consequently / As a result (그 결과, 따라서)",
+      exp: "원인에 뒤따르는 최종 결과를 나타내므로 결과 접속부사 Consequently가 정답입니다."
+    },
+    {
+      sub: "양보 접속사 (Although + 절)",
+      q: "___________ the regional sales division faced intense competition from discount retailers throughout the year, it managed to achieve a ten percent profit margin.",
+      correct: "Although",
+      dist: ["Despite", "Because of", "However"],
+      trig: "Although + S + V (양보 절)",
+      hint: "단서: 뒤에 주어(the division) + 동사(faced) 절이 연결되고 역접/양보 문맥. 문두 빈칸.",
+      gp: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 양보 Although (비록 ~이지만)",
+      exp: "뒤에 주어+동사를 갖춘 완전한 부사절이 오고 역접의 의미이므로 양보 접속사 Although가 정답입니다. (Despite는 전치사이므로 탈락)"
     },
     {
       sub: "이유 접속사 (Because + 절)",
-      q: "___________ the raw component materials were held up in customs for two weeks, the assembly plant temporarily halted production lines.",
+      q: "___________ the raw electronic components were held up in international customs for over two weeks, the automobile assembly plant had to suspend operations temporarily.",
       correct: "Because",
       dist: ["Because of", "Due to", "Owing to"],
-      trig: "the materials were held up (절)",
-      hint: "단서: 뒤에 주어(the materials) + 동사(were held up) 절이 이어짐",
-      gp: "G-POINT 31: 절을 이끄는 이유 접속사 = Because",
-      exp: "뒤에 완전한 주어+동사 절이 오므로 전치사(Due to 등)가 아닌 이유 접속사 Because가 정답입니다."
+      trig: "Because + S + V (이유 절)",
+      hint: "단서: 뒤에 주어(the components) + 동사(were held up) 절이 이어짐. 전치사(Due to 등) 소거.",
+      gp: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 이유 Because / Since (~때문에)",
+      exp: "부품이 세관에 묶였다는 원인을 절(S+V)로 이끌고 있으므로 접속사 Because가 정답입니다. (보기의 Because of, Due to, Owing to는 전치사)"
+    },
+    {
+      sub: "대조 접속사 (While + 절)",
+      q: "___________ lightweight solar panels generate clean electricity efficiently during sunny daylight hours, wind turbines produce reliable renewable energy day and night.",
+      correct: "While",
+      dist: ["During", "Despite", "Unlike"],
+      trig: "solar panels generate vs wind turbines produce (대조 절)",
+      hint: "단서: 뒤에 주어+동사 절(solar panels generate...)이 오며 태양광과 풍력 발전의 특징을 상호 대조",
+      gp: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 대조 While (~인 반면에, ~함에 반해)",
+      exp: "절과 절을 연결하며 두 사실의 대조를 나타내므로 접속사 While이 정답입니다. (During은 명사구 전치사)"
+    },
+    {
+      sub: "조건 접속사 (Unless = If not)",
+      q: "___________ all building visitors present an authorized security identification badge at the front desk, security officers will deny them entry to the main research facility.",
+      correct: "Unless",
+      dist: ["If", "Because", "Although"],
+      trig: "Unless + 긍정문 -> 부정 주절 (부정 조건)",
+      hint: "단서: '신분증을 제시하지 않는다면(Unless), 출입이 불허될 것이다'라는 부정 조건",
+      gp: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 부정 조건 Unless (만약 ~하지 않는다면)",
+      exp: "문맥상 신분증을 보여주지 않을 경우 입장이 금지된다는 조건이므로 Unless(= If ... not)가 정답입니다."
+    },
+    {
+      sub: "시간 접속사 (As soon as + 절)",
+      q: "___________ the renowned keynote speaker stepped onto the stage, the thousands of eager attendees erupted into thunderous applause.",
+      correct: "As soon as",
+      dist: ["During", "Despite", "However"],
+      trig: "stepped onto stage -> erupted applause (즉각 동작)",
+      hint: "단서: 연사가 무대에 오르자마자 환호성이 터져 나왔다는 즉각적 선후 관계를 잇는 접속사",
+      gp: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 시간 As soon as (~하자마자)",
+      exp: "두 개의 절을 연결하며 한 동작이 일어나자마자 다음 동작이 일어남을 나타내므로 As soon as가 정답입니다."
+    },
+    {
+      sub: "조건 접속사 (Provided that + 절)",
+      q: "The municipal government will grant the commercial construction permit ___________ the developer implements comprehensive environmental protection measures.",
+      correct: "provided that",
+      dist: ["despite", "in spite of", "because of"],
+      trig: "permit granted provided that S + V (조건 절)",
+      hint: "단서: 뒤에 주어(the developer) + 동사(implements) 절이 이어지며 허가의 조건을 제시",
+      gp: "G-POINT 33: 접속사의 자리 (S+V [접속사] S+V.) -> 조건 Provided that / Providing (만약 ~라면)",
+      exp: "뒤에 완전한 절이 오고 '~라는 조건으로/만약 ~라면'의 의미이므로 조건 접속사 provided that이 정답입니다."
+    },
+    {
+      sub: "양보 전치사 (Despite + 명사구)",
+      q: "___________ torrential monsoon rainstorms and severe flood warnings across the metropolitan area, all high-speed commuter trains operated right on schedule.",
+      correct: "Despite",
+      dist: ["Although", "Even though", "Whereas"],
+      trig: "torrential monsoon rainstorms (명사구)",
+      hint: "단서: 빈칸 뒤에 동사 없이 순수 명사구(rainstorms and warnings)만 연결됨 -> 1초 컷 전치사 자리!",
+      gp: "G-POINT 32/33 소거 공식: 뒤에 동사가 없는 명사구 -> 전치사 Despite / In spite of",
+      exp: "빈칸 뒤에 주어+동사 절이 아닌 명사구만 이어지므로 접속사(Although 등)가 아닌 전치사 Despite가 정답입니다."
     },
     {
       sub: "이유 전치사 (Due to + 명사구)",
-      q: "___________ unforeseen logistical delays at the overseas maritime terminal, delivery dates for retail merchandise have been rescheduled.",
+      q: "___________ unforeseen logistical bottlenecks at the overseas shipping port, shipment dates for retail orders have been delayed by ten days.",
       correct: "Due to",
       dist: ["Because", "Since", "As"],
-      trig: "unforeseen logistical delays (명사구)",
-      hint: "단서: 뒤에 절이 아닌 명사구(delays)만 연결됨",
-      gp: "G-POINT 32: 명사구를 이끄는 이유 전치사 = Due to / Because of",
-      exp: "뒤에 주어+동사가 없는 순수 명사구만 있으므로 전치사 Due to가 정답입니다."
+      trig: "unforeseen logistical bottlenecks (명사구)",
+      hint: "단서: 빈칸 뒤에 주어+동사 절이 없고 명사구(bottlenecks)만 존재 -> 전치사 자리!",
+      gp: "G-POINT 32/33 소거 공식: 명사구 앞 이유 표현 -> 전치사 Due to / Because of",
+      exp: "뒤에 절이 아닌 명사구만 있으므로 이유 접속사(Because 등)가 아닌 이유 전치사 Due to가 정답입니다."
     },
     {
-      sub: "시간/대조 접속사 (While + 절)",
-      q: "___________ senior executives held discussions inside the boardroom, technical staff prepared the stage equipment in the auditorium.",
-      correct: "While",
-      dist: ["During", "Throughout", "Despite"],
-      trig: "executives held discussions (절)",
-      hint: "단서: 뒤에 주어+동사 절이 오며 동시 동작(~하는 동안)을 나타냄",
-      gp: "G-POINT 33: 절을 이끄는 시간 접속사 = While (During은 전치사)",
-      exp: "뒤에 주어+동사 절이 오고 동시 동작을 나타내므로 접속사 While이 정답입니다. (During은 명사구 전치사)"
-    },
-    {
-      sub: "첨가 연결부사 (Furthermore)",
-      q: "The upgraded smartphone application offers streamlined biometric authentication. ___________, it reduces battery consumption by twenty percent.",
-      correct: "Furthermore",
-      dist: ["However", "Instead", "Nevertheless"],
-      trig: "streamlined auth + reduced battery (장점 첨가)",
-      hint: "단서: 앞문장의 장점에 이어 또 다른 장점을 추가하는 순접 첨가",
-      gp: "G-POINT 29: 순접/정보 추가 연결부사 = Furthermore / Moreover (게다가)",
-      exp: "인증 간소화에 이어 배터리 절감이라는 긍정적 기능을 추가하는 문맥이므로 Furthermore가 정답입니다."
+      sub: "기간 전치사 (During + 특정 기간)",
+      q: "The head of corporate strategy did not answer any telephone calls or urgent text messages ___________ the intensive three-hour board meeting yesterday.",
+      correct: "during",
+      dist: ["while", "although", "whereas"],
+      trig: "the three-hour board meeting (특정 기간 명사구)",
+      hint: "단서: 뒤에 절(S+V)이 아닌 특정 사건/기간을 가리키는 명사구(meeting)가 연결됨",
+      gp: "G-POINT 32/33 소거 공식: 특정 기간 명사구 앞 = 전치사 During vs 절 앞 = 접속사 While",
+      exp: "3시간 회의라는 특정 기간 명사구가 목적어로 이어지므로 기간 전치사 during이 정답입니다. (while은 접속사)"
     }
   ],
 

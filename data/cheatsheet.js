@@ -113,11 +113,40 @@ const CHEATSHEET = {
     ]
   },
   conjunction: {
-    title: "7. 연결어 (접속사 vs 전치사 vs 접속부사)",
+    title: "7. 연결어 (접속사 vs 접속부사 vs 전치사)",
     rules: [
-      { name: "접속사 vs 전치사 구분", desc: "양보: although/even though (+ 절) vs despite/in spite of (+ 명사구)\n이유: because/since (+ 절) vs because of/due to (+ 명사구)" },
-      { name: "접속부사 (문장 부사)", desc: "however (그러나), therefore (그러므로), furthermore (게다가), otherwise (그렇지 않으면)" },
-      { name: "논리적 연결", desc: "앞뒤 문장의 인과, 역접, 나열 관계를 정확히 해석하여 결정" }
+      { 
+        name: "🔍 켈리의 G-POINT 32 (접속부사의 자리)", 
+        desc: "• 형태: S + V. [ 접속부사 ], S + V. (마침표 찍고 새 문장 시작, 콤마 앞)\n• 특징: 문법적으로 없어도 문장이 성립함 (단독 부사 수식)\n• 대표어휘: However(그러나), Therefore(그러므로), Furthermore(게다가), Nevertheless(그럼에도 불구하고)" 
+      },
+      { 
+        name: "🔍 켈리의 G-POINT 33 (접속사의 자리)", 
+        desc: "• 형태: [ 접속사 ] S + V, S + V.  또는  S + V [ 접속사 ] S + V.\n• 특징: 한 문장 안에서 주어+동사(절) 2개를 연결하기 위해 '문법적으로 반드시 꼭 필요!'\n• 대표어휘: Although/Even though(비록 ~이지만), Because/Since(~ 때문에), While(~하는 반면, ~동안), If/Unless(만약 ~라면/~아니라면)" 
+      },
+      { 
+        name: "🔍 전치사의 자리", 
+        desc: "• 형태: [ 전치사 ] + 명사(구), S + V.\n• 특징: 뒤에 주어+동사 절이 오지 못하고 '명사 또는 명사구'만 위치함!\n• 대표어휘: Despite / In spite of (~에도 불구하고), Because of / Due to (~ 때문에), During (~ 동안에)" 
+      }
+    ],
+    traps: [
+      { 
+        name: "💡 이것만 외우면 끝! 지텔프 초빈출 연결어 핵심 4대 패밀리", 
+        desc: "시험에 나오는 수백 개 단어를 다 외울 필요 없습니다! 아래 핵심 4개 군만 알면 90% 이상 해결됩니다:\n" +
+              "① 역접/양보(그러나): Although/Even though (접속사) vs However/Nevertheless (접속부사) vs Despite (전치사)\n" +
+              "② 이유/인과(따라서, ~때문에): Because/Since (접속사) vs Therefore/Consequently (접속부사) vs Due to/Because of (전치사)\n" +
+              "③ 첨가/나열(게다가, 더욱이): Furthermore, Moreover, In addition (접속부사)\n" +
+              "④ 대조/반면(~하는 반면에): While, Whereas (접속사) vs In contrast, On the other hand (접속부사)" 
+      },
+      { 
+        name: "🚨 켈리쌤의 2단계 5초 컷 해결 공식 (문장부호 ➔ 부호 논리)", 
+        desc: "1단계 [구조 소거]: 마침표(.) 뒤 콤마(,) 앞이면 ➔ 접속사/전치사(Although, Because, Despite) 1초 컷 소거! 접속부사(However, Therefore)만 남김!\n" +
+              "반대로 한 문장에 S+V가 2개 연결되면 ➔ 접속부사(However, Therefore) 1초 컷 소거! 접속사(Although, Because)만 남김!\n" +
+              "2단계 [플러스/마이너스 부호법]: 앞문장(+) ↔ 뒷문장(-) 반대면 역접(However/Although), 앞문장(+) ➔ 뒷문장(+) 자연스러운 인과면 순접(Therefore/Because)!" 
+      },
+      {
+        name: "🚨 Unless 함정 주의",
+        desc: "unless = if ~ not (만약 ~하지 않는다면). 자체에 부정의 의미가 포함되어 있으므로 절 내에 not을 또 쓰지 않음!"
+      }
     ]
   }
 };

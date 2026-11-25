@@ -1190,7 +1190,7 @@ const QUESTIONS_DATABASE = [
     ],
     triggerWord: "Although vs Despite",
     hint: "단서: 뒤에 주어+동사 절(the sales team encountered ...)이 오고 양보의 의미",
-    gPoint: "G-TELP 연결어 공식: 절을 이끄는 양보 접속사 = Although (Despite는 전치사)",
+    gPoint: "G-POINT 33: 절을 이끄는 양보 접속사 = Although (Despite는 전치사)",
     explanation: "뒤에 '주어 + 동사'를 갖춘 절이 이어지며, '공급망 혼란을 겪었음에도 불구하고'라는 역접/양보의 관계이므로 접속사 'Although'가 정답입니다."
   },
   {
@@ -1198,7 +1198,7 @@ const QUESTIONS_DATABASE = [
     category: "conjunction",
     subCategory: "연결어",
     subCategoryName: "연결어 > 양보 전치사 (Despite + 명사구)",
-    question: "___________ torrential rainstorms during the morning rush hour, all scheduled express commuter trains arrived on time.",
+    question: "___________ torrential monsoon rainstorms and severe flood warnings across the city, all scheduled express commuter trains arrived on time.",
     options: [
       { text: "Despite", isCorrect: true },
       { text: "Although", isCorrect: false },
@@ -1206,15 +1206,15 @@ const QUESTIONS_DATABASE = [
       { text: "Whereas", isCorrect: false }
     ],
     triggerWord: "torrential rainstorms (명사구)",
-    hint: "단서: 뒤에 동사가 없는 순수 명사구(torrential rainstorms)",
-    gPoint: "G-TELP 연결어 공식: 명사(구)를 목적어로 취하는 양보 전치사 = Despite",
+    hint: "단서: 뒤에 동사가 없는 순수 명사구(rainstorms and warnings) -> 1초 컷 전치사 자리!",
+    gPoint: "G-POINT 32/33 소거 공식: 명사(구)를 목적어로 취하는 양보 전치사 = Despite",
     explanation: "뒤에 주어+동사 절이 아닌 명사구만 이어지므로 전치사 'Despite'가 정답입니다."
   },
   {
     id: "CONJ-03",
     category: "conjunction",
     subCategory: "연결어",
-    subCategoryName: "연결어 > 역접 연결부사 (However)",
+    subCategoryName: "연결어 > 역접 접속부사 (However)",
     question: "The prototype showed remarkable test results in lab simulations. ___________, unexpected hardware overheating was detected during field testing.",
     options: [
       { text: "However", isCorrect: true },
@@ -1223,15 +1223,15 @@ const QUESTIONS_DATABASE = [
       { text: "Consequently", isCorrect: false }
     ],
     triggerWord: "remarkable vs overheating (대조)",
-    hint: "단서: 앞문장(긍정 결과)과 뒷문장(발열 문제) 간의 역접 대조",
-    gPoint: "G-TELP 연결어: 앞뒤 문맥 반전 = However (그러나)",
+    hint: "단서: 앞문장(긍정 결과)과 뒷문장(발열 문제) 간의 역접 대조. 마침표 뒤 콤마 앞 자리.",
+    gPoint: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 역접 However (그러나)",
     explanation: "시뮬레이션 호평과 실제 필드 테스트에서의 문제점이라는 상반된 두 문장을 잇는 역접 연결부사 'However'가 정답입니다."
   },
   {
     id: "CONJ-04",
     category: "conjunction",
     subCategory: "연결어",
-    subCategoryName: "연결어 > 인과 연결부사 (Therefore)",
+    subCategoryName: "연결어 > 인과 접속부사 (Therefore)",
     question: "Severe blizzards grounded all regional cargo flights last night. ___________, delivery packages will be delayed by one business day.",
     options: [
       { text: "Therefore", isCorrect: true },
@@ -1241,7 +1241,7 @@ const QUESTIONS_DATABASE = [
     ],
     triggerWord: "grounded flights -> delayed packages (인과)",
     hint: "단서: 앞문장(원인)과 뒷문장(결과)의 명확한 인과관계",
-    gPoint: "G-TELP 연결어: 원인과 결과 = Therefore (따라서, 그러므로)",
+    gPoint: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 인과 Therefore (따라서, 그러므로)",
     explanation: "비행기 결항이라는 원인으로 인해 배송이 지연된다는 당연한 결과가 이어지므로 인과 접속부사 'Therefore'가 정답입니다."
   },
   {
@@ -1257,15 +1257,32 @@ const QUESTIONS_DATABASE = [
       { text: "Owing to", isCorrect: false }
     ],
     triggerWord: "the materials were held up (절)",
-    hint: "단서: 뒤에 주어+동사 절이 이어짐",
-    gPoint: "G-POINT 31: 절을 이끄는 이유 접속사 = Because",
+    hint: "단서: 뒤에 주어+동사 절이 이어짐 (전치사 Due to 등 소거)",
+    gPoint: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 이유 Because / Since",
     explanation: "뒤에 완전한 주어+동사 절이 오므로 접속사 'Because'가 정답입니다."
   },
   {
     id: "CONJ-06",
     category: "conjunction",
     subCategory: "연결어",
-    subCategoryName: "연결어 > 첨가 연결부사 (Furthermore)",
+    subCategoryName: "연결어 > 이유 전치사 (Due to + 명사구)",
+    question: "___________ unforeseen logistical bottlenecks at the overseas shipping port, delivery dates for retail merchandise have been rescheduled.",
+    options: [
+      { text: "Due to", isCorrect: true },
+      { text: "Because", isCorrect: false },
+      { text: "Since", isCorrect: false },
+      { text: "As", isCorrect: false }
+    ],
+    triggerWord: "unforeseen logistical bottlenecks (명사구)",
+    hint: "단서: 뒤에 주어+동사 절이 없고 명사구(bottlenecks)만 존재 -> 전치사 자리!",
+    gPoint: "G-POINT 32/33 소거 공식: 명사구 앞 이유 표현 -> 전치사 Due to / Because of",
+    explanation: "뒤에 절이 아닌 명사구만 있으므로 이유 접속사가 아닌 이유 전치사 'Due to'가 정답입니다."
+  },
+  {
+    id: "CONJ-07",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 첨가 접속부사 (Furthermore)",
     question: "The upgraded mobile application offers streamlined biometric authentication. ___________, it reduces battery consumption by twenty percent.",
     options: [
       { text: "Furthermore", isCorrect: true },
@@ -1275,8 +1292,59 @@ const QUESTIONS_DATABASE = [
     ],
     triggerWord: "streamlined auth + reduced battery (장점 첨가)",
     hint: "단서: 앞문장의 장점에 이어 또 다른 장점을 추가하는 순접 첨가",
-    gPoint: "G-POINT 29: 순접/정보 추가 연결부사 = Furthermore / Moreover",
+    gPoint: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 첨가 Furthermore / Moreover (게다가)",
     explanation: "인증 간소화에 이어 배터리 절감이라는 긍정적 기능을 추가하는 문맥이므로 'Furthermore'가 정답입니다."
+  },
+  {
+    id: "CONJ-08",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 대조 접속사 (While + 절)",
+    question: "___________ lightweight solar panels generate clean electricity efficiently during sunny daytime, wind turbines produce reliable power day and night.",
+    options: [
+      { text: "While", isCorrect: true },
+      { text: "During", isCorrect: false },
+      { text: "Despite", isCorrect: false },
+      { text: "Unlike", isCorrect: false }
+    ],
+    triggerWord: "solar panels generate vs wind turbines produce (대조 절)",
+    hint: "단서: 뒤에 주어+동사 절이 오며 두 대상의 특징을 대조(~인 반면에). During은 전치사.",
+    gPoint: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 대조 While (~인 반면에)",
+    explanation: "절과 절을 연결하며 두 사실의 대조를 나타내므로 접속사 'While'이 정답입니다."
+  },
+  {
+    id: "CONJ-09",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 조건 접속사 (Unless = If not)",
+    question: "___________ all building visitors present an authorized security identification badge at the front desk, security officers will deny them entry to the facility.",
+    options: [
+      { text: "Unless", isCorrect: true },
+      { text: "If", isCorrect: false },
+      { text: "Because", isCorrect: false },
+      { text: "Although", isCorrect: false }
+    ],
+    triggerWord: "Unless + 긍정문 -> 부정 주절 (부정 조건)",
+    hint: "단서: '신분증을 제시하지 않는다면(Unless), 출입이 불허될 것이다'라는 부정 조건",
+    gPoint: "G-POINT 33: 접속사의 자리 ([접속사] S+V, S+V.) -> 부정 조건 Unless (만약 ~하지 않는다면)",
+    explanation: "문맥상 신분증을 보여주지 않을 경우 입장이 금지된다는 조건이므로 'Unless'(= If ... not)가 정답입니다."
+  },
+  {
+    id: "CONJ-10",
+    category: "conjunction",
+    subCategory: "연결어",
+    subCategoryName: "연결어 > 조건 접속부사 (Otherwise)",
+    question: "All conference attendees must complete online badge confirmation before 5:00 PM. ___________, they will be required to pay an on-site registration fee.",
+    options: [
+      { text: "Otherwise", isCorrect: true },
+      { text: "In addition", isCorrect: false },
+      { text: "Consequently", isCorrect: false },
+      { text: "Meanwhile", isCorrect: false }
+    ],
+    triggerWord: "register before 5 PM or pay fee (조건/경고)",
+    hint: "단서: 앞문장의 조건을 지켜야 하며, '그렇지 않으면' 추가 요금을 지불해야 한다는 반대 조건",
+    gPoint: "G-POINT 32: 접속부사의 자리 (S+V. [접속부사], S+V.) -> 조건 Otherwise (그렇지 않으면)",
+    explanation: "명령·당위 표현 뒤에서 '그렇지 않으면 다른 불이익이 따른다'는 조건적 반전 경고를 나타내므로 'Otherwise'가 정답입니다."
   }
 ];
 
@@ -1289,5 +1357,5 @@ const CATEGORIES = [
   { id: "should_omission", name: "Should 생략 (동사원형)", icon: "check-circle", badge: "실전 10제 완비" },
   { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 6제 탑재" },
   { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 6제 탑재" },
-  { id: "conjunction", name: "연결어 (접속사/부사)", icon: "share-2", badge: "실전 6제 탑재" }
+  { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" }
 ];
