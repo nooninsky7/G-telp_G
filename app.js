@@ -39,7 +39,8 @@ class GTelpApp {
       date: this.getTodayDateString(),
       totalSets: 0,
       totalQuestions: 0,
-      categories: {}
+      categories: {},
+      todayWrongStore: {}
     };
   }
 
@@ -77,15 +78,20 @@ class GTelpApp {
         this.dailyStats = this.getDefaultDailyStats();
       }
 
+      // 오늘 오답 저장소 확보
+      if (!this.dailyStats.todayWrongStore) {
+        this.dailyStats.todayWrongStore = {};
+      }
+
       // 비중복 순환 사이클 로드
       const savedCycle = localStorage.getItem('gtelp_custom_cycle');
       if (savedCycle) {
         this.customCycle = JSON.parse(savedCycle);
       } else {
-        this.customCycle = { unvisitedIds: [], round: 1 };
+        this.customCycle = { unvisitedIds: [], solvedInRound: 0, round: 1 };
       }
 
-      // 1번, 3번 문제 완전 영구 배제 (사용자 오답 2, 4, 5번만 엄격 유지)
+      // 1번, 3번 문제 완전 영구 배제
       this.questions = this.questions.filter(q => q.id !== 'KELLY-DAILY-01' && q.id !== 'KELLY-DAILY-03');
       if (this.customCycle && this.customCycle.unvisitedIds) {
         this.customCycle.unvisitedIds = this.customCycle.unvisitedIds.filter(id => id !== 'KELLY-DAILY-01' && id !== 'KELLY-DAILY-03');
@@ -98,17 +104,20 @@ class GTelpApp {
         delete this.wrongQuestionStore['KELLY-DAILY-03'];
       }
 
-      // 켈리 매일 문법 5제 중 사용자 오답(2, 4, 5번) 오답노트 보관함 초기 연동
-      if (!this.history.kellyDailyInitialized) {
-        if (!this.history.wrongIds) this.history.wrongIds = [];
-        const kellyWrongIds = ['KELLY-DAILY-02', 'KELLY-DAILY-04', 'KELLY-DAILY-05'];
-        kellyWrongIds.forEach(id => {
-          if (!this.history.wrongIds.includes(id)) {
-            this.history.wrongIds.push(id);
-          }
-        });
-        this.history.kellyDailyInitialized = true;
+      // Kelly 오답 문제는 '선생님 맞춤 오답' 문제은행에서만 순환 출제되도록 하고,
+      // 하단 '오늘 틀린 오답노트'에는 사용자가 오늘 직접 풀다 틀렸을 때만 순수하게 등록되도록 강제 연동 해제
+      const kellyWrongIds = ['KELLY-DAILY-02', 'KELLY-DAILY-04', 'KELLY-DAILY-05'];
+      if (this.history && this.history.wrongIds) {
+        this.history.wrongIds = this.history.wrongIds.filter(id => !kellyWrongIds.includes(id));
       }
+      if (this.wrongQuestionStore) {
+        kellyWrongIds.forEach(id => delete this.wrongQuestionStore[id]);
+      }
+      if (this.dailyStats.todayWrongStore) {
+        kellyWrongIds.forEach(id => delete this.dailyStats.todayWrongStore[id]);
+      }
+      delete this.history.kellyDailyInitialized;
+
       this.saveUserData();
     } catch (e) {
       console.error(e);
@@ -158,34 +167,16 @@ class GTelpApp {
     this.dailyStats.categories[categoryId].questions += questionCount;
   }
 
-  getWrongQuestionsList() {
-    const pool = [];
-    const storedKeys = Object.keys(this.wrongQuestionStore || {});
-    storedKeys.forEach(id => {
-      if (this.wrongQuestionStore[id]) {
-        pool.push(this.wrongQuestionStore[id]);
-      }
-    });
-
-    if (this.history.wrongIds) {
-      this.history.wrongIds.forEach(id => {
-        if (!pool.some(q => q.id === id)) {
-          const found = this.questions.find(q => q.id === id);
-          if (found) pool.push(found);
-        }
-      });
+  getTodayWrongQuestionsList() {
+    const today = this.getTodayDateString();
+    if (!this.dailyStats || this.dailyStats.date !== today || !this.dailyStats.todayWrongStore) {
+      return [];
     }
+    return Object.values(this.dailyStats.todayWrongStore);
+  }
 
-    // 켈리 매일문법 5제 중 오답(2, 4, 5번) 영구 보관 (다시 풀어 맞혀도 절대 사라지지 않음)
-    const kellyWrongIds = ['KELLY-DAILY-02', 'KELLY-DAILY-04', 'KELLY-DAILY-05'];
-    kellyWrongIds.forEach(id => {
-      if (!pool.some(q => q.id === id)) {
-        const found = this.questions.find(q => q.id === id);
-        if (found) pool.push(found);
-      }
-    });
-
-    return pool;
+  getWrongQuestionsList() {
+    return this.getTodayWrongQuestionsList();
   }
 
   // =========================================================================
@@ -393,8 +384,16 @@ class GTelpApp {
     }
 
     document.getElementById('btn-retry-session').addEventListener('click', () => {
+      if (this.currentSessionType === 'custom') {
+        this.startQuizSession('custom', 5);
+        return;
+      }
+      if (this.currentSessionType === 'wrong') {
+        this.startWrongSession();
+        return;
+      }
       const is26 = this.currentSessionType === 'full_26' || this.currentQuestions.length === 26;
-      this.startQuizSession(is26 ? 'full_26' : this.currentCategory, is26 ? 26 : 10);
+      this.startQuizSession(is26 ? 'full_26' : this.currentCategory, is26 ? 26 : this.selectedQuestionCount);
     });
     document.getElementById('btn-result-home').addEventListener('click', () => this.showDashboard());
 
@@ -456,24 +455,35 @@ class GTelpApp {
   renderDashboard() {
     const total = this.history.totalSolved || 0;
     const rate = total > 0 ? Math.round((this.history.totalCorrect / total) * 100) : 0;
-    const wrongList = this.getWrongQuestionsList();
-    const wrongCount = wrongList.length;
+    const todayWrongList = this.getTodayWrongQuestionsList();
+    const todayWrongCount = todayWrongList.length;
 
     this.dom.statSolved.textContent = total;
     this.dom.statRate.textContent = `${rate}%`;
-    this.dom.statWrongCount.textContent = wrongCount;
+    this.dom.statWrongCount.textContent = todayWrongCount;
     this.dom.statStreak.textContent = `${this.history.streak || 1}일`;
 
     const wrongCard = document.getElementById('card-wrong-notes');
     const wrongBadge = document.getElementById('wrong-badge');
     if (wrongCard) {
       wrongCard.classList.remove('opacity-50', 'pointer-events-none');
-      wrongCard.onclick = () => this.startWrongSession();
 
-      wrongCard.className = "bg-rose-50/50 p-5 rounded-2xl border-2 border-rose-300 hover:border-rose-400 hover:bg-rose-100/60 transition cursor-pointer shadow-sm flex items-center justify-between";
-      if (wrongBadge) {
-        wrongBadge.className = "text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-600 text-white shadow-xs animate-pulse";
-        wrongBadge.textContent = `🔥 ${Math.max(wrongCount, 3)}문제 무제한 복습하기`;
+      if (todayWrongCount === 0) {
+        wrongCard.className = "bg-white p-5 rounded-2xl border border-slate-200 hover:border-indigo-200 transition cursor-pointer shadow-xs flex items-center justify-between";
+        if (wrongBadge) {
+          wrongBadge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500";
+          wrongBadge.textContent = "오늘 오답 0개";
+        }
+        wrongCard.onclick = () => {
+          alert("👏 오늘 문제 풀이 중 틀린 문제가 없습니다!\n\n다른 파트나 실전 모의고사를 풀다가 틀린 문제가 생기면 이곳에 자동으로 모여 언제든 집중 복습할 수 있습니다.");
+        };
+      } else {
+        wrongCard.className = "bg-rose-50/50 p-5 rounded-2xl border-2 border-rose-300 hover:border-rose-400 hover:bg-rose-100/60 transition cursor-pointer shadow-sm flex items-center justify-between";
+        if (wrongBadge) {
+          wrongBadge.className = "text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-600 text-white shadow-xs animate-pulse";
+          wrongBadge.textContent = `🔥 오늘 틀린 ${todayWrongCount}문제 집중 복습하기`;
+        }
+        wrongCard.onclick = () => this.startWrongSession();
       }
     }
 
@@ -574,6 +584,9 @@ class GTelpApp {
 
   selectCategory(catId) {
     this.currentCategory = catId;
+    if (catId === 'custom') {
+      this.setSelectedQuestionCount(5);
+    }
     this.renderCategoryCards();
     this.updateSelectedCategoryBanner();
     this.renderDailyActivity();
@@ -666,15 +679,33 @@ class GTelpApp {
     else if (cat.id === 'relative') desc = "콤마 뒤 that 불가, 사람/사물 선행사 구분 등 관계대명사/관계부사 핵심을 훈련합니다.";
     else if (cat.id === 'modal') desc = "문맥에 따른 의무(must/should), 가능성(may/can) 등 조동사 해석을 훈련합니다.";
     else if (cat.id === 'conjunction') desc = "although(접속사) vs despite(전치사), however 등 문맥 연결어 논리 관계를 훈련합니다.";
-    else if (cat.id === 'custom') desc = "선생님이 내주신 과제나 교재 오답 문제를 비중복 순환 문제은행으로 한 번씩 전부 마스터할 때까지 반복 훈련합니다.";
+    else if (cat.id === 'custom') desc = "선생님 문제은행의 모든 문제를 5개씩 순환 출제합니다. 1번 풀거나 여러 번 연속으로 풀어 문제은행의 모든 문제를 1세트로 완주할 수 있습니다.";
 
     this.dom.selectedCatDesc.textContent = desc;
 
     // 시작 버튼 텍스트 업데이트
     const btnTextEl = document.getElementById('btn-start-session-text');
     if (btnTextEl) {
-      const cntStr = this.selectedQuestionCount === 'all' ? `전체 ${count}문제 모두` : `${this.selectedQuestionCount}문제`;
-      btnTextEl.textContent = `🔥 ${cat.name} ${cntStr} 시작하기 (중복없는 순환 풀이)`;
+      if (cat.id === 'custom') {
+        const customPool = this.questions.filter(q => q.category === 'custom');
+        const poolIds = customPool.map(q => q.id);
+        const unvisitedCount = (this.customCycle && this.customCycle.unvisitedIds && this.customCycle.unvisitedIds.length > 0)
+          ? this.customCycle.unvisitedIds.filter(id => poolIds.includes(id)).length
+          : customPool.length;
+        if (customPool.length <= 5) {
+          btnTextEl.textContent = `🔥 선생님 문제은행 ${customPool.length}문제 풀기 (1세트 완주)`;
+        } else {
+          const nextCount = Math.min(5, unvisitedCount);
+          if (nextCount < 5) {
+            btnTextEl.textContent = `🔥 선생님 문제은행 마지막 ${nextCount}문제 풀기 (1세트 완주)`;
+          } else {
+            btnTextEl.textContent = `🔥 선생님 문제은행 5문제 풀기 (순환 출제)`;
+          }
+        }
+      } else {
+        const cntStr = this.selectedQuestionCount === 'all' ? `전체 ${count}문제 모두` : `${this.selectedQuestionCount}문제`;
+        btnTextEl.textContent = `🔥 ${cat.name} ${cntStr} 시작하기 (중복없는 순환 풀이)`;
+      }
     }
 
     // 순환 뱃지 표시
@@ -683,11 +714,17 @@ class GTelpApp {
       if (this.currentCategory === 'custom') {
         cycleBadge.classList.remove('hidden');
         const customPool = this.questions.filter(q => q.category === 'custom');
-        const unvisitedCount = this.customCycle && this.customCycle.unvisitedIds 
-          ? this.customCycle.unvisitedIds.filter(id => customPool.some(q => q.id === id)).length 
-          : customPool.length;
+        const poolIds = customPool.map(q => q.id);
+        const unvisited = (this.customCycle && this.customCycle.unvisitedIds) 
+          ? this.customCycle.unvisitedIds.filter(id => poolIds.includes(id)) 
+          : [];
         const currentRound = (this.customCycle && this.customCycle.round) ? this.customCycle.round : 1;
-        cycleBadge.textContent = `🔄 ${currentRound}회독 순환 중 (남은 미풀이: ${unvisitedCount}개)`;
+        const totalCount = customPool.length;
+        const remaining = (this.customCycle && this.customCycle.unvisitedIds && this.customCycle.unvisitedIds.length > 0)
+          ? unvisited.length
+          : totalCount;
+        const solved = totalCount - remaining;
+        cycleBadge.textContent = `🔄 문제은행 ${currentRound}회독: [진행 ${solved} / 총 ${totalCount}문제] (남은 문제: ${remaining}개)`;
       } else {
         cycleBadge.classList.add('hidden');
       }
@@ -707,39 +744,32 @@ class GTelpApp {
       this.currentSessionType = 'custom';
       this.startTimer();
 
-      const numToPick = (count === 'all' || count > customPool.length) ? customPool.length : count;
-
       // =========================================================================
-      // 비중복 순환 알고리즘 (모든 문제를 한 번씩 풀 때까지 중복 없이 고루 출제)
+      // 선생님 문제은행 비중복 5문제 순환 알고리즘
+      // - 모든 문제가 1세트로 빠짐없이 풀릴 때까지 중복 없이 5개씩 출제
+      // - 1번 또는 여러 번 연속으로 풀 수 있으며, 모두 풀면 1세트 완주 후 다음 회독 시작
       // =========================================================================
       if (!this.customCycle) {
-        this.customCycle = { unvisitedIds: [], round: 1 };
+        this.customCycle = { unvisitedIds: [], solvedInRound: 0, round: 1 };
       }
-      this.customCycle.unvisitedIds = (this.customCycle.unvisitedIds || []).filter(id => customPool.some(q => q.id === id));
       
+      const poolIds = customPool.map(q => q.id);
+      this.customCycle.unvisitedIds = (this.customCycle.unvisitedIds || []).filter(id => poolIds.includes(id));
+
+      // 남은 미풀이 문항이 없으면 새로운 회독(1세트) 시작
       if (this.customCycle.unvisitedIds.length === 0) {
+        this.customCycle.round = (this.customCycle.round || 0) + 1;
         this.customCycle.unvisitedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
+        this.customCycle.solvedInRound = 0;
       }
 
-      let pickedIds = [];
-      if (count === 'all') {
-        pickedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
-        this.customCycle.unvisitedIds = [];
-        this.customCycle.round = (this.customCycle.round || 1) + 1;
-      } else {
-        while (pickedIds.length < numToPick) {
-          if (this.customCycle.unvisitedIds.length === 0) {
-            this.customCycle.round = (this.customCycle.round || 1) + 1;
-            this.customCycle.unvisitedIds = [...customPool].sort(() => Math.random() - 0.5).map(q => q.id);
-          }
-          const nextId = this.customCycle.unvisitedIds.shift();
-          if (nextId && !pickedIds.includes(nextId)) {
-            pickedIds.push(nextId);
-          }
-        }
-      }
-
+      // 기본 5문제(또는 남은 문항 수)를 뽑아 1세트로 출제
+      const numToPick = Math.min(5, this.customCycle.unvisitedIds.length);
+      const pickedIds = this.customCycle.unvisitedIds.splice(0, numToPick);
+      this.customCycle.solvedInRound = (this.customCycle.solvedInRound || 0) + pickedIds.length;
+      this.customCycle.justFinishedCycle = (this.customCycle.unvisitedIds.length === 0);
       this.saveUserData();
+
       var selected = pickedIds.map(id => customPool.find(q => q.id === id)).filter(Boolean);
     } else {
       const is26 = categoryId === 'full_26' || count === 26;
@@ -793,15 +823,16 @@ class GTelpApp {
   }
 
   startWrongSession() {
-    this.currentSessionType = 'wrong';
-    let wrongPool = this.getWrongQuestionsList();
+    let wrongPool = this.getTodayWrongQuestionsList();
     if (wrongPool.length === 0) {
-      wrongPool = this.questions.filter(q => q.category === 'custom');
+      alert("👏 오늘 문제 풀이 중 틀린 문제가 없습니다!\n\n다른 파트나 실전 모의고사를 풀다가 틀린 문제가 생기면 이곳에 자동으로 모여 집중 복습할 수 있습니다.");
+      return;
     }
 
+    this.currentSessionType = 'wrong';
     this.startTimer();
     const shuffled = [...wrongPool].sort(() => Math.random() - 0.5);
-    this.currentQuestions = shuffled.slice(0, 10).map(q => {
+    this.currentQuestions = shuffled.map(q => {
       const labels = ['A', 'B', 'C', 'D'];
       const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
       return {
@@ -963,12 +994,14 @@ class GTelpApp {
       this.history.totalCorrect = (this.history.totalCorrect || 0) + 1;
       // 오답노트 보존: 문제를 다시 맞히더라도 보관함에서 자동 삭제하지 않고 언제든 무제한 재복습 가능하도록 보존
     } else {
-      if (!this.history.wrongIds) this.history.wrongIds = [];
-      if (!this.history.wrongIds.includes(currentQ.id)) {
-        this.history.wrongIds.push(currentQ.id);
+      const today = this.getTodayDateString();
+      if (!this.dailyStats || this.dailyStats.date !== today) {
+        this.dailyStats = this.getDefaultDailyStats();
       }
-      if (!this.wrongQuestionStore) this.wrongQuestionStore = {};
-      this.wrongQuestionStore[currentQ.id] = {
+      if (!this.dailyStats.todayWrongStore) {
+        this.dailyStats.todayWrongStore = {};
+      }
+      const wrongItem = {
         id: currentQ.id,
         category: currentQ.category,
         subCategory: currentQ.subCategory,
@@ -980,6 +1013,14 @@ class GTelpApp {
         gPoint: currentQ.gPoint,
         explanation: currentQ.explanation
       };
+      this.dailyStats.todayWrongStore[currentQ.id] = wrongItem;
+
+      if (!this.history.wrongIds) this.history.wrongIds = [];
+      if (!this.history.wrongIds.includes(currentQ.id)) {
+        this.history.wrongIds.push(currentQ.id);
+      }
+      if (!this.wrongQuestionStore) this.wrongQuestionStore = {};
+      this.wrongQuestionStore[currentQ.id] = wrongItem;
     }
 
     this.saveUserData();
@@ -1083,8 +1124,26 @@ class GTelpApp {
 
     const catStats = this.dailyStats && this.dailyStats.categories ? this.dailyStats.categories[sessionCat] : null;
     const dailyBadge = document.getElementById('final-daily-badge');
-    if (dailyBadge && catStats) {
-      dailyBadge.innerHTML = `<span>📅</span> 오늘 <strong>${catStats.name}</strong> 누적 <strong>${catStats.sets}세트 (${catStats.questions}문제)</strong> 완료!`;
+    const isCustom = this.currentSessionType === 'custom';
+    const isWrong = this.currentSessionType === 'wrong';
+
+    if (dailyBadge) {
+      if (isCustom) {
+        const customPool = this.questions.filter(q => q.category === 'custom');
+        const round = (this.customCycle && this.customCycle.round) ? this.customCycle.round : 1;
+        const justFinished = this.customCycle && this.customCycle.justFinishedCycle;
+        if (justFinished) {
+          dailyBadge.innerHTML = `🏆 <strong>[선생님 문제은행 1세트 완주!]</strong> 전체 <strong>${customPool.length}문제를 빠짐없이 모두 풀었습니다!</strong> (${round}회독 완료)`;
+        } else {
+          const remaining = (this.customCycle && this.customCycle.unvisitedIds) ? this.customCycle.unvisitedIds.length : 0;
+          const solved = (this.customCycle && this.customCycle.solvedInRound) ? this.customCycle.solvedInRound : (customPool.length - remaining);
+          dailyBadge.innerHTML = `✨ <strong>[선생님 문제은행 5문제 완료]</strong> ${round}회독 진행: <strong>${solved} / ${customPool.length}문제</strong> (남은 문제: ${remaining}개)`;
+        }
+      } else if (isWrong) {
+        dailyBadge.innerHTML = `📝 <strong>[오늘의 오답 복습 완료]</strong> 틀렸던 문제들을 꼼꼼하게 복습했습니다!`;
+      } else if (catStats) {
+        dailyBadge.innerHTML = `<span>📅</span> 오늘 <strong>${catStats.name}</strong> 누적 <strong>${catStats.sets}세트 (${catStats.questions}문제)</strong> 완료!`;
+      }
     }
 
     // 실전 26제 모의고사 전용 G-TELP 100점 환산 및 6대 영역 분석 리포트
@@ -1228,7 +1287,21 @@ class GTelpApp {
 
     const retryBtn = document.getElementById('btn-retry-session');
     if (retryBtn) {
-      retryBtn.textContent = isFull26 ? '🔄 새로운 26제 모의고사 또 풀기' : '🔄 새로운 10문제 또 풀기';
+      if (isCustom) {
+        const remaining = (this.customCycle && this.customCycle.unvisitedIds) ? this.customCycle.unvisitedIds.length : 0;
+        const justFinished = this.customCycle && this.customCycle.justFinishedCycle;
+        const round = (this.customCycle && this.customCycle.round) ? this.customCycle.round : 1;
+        if (justFinished) {
+          retryBtn.textContent = `🔄 새로운 1세트(${round + 1}회독) 다시 시작하기`;
+        } else {
+          const nextBatch = Math.min(5, remaining);
+          retryBtn.textContent = `🔄 다음 ${nextBatch}문제 이어서 풀기 (순환)`;
+        }
+      } else if (isWrong) {
+        retryBtn.textContent = '🔄 오늘 오답 다시 복습하기';
+      } else {
+        retryBtn.textContent = isFull26 ? '🔄 새로운 26제 모의고사 또 풀기' : `🔄 새로운 ${this.selectedQuestionCount}문제 또 풀기`;
+      }
     }
 
     let message = "🎉 축하합니다! 완벽하게 마스터하고 계시네요!";
