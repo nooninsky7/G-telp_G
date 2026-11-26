@@ -118,6 +118,19 @@ class GTelpApp {
       }
       delete this.history.kellyDailyInitialized;
 
+      // 새로 추가된 선생님 문제가 사이클에 즉시 반영되도록 동기화
+      const customPool = this.questions.filter(q => q.category === 'custom');
+      const poolIds = customPool.map(q => q.id);
+      if (this.customCycle) {
+        if (!this.customCycle.unvisitedIds) this.customCycle.unvisitedIds = [];
+        this.customCycle.unvisitedIds = this.customCycle.unvisitedIds.filter(id => poolIds.includes(id));
+        poolIds.forEach(id => {
+          if (!this.customCycle.unvisitedIds.includes(id) && (!this.customCycle.solvedInRound || this.customCycle.unvisitedIds.length === 0)) {
+            this.customCycle.unvisitedIds.push(id);
+          }
+        });
+      }
+
       this.saveUserData();
     } catch (e) {
       console.error(e);
