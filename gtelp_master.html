@@ -782,7 +782,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-1",
         getQ: (s) => `Due to a sudden network glitch on the main billing server, ${s} ___________ the system configuration right now to prevent transaction errors.`,
         getCorrect: (v) => `is now ${v.ing}`,
-        distractors: (v) => [v.base + "s", v.ed, `will have been ${v.ing}`],
+        distractors: (v) => [`was ${v.ing}`, `will be ${v.ing}`, `has been ${v.ing}`],
         trigger: "right now",
         hint: "단서: 문장의 'right now' (현재 시점 부사) + 완료 기간(for/since) 없음",
         gPoint: "G-POINT 6: right now, at the moment -> 현재진행형 (am/is/are -ing)"
@@ -791,7 +791,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-2",
         getQ: (s) => `Be quiet in the hallway! The executive search committee ___________ the finalists behind closed doors at the moment.`,
         getCorrect: () => `is interviewing`,
-        distractors: () => [`interviewed`, `will interview`, `has interviewed`],
+        distractors: () => [`was interviewing`, `will be interviewing`, `had interviewed`],
         trigger: "at the moment",
         hint: "단서: 명령문 'Be quiet!' + 'at the moment (지금 이 순간)'",
         gPoint: "G-POINT 6: at the moment -> 현재진행형"
@@ -800,7 +800,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-3",
         getQ: (s) => `The urgent product recall announcement was released ten minutes ago. Currently, ${s} ___________ media inquiries at the press conference.`,
         getCorrect: (v) => `is ${v.ing}`,
-        distractors: (v) => [v.ed, `will ${v.base}`, `had ${v.ed}`],
+        distractors: (v) => [`was ${v.ing}`, `will be ${v.ing}`, `has been ${v.ing}`],
         trigger: "Currently",
         hint: "단서: 문장의 'Currently (현재)' + 기간 없음",
         gPoint: "G-POINT 6: Currently -> 현재진행형"
@@ -809,7 +809,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-4",
         getQ: (s) => `The flight schedule has been adjusted due to heavy snowfall. Now the airline representatives ___________ meal vouchers to stranded international travelers.`,
         getCorrect: () => `are distributing`,
-        distractors: () => [`distributed`, `will distribute`, `have distributed`],
+        distractors: () => [`were distributing`, `will be distributing`, `have distributed`],
         trigger: "Now",
         hint: "단서: 문두의 'Now' + 복수주어 representatives",
         gPoint: "G-POINT 6: Now -> 현재진행형"
@@ -818,7 +818,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-5",
         getQ: (s) => `Look at the presentation screen right now! ${s} ___________ the live telemetry data streaming from the oceanic probe.`,
         getCorrect: (v) => `is ${v.ing}`,
-        distractors: (v) => [v.ed, `will ${v.base}`, `had been ${v.ing}`],
+        distractors: (v) => [`was ${v.ing}`, `will be ${v.ing}`, `had been ${v.ing}`],
         trigger: "Look at ~ right now!",
         hint: "단서: 주목 명령문 'Look!' + 'right now'",
         gPoint: "G-POINT 6: Look/Listen + right now -> 현재진행형"
@@ -827,7 +827,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PROG-6",
         getQ: (s) => `At present, financial analysts at the brokerage ___________ volatile currency fluctuations across European markets.`,
         getCorrect: () => `are monitoring`,
-        distractors: () => [`monitored`, `will monitor`, `had monitored`],
+        distractors: () => [`were monitoring`, `will be monitoring`, `have monitored`],
         trigger: "At present",
         hint: "단서: 'At present' (현재 이 순간 진행)",
         gPoint: "G-POINT 6: At present -> 현재진행형"
@@ -839,7 +839,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-1",
         getQ: (s) => `The international renewable energy expo will begin next Monday in Tokyo. Tomorrow morning, ${s} ___________ a keynote speech on solar grid efficiency on behalf of our firm.`,
         getCorrect: (v) => `will be ${v.ing}`,
-        distractors: (v) => [v.ed, `has been ${v.ing}`, v.base + "s"],
+        distractors: (v) => [`was ${v.ing}`, `is ${v.ing}`, `has been ${v.ing}`],
         trigger: "Tomorrow morning",
         hint: "단서: 'Tomorrow morning' (단순 미래 시점 부사)",
         gPoint: "G-POINT 7: Tomorrow, Next ~ -> 미래진행형 (will be -ing)"
@@ -848,7 +848,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-2",
         getQ: (s) => `Please do not schedule any phone calls between 2 PM and 4 PM tomorrow because ${s} ___________ an executive board session during those hours.`,
         getCorrect: () => `will be leading`,
-        distractors: () => [`led`, `leads`, `had led`],
+        distractors: () => [`was leading`, `is leading`, `had led`],
         trigger: "tomorrow between 2 PM and 4 PM",
         hint: "단서: 내일 특정 시간대(tomorrow between 2 PM and 4 PM)",
         gPoint: "G-POINT 7: 미래 특정 시점 진행 -> 미래진행형"
@@ -857,7 +857,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-3",
         getQ: (s) => `When the foreign diplomatic delegation arrives at the airport terminal tomorrow afternoon, our welcoming committee ___________ commemorative badges to each dignitary.`,
         getCorrect: () => `will be presenting`,
-        distractors: () => [`presented`, `presents`, `had presented`],
+        distractors: () => [`was presenting`, `is presenting`, `has presented`],
         trigger: "When + arrives (현재) tomorrow afternoon",
         hint: "단서: 시간부사절의 현재동사 'arrives' (내일 미래 시점 대용)",
         gPoint: "G-POINT 7: when절 현재동사 -> 주절 미래진행형 (will be -ing)"
@@ -866,7 +866,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-4",
         getQ: (s) => `The entire film production crew has finalized their travel arrangements. Next Tuesday afternoon, they ___________ to Vancouver for outdoor location shooting.`,
         getCorrect: () => `will be traveling`,
-        distractors: () => [`traveled`, `have traveled`, `had traveled`],
+        distractors: () => [`were traveling`, `are traveling`, `had traveled`],
         trigger: "Next Tuesday afternoon",
         hint: "단서: 'Next Tuesday afternoon' (명확한 미래 시점 부사)",
         gPoint: "G-POINT 7: Next + 시점 -> 미래진행형"
@@ -875,7 +875,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-5",
         getQ: (s) => `At this exact time next Friday, ${s} ___________ the ceremonial opening address at the international architecture expo.`,
         getCorrect: (v) => `will be ${v.ing}`,
-        distractors: (v) => [v.ed, `has been ${v.ing}`, `was ${v.ing}`],
+        distractors: (v) => [`was ${v.ing}`, `is ${v.ing}`, `has been ${v.ing}`],
         trigger: "At this exact time next Friday",
         hint: "단서: 'At this time next Friday (미래 특정 시점)'",
         gPoint: "G-POINT 7: 미래 특정 시점 -> will be -ing"
@@ -884,7 +884,7 @@ const GTELP_GENERATOR = {
         id: "T-FUT-PROG-6",
         getQ: (s) => `Tomorrow evening around 8 PM, the surgical team ___________ a delicate cardiovascular procedure under high-resolution monitors.`,
         getCorrect: () => `will be performing`,
-        distractors: () => [`performed`, `performs`, `had performed`],
+        distractors: () => [`was performing`, `is performing`, `had performed`],
         trigger: "Tomorrow evening around 8 PM",
         hint: "단서: 'Tomorrow evening around 8 PM (미래 시점)'",
         gPoint: "G-POINT 7: Tomorrow 시점 -> will be -ing"
@@ -953,7 +953,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PERF-1",
         getQ: (s) => `When David graduated from university, he moved to Seattle, where he ___________ eco-friendly skyscrapers for fourteen years now. He still loves his profession.`,
         getCorrect: () => `has been designing`,
-        distractors: () => [`designed`, `will design`, `had designed`],
+        distractors: () => [`was designing`, `will be designing`, `had designed`],
         trigger: "for fourteen years now",
         hint: "단서: 'for fourteen years now' (기간 for + 현재 시점 now) + 현재 문맥",
         gPoint: "G-POINT 9: for 기간 now -> 현재완료진행형 (have/has been -ing)"
@@ -962,7 +962,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PERF-2",
         getQ: (s) => `Elena, an internationally acclaimed novelist, ___________ her upcoming fantasy saga for three years now. Eager readers continue to anticipate its publication.`,
         getCorrect: () => `has been writing`,
-        distractors: () => [`wrote`, `is writing`, `had written`],
+        distractors: () => [`was writing`, `is writing`, `had been writing`],
         trigger: "for three years now",
         hint: "단서: 'for three years now' (now + for 기간)",
         gPoint: "G-POINT 9: for 기간 now -> 현재완료진행형"
@@ -980,7 +980,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PERF-4",
         getQ: (s) => `Because the chief engineer resigned abruptly, recruiting a competent replacement is vital. ${s} ___________ qualified candidates for four weeks now to fill the opening.`,
         getCorrect: (v) => `has been ${v.ing}`,
-        distractors: (v) => [v.ed, `will ${v.base}`, `had ${v.ed}`],
+        distractors: (v) => [`was ${v.ing}`, `will be ${v.ing}`, `had been ${v.ing}`],
         trigger: "for four weeks now",
         hint: "단서: 현재 문맥(is vital) + 기간 'for four weeks now'",
         gPoint: "G-POINT 9: 현재 상황 + for 기간 now -> 현재완료진행형"
@@ -989,7 +989,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PERF-5",
         getQ: (s) => `Since the pharmaceutical firm established its genomic research branch five years ago, ${s} ___________ experimental cancer therapies with promising early results.`,
         getCorrect: (v) => `has been ${v.ing}`,
-        distractors: (v) => [v.ed, `will ${v.base}`, `had ${v.ed}`],
+        distractors: (v) => [`was ${v.ing}`, `is ${v.ing}`, `had been ${v.ing}`],
         trigger: "Since the firm established its branch",
         hint: "단서: 'Since + 과거시동사(established)' + 주절 현재까지 지속",
         gPoint: "G-POINT 9: Since 과거시점 -> have/has been -ing"
@@ -998,7 +998,7 @@ const GTELP_GENERATOR = {
         id: "T-PRES-PERF-6",
         getQ: (s) => `The urban revitalization project is actively progressing. Construction crews ___________ the historical bridge foundations for ten months now.`,
         getCorrect: () => `have been reinforcing`,
-        distractors: () => [`reinforced`, `will reinforce`, `had reinforced`],
+        distractors: () => [`were reinforcing`, `will be reinforcing`, `had reinforced`],
         trigger: "for ten months now",
         hint: "단서: 현재 지속 문맥 + 'for ten months now'",
         gPoint: "G-POINT 9: for 기간 now -> have been -ing"
