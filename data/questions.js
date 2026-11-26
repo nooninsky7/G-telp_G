@@ -1348,14 +1348,14 @@ const QUESTIONS_DATABASE = [
   },
 
   // =========================================================================
-  // 8. 선생님 맞춤 오답 & 특훈 문항 (켈리 매일문법 사용자 오답 2, 4, 5번 집중 탑재)
+  // 8. 선생님 맞춤 오답 문항
   // =========================================================================
   {
     id: "KELLY-DAILY-02",
     category: "custom",
     subCategory: "시제 (미래진행)",
-    subCategoryName: "켈리 매일문법 2번 [내 오답] > 시간부사절(before) + 주절 미래진행형",
-    question: "Before the professor gives a lecture, students ___________ quizzes to identify what they know and what they don't know. Their scores in quizzes will be reflected on their final grade. [출제자 켈리]",
+    subCategoryName: "시제 > 시간부사절(before) + 주절 미래진행형",
+    question: "Before the professor gives a lecture, students ___________ quizzes to identify what they know and what they don't know. Their scores in quizzes will be reflected on their final grade.",
     options: [
       { text: "is taking", isCorrect: false },
       { text: "will be taking", isCorrect: true },
@@ -1365,14 +1365,14 @@ const QUESTIONS_DATABASE = [
     triggerWord: "Before the professor gives (현재) + will be reflected",
     hint: "단서 1: 지텔프 시제는 진행형(-ing)만 정답 (c, d 즉시 소거) / 단서 2: 시간부사절(Before) 현재동사 ➔ 주절 미래진행형 (will be -ing) / 단서 3: 복수주어 students이므로 is taking 수일치 탈락!",
     gPoint: "G-POINT 7: 시간·조건 부사절(before, when) 현재동사 ➔ 주절 미래진행형 (will be -ing)",
-    explanation: "[켈리쌤의 1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) would take와 (d) had taken은 바로 소거합니다.\n2. (a) is taking은 주어가 복수(students)인데 단수동사 is를 썼으므로 수일치 오류로 탈락합니다.\n3. 시간부사절인 Before절에 현재시제(gives)가 쓰였으므로 '시간/조건 부사절에서 현재가 미래를 대신한다'는 문법 규칙에 따라 주절에는 미래진행형인 'will be taking'이 정답입니다!"
+    explanation: "[1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) would take와 (d) had taken은 바로 소거합니다.\n2. (a) is taking은 주어가 복수(students)인데 단수동사 is를 썼으므로 수일치 오류로 탈락합니다.\n3. 시간부사절인 Before절에 현재시제(gives)가 쓰였으므로 '시간/조건 부사절에서 현재가 미래를 대신한다'는 문법 규칙에 따라 주절에는 미래진행형인 'will be taking'이 정답입니다!"
   },
   {
     id: "KELLY-DAILY-04",
     category: "custom",
     subCategory: "조동사 (must)",
-    subCategoryName: "켈리 매일문법 4번 [내 오답] > 무조건 해야 하는 의무 (must)",
-    question: "Chandler ___________ renew his driver's license to extend his license expiration date. Otherwise, he can't drive any more. Because he is not a U.S. citizen, his driver's license isn't allowed to renew online. [출제자 켈리]",
+    subCategoryName: "조동사 > 무조건 해야 하는 의무 (must)",
+    question: "Chandler ___________ renew his driver's license to extend his license expiration date. Otherwise, he can't drive any more. Because he is not a U.S. citizen, his driver's license isn't allowed to renew online.",
     options: [
       { text: "should", isCorrect: false },
       { text: "can", isCorrect: false },
@@ -1382,14 +1382,14 @@ const QUESTIONS_DATABASE = [
     triggerWord: "Otherwise, he can't drive any more (의무 강제성)",
     hint: "단서: 뒷문장 'Otherwise, he can't drive any more(그렇지 않으면 더 이상 운전할 수 없다)' ➔ 단순 권고가 아닌 법적/강제적 의무 must!",
     gPoint: "G-POINT 29: 무조건 해야 하는 의무, 법적 강제성 = must (should는 권유/충고)",
-    explanation: "[켈리쌤의 1초 컷 오답 분석]\n운전면허증을 갱신하지 않으면 '더 이상 운전할 수 없다(Otherwise, he can't drive any more)'라고 법적 제재가 뒤따르므로, 이는 '단순히 하는 게 좋다'는 권고(should)가 아니라 운전을 하기 위해 '무조건 해야 하는 필수적 의무'입니다. 따라서 절대적 의무를 나타내는 'must'가 정답입니다."
+    explanation: "[1초 컷 오답 분석]\n운전면허증을 갱신하지 않으면 '더 이상 운전할 수 없다(Otherwise, he can't drive any more)'라고 법적 제재가 뒤따르므로, 이는 '단순히 하는 게 좋다'는 권고(should)가 아니라 운전을 하기 위해 '무조건 해야 하는 필수적 의무'입니다. 따라서 절대적 의무를 나타내는 'must'가 정답입니다."
   },
   {
     id: "KELLY-DAILY-05",
     category: "custom",
     subCategory: "시제 (현재완료진행)",
-    subCategoryName: "켈리 매일문법 5번 [내 오답] > Since + 과거동사 ➔ 주절 현재완료진행형",
-    question: "Since she learned how to make French toast, she ___________ it for dinner. Although it tastes awful, Jack pretends to like her cooking. [출제자 켈리]",
+    subCategoryName: "시제 > Since + 과거동사 ➔ 주절 현재완료진행형",
+    question: "Since she learned how to make French toast, she ___________ it for dinner. Although it tastes awful, Jack pretends to like her cooking.",
     options: [
       { text: "has been making", isCorrect: true },
       { text: "was making", isCorrect: false },
@@ -1399,7 +1399,7 @@ const QUESTIONS_DATABASE = [
     triggerWord: "Since she learned (과거)",
     hint: "단서 1: 지텔프 시제는 진행형(-ing)만 정답 (c, d 즉시 소거) / 단서 2: 'Since + 과거시점' ➔ 주절은 무조건 'have/has been -ing'!",
     gPoint: "G-POINT 9: since + 과거동사 ➔ 현재완료진행형 (has/have been -ing)",
-    explanation: "[켈리쌤의 1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) had made와 (d) will make는 1초 만에 소거합니다.\n2. 문두에 '~이후로 쭉'을 뜻하는 'Since + 과거동사(learned)'가 나왔으므로, 주절에는 과거부터 현재까지 동작이 이어져 오는 현재완료진행형 'has been making'이 정답입니다!"
+    explanation: "[1초 컷 오답 분석]\n1. 지텔프 시제 문제는 100% 진행형(-ing)만 정답이므로 진행형이 아닌 (c) had made와 (d) will make는 1초 만에 소거합니다.\n2. 문두에 '~이후로 쭉'을 뜻하는 'Since + 과거동사(learned)'가 나왔으므로, 주절에는 과거부터 현재까지 동작이 이어져 오는 현재완료진행형 'has been making'이 정답입니다!"
   }
 ];
 
@@ -1413,5 +1413,5 @@ const CATEGORIES = [
   { id: "relative", name: "관계사 (관계대명사/부사)", icon: "link", badge: "실전 18제 완비" },
   { id: "modal", name: "조동사 (문맥 해석)", icon: "shield-alert", badge: "실전 18제 완비" },
   { id: "conjunction", name: "연결어 (접속사/접속부사)", icon: "share-2", badge: "실전 18제 완비" },
-  { id: "custom", name: "선생님 맞춤 오답 & 특훈", icon: "bookmark", badge: "켈리 오답 3제 (2, 4, 5번)" }
+  { id: "custom", name: "선생님 맞춤 오답", icon: "bookmark", badge: "" }
 ];

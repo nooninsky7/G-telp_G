@@ -141,6 +141,7 @@ class GTelpApp {
       'relative': '관계사',
       'modal': '조동사',
       'conjunction': '연결어',
+      'custom': '선생님 맞춤 오답',
       'all': '전체 종합',
       'wrong': '오답노트 복습'
     };
@@ -551,9 +552,11 @@ class GTelpApp {
              class="p-4 rounded-2xl border ${activeBorder} cursor-pointer transition shadow-xs flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">
-                ${cat.badge}
-              </span>
+              ${cat.badge ? `
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">
+                  ${cat.badge}
+                </span>
+              ` : `<span></span>`}
               <span class="text-xs font-mono font-semibold text-slate-400">${count}문항</span>
             </div>
             <h4 class="font-extrabold text-slate-900 text-sm md:text-base">${cat.name}</h4>
@@ -698,7 +701,7 @@ class GTelpApp {
     if (categoryId === 'custom') {
       const customPool = this.questions.filter(q => q.category === 'custom');
       if (customPool.length === 0) {
-        alert("📷 [선생님 맞춤 오답 & 특훈 보관함 안내]\n\n아직 등록된 선생님 문제가 없습니다.\n\n선생님이 내주신 과제나 틀렸던 교재 문제 사진을 채팅창에 올려주시면, 지문/선지/정답/해설을 정확히 디지털화하여 이곳에 즉시 등록해 드립니다!");
+        alert("📷 [선생님 맞춤 오답 안내]\n\n아직 등록된 문제가 없습니다.\n\n선생님이 내주신 과제나 틀렸던 교재 문제 사진을 채팅창에 올려주시면, 지문/선지/정답/해설을 정확히 디지털화하여 이곳에 즉시 등록해 드립니다!");
         return;
       }
       this.currentSessionType = 'custom';
