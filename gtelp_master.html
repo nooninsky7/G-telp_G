@@ -3915,6 +3915,19 @@ class GTelpApp {
         this.customCycle = { unvisitedIds: [], round: 1 };
       }
 
+      // 1번, 3번 문제 완전 영구 배제 (사용자 오답 2, 4, 5번만 엄격 유지)
+      this.questions = this.questions.filter(q => q.id !== 'KELLY-DAILY-01' && q.id !== 'KELLY-DAILY-03');
+      if (this.customCycle && this.customCycle.unvisitedIds) {
+        this.customCycle.unvisitedIds = this.customCycle.unvisitedIds.filter(id => id !== 'KELLY-DAILY-01' && id !== 'KELLY-DAILY-03');
+      }
+      if (this.history && this.history.wrongIds) {
+        this.history.wrongIds = this.history.wrongIds.filter(id => id !== 'KELLY-DAILY-01' && id !== 'KELLY-DAILY-03');
+      }
+      if (this.wrongQuestionStore) {
+        delete this.wrongQuestionStore['KELLY-DAILY-01'];
+        delete this.wrongQuestionStore['KELLY-DAILY-03'];
+      }
+
       // 켈리 매일 문법 5제 중 사용자 오답(2, 4, 5번) 오답노트 보관함 초기 연동
       if (!this.history.kellyDailyInitialized) {
         if (!this.history.wrongIds) this.history.wrongIds = [];
@@ -3925,8 +3938,8 @@ class GTelpApp {
           }
         });
         this.history.kellyDailyInitialized = true;
-        this.saveUserData();
       }
+      this.saveUserData();
     } catch (e) {
       console.error(e);
     }
